@@ -1,0 +1,39 @@
+name: Unit Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  buildpackage:
+    name: Build Package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Install ctypeslib
+      run: |
+        git clone git@github.com:geohot/ctypeslib.git
+        cd ctypeslib
+        pip install .
+    - name: Install HIP
+      run: |
+        sudo mkdir --parents --mode=0755 /etc/apt/keyrings
+        wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
+        echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/5.7.1 jammy main" | sudo tee --append /etc/apt/sources.list.d/rocm.list
+        echo -e 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' | sudo tee /etc/apt/preferences.d/rocm-pin-600
+        sudo apt update
+        sudo apt install rocm-hip-sdk
+    - name: Generate headers
+      run: ./generate.sh
+    - name: Install gpuctypes
+      run: pip install .
+    - name: Test gpuctypes
+      run: python3 -c "import gpuctypes.hip"
+
