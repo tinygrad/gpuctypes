@@ -1,6 +1,6 @@
 import ctypes
 import unittest
-from ctypes_helpers import to_char_p_p
+from helpers import to_char_p_p
 import gpuctypes.opencl as cl
 
 def check(status):
