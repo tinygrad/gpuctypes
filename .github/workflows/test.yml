@@ -35,12 +35,14 @@ jobs:
           sudo apt update -y
           sudo apt install -y --no-install-recommends git g++ cmake ninja-build llvm-15-dev zlib1g-dev libglew-dev \
             flex bison libfl-dev libboost-thread-dev libboost-filesystem-dev nvidia-cuda-toolkit-gcc
+          nvcc -V
       - name: Install OpenCL
         if: ${{ matrix.task == 'opencl' }}
         run: |
           echo "deb [ allow-insecure=yes ] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
           sudo apt update -y
           sudo apt install --allow-unauthenticated -y --no-install-recommends \
+            opencl-headers ocl-icd-opencl-dev \
             intel-oneapi-runtime-openmp=2023.2.1-16 intel-oneapi-runtime-compilers-common=2023.2.1-16 intel-oneapi-runtime-compilers=2023.2.1-16 \
             intel-oneapi-runtime-dpcpp-sycl-opencl-cpu=2023.2.1-16 intel-oneapi-runtime-tbb-common=2021.10.0-49541 \
             intel-oneapi-runtime-tbb=2021.10.0-49541 intel-oneapi-runtime-opencl=2023.2.1-16
@@ -57,7 +59,9 @@ jobs:
           pip install .
           clang2py -V
       - name: Generate headers
-        run: ./generate_${{ matrix.task }}.sh
+        run: |
+          rm gpuctypes/${{ matrix.task }}.py
+          ./generate_${{ matrix.task }}.sh
       - name: Install gpuctypes
         run: pip install .
       - name: Test gpuctypes import
@@ -65,5 +69,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: Generated ${{ matrix.task }} Header
-          path: gpuopencl/${{ matrix.task }}.py
+          path: gpuctypes/${{ matrix.task }}.py
 
