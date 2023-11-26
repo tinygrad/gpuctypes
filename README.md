@@ -4,7 +4,7 @@ Do you wish that there were simple wrappers for GPU libraries in Python? Like no
 
 That's what gpuctypes does! While high level libraries have their place, the world needs more low level libraries. Like gpuctypes. Welcome home.
 
-### Installation
+### Installation (usage)
 
 ```sh
 pip install gpuctypes
@@ -21,6 +21,14 @@ import gpuctypes.opencl as opencl
 ### How it works
 
 gpuctypes uses [ctypeslib](https://github.com/trolldbois/ctypeslib) to autogenerate Python files from the headers of the respective libraries.
+
+### Installation (development)
+
+```sh
+git clone https://github.com/tinygrad/gpuctypes.git
+cd gpuctypes
+pip install -e .
+```
 
 ### Current versions
 
