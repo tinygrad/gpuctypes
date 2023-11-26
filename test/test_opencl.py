@@ -1,7 +1,7 @@
 from typing import Optional
 import ctypes
 import unittest
-from helpers import to_char_p_p
+from helpers import ctype_buffer, to_char_p_p
 import gpuctypes.opencl as cl
 
 def check(status, info:Optional[str]=None):
@@ -80,9 +80,9 @@ class TestOpenCL(unittest.TestCase):
     check(status.value)
     assert kernel is not None
 
-    A = (ctypes.c_int32 * 5)()
-    B = (ctypes.c_int32 * 5)(1, 2, 3, 4, 5)
-    C = (ctypes.c_int32 * 5)(5, 4, 3, 2, 1)
+    A = ctype_buffer(ctypes.c_int32, 5, ())
+    B = ctype_buffer(ctypes.c_int32, 5, (1,2,3,4,5))
+    C = ctype_buffer(ctypes.c_int32, 5, (5,4,3,2,1))
 
     bufA = cl.clCreateBuffer(self.context, cl.CL_MEM_WRITE_ONLY, ctypes.sizeof(A), None, ctypes.byref(status))
     bufB = cl.clCreateBuffer(self.context, cl.CL_MEM_READ_ONLY | cl.CL_MEM_COPY_HOST_PTR, ctypes.sizeof(B), ctypes.byref(B), ctypes.byref(status))

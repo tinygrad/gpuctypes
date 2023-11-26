@@ -27,3 +27,5 @@ def cuda_compile(prg, options, f, check):
   status = f.compile(prog, len(options), to_char_p_p(options))
   if status != 0: raise RuntimeError(f"compile failed: {get_bytes(prog, f.getLogSize, f.getLog, check)}")
   return get_bytes(prog, f.getCodeSize, f.getCode, check)
+
+def ctype_buffer(dtype, sz: int, data): return (dtype * sz)(*data)
