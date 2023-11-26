@@ -281,65 +281,119 @@ class struct_ihiprtcLinkState(Structure):
     pass
 
 hiprtcLinkState = ctypes.POINTER(struct_ihiprtcLinkState)
-hiprtcGetErrorString = _libraries['libhiprtc.so'].hiprtcGetErrorString
-hiprtcGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
-hiprtcGetErrorString.argtypes = [hiprtcResult]
-hiprtcVersion = _libraries['libhiprtc.so'].hiprtcVersion
-hiprtcVersion.restype = hiprtcResult
-hiprtcVersion.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
+try:
+    hiprtcGetErrorString = _libraries['libhiprtc.so'].hiprtcGetErrorString
+    hiprtcGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
+    hiprtcGetErrorString.argtypes = [hiprtcResult]
+except AttributeError:
+    pass
+try:
+    hiprtcVersion = _libraries['libhiprtc.so'].hiprtcVersion
+    hiprtcVersion.restype = hiprtcResult
+    hiprtcVersion.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
 class struct__hiprtcProgram(Structure):
     pass
 
 hiprtcProgram = ctypes.POINTER(struct__hiprtcProgram)
-hiprtcAddNameExpression = _libraries['libhiprtc.so'].hiprtcAddNameExpression
-hiprtcAddNameExpression.restype = hiprtcResult
-hiprtcAddNameExpression.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-hiprtcCompileProgram = _libraries['libhiprtc.so'].hiprtcCompileProgram
-hiprtcCompileProgram.restype = hiprtcResult
-hiprtcCompileProgram.argtypes = [hiprtcProgram, ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-hiprtcCreateProgram = _libraries['libhiprtc.so'].hiprtcCreateProgram
-hiprtcCreateProgram.restype = hiprtcResult
-hiprtcCreateProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-hiprtcDestroyProgram = _libraries['libhiprtc.so'].hiprtcDestroyProgram
-hiprtcDestroyProgram.restype = hiprtcResult
-hiprtcDestroyProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram))]
-hiprtcGetLoweredName = _libraries['libhiprtc.so'].hiprtcGetLoweredName
-hiprtcGetLoweredName.restype = hiprtcResult
-hiprtcGetLoweredName.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-hiprtcGetProgramLog = _libraries['libhiprtc.so'].hiprtcGetProgramLog
-hiprtcGetProgramLog.restype = hiprtcResult
-hiprtcGetProgramLog.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-hiprtcGetProgramLogSize = _libraries['libhiprtc.so'].hiprtcGetProgramLogSize
-hiprtcGetProgramLogSize.restype = hiprtcResult
-hiprtcGetProgramLogSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
-hiprtcGetCode = _libraries['libhiprtc.so'].hiprtcGetCode
-hiprtcGetCode.restype = hiprtcResult
-hiprtcGetCode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-hiprtcGetCodeSize = _libraries['libhiprtc.so'].hiprtcGetCodeSize
-hiprtcGetCodeSize.restype = hiprtcResult
-hiprtcGetCodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
-hiprtcGetBitcode = _libraries['libhiprtc.so'].hiprtcGetBitcode
-hiprtcGetBitcode.restype = hiprtcResult
-hiprtcGetBitcode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-hiprtcGetBitcodeSize = _libraries['libhiprtc.so'].hiprtcGetBitcodeSize
-hiprtcGetBitcodeSize.restype = hiprtcResult
-hiprtcGetBitcodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
-hiprtcLinkCreate = _libraries['libhiprtc.so'].hiprtcLinkCreate
-hiprtcLinkCreate.restype = hiprtcResult
-hiprtcLinkCreate.argtypes = [ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(struct_ihiprtcLinkState))]
-hiprtcLinkAddFile = _libraries['libhiprtc.so'].hiprtcLinkAddFile
-hiprtcLinkAddFile.restype = hiprtcResult
-hiprtcLinkAddFile.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+try:
+    hiprtcAddNameExpression = _libraries['libhiprtc.so'].hiprtcAddNameExpression
+    hiprtcAddNameExpression.restype = hiprtcResult
+    hiprtcAddNameExpression.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcCompileProgram = _libraries['libhiprtc.so'].hiprtcCompileProgram
+    hiprtcCompileProgram.restype = hiprtcResult
+    hiprtcCompileProgram.argtypes = [hiprtcProgram, ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hiprtcCreateProgram = _libraries['libhiprtc.so'].hiprtcCreateProgram
+    hiprtcCreateProgram.restype = hiprtcResult
+    hiprtcCreateProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hiprtcDestroyProgram = _libraries['libhiprtc.so'].hiprtcDestroyProgram
+    hiprtcDestroyProgram.restype = hiprtcResult
+    hiprtcDestroyProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram))]
+except AttributeError:
+    pass
+try:
+    hiprtcGetLoweredName = _libraries['libhiprtc.so'].hiprtcGetLoweredName
+    hiprtcGetLoweredName.restype = hiprtcResult
+    hiprtcGetLoweredName.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hiprtcGetProgramLog = _libraries['libhiprtc.so'].hiprtcGetProgramLog
+    hiprtcGetProgramLog.restype = hiprtcResult
+    hiprtcGetProgramLog.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetProgramLogSize = _libraries['libhiprtc.so'].hiprtcGetProgramLogSize
+    hiprtcGetProgramLogSize.restype = hiprtcResult
+    hiprtcGetProgramLogSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetCode = _libraries['libhiprtc.so'].hiprtcGetCode
+    hiprtcGetCode.restype = hiprtcResult
+    hiprtcGetCode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetCodeSize = _libraries['libhiprtc.so'].hiprtcGetCodeSize
+    hiprtcGetCodeSize.restype = hiprtcResult
+    hiprtcGetCodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetBitcode = _libraries['libhiprtc.so'].hiprtcGetBitcode
+    hiprtcGetBitcode.restype = hiprtcResult
+    hiprtcGetBitcode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetBitcodeSize = _libraries['libhiprtc.so'].hiprtcGetBitcodeSize
+    hiprtcGetBitcodeSize.restype = hiprtcResult
+    hiprtcGetBitcodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkCreate = _libraries['libhiprtc.so'].hiprtcLinkCreate
+    hiprtcLinkCreate.restype = hiprtcResult
+    hiprtcLinkCreate.argtypes = [ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(struct_ihiprtcLinkState))]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkAddFile = _libraries['libhiprtc.so'].hiprtcLinkAddFile
+    hiprtcLinkAddFile.restype = hiprtcResult
+    hiprtcLinkAddFile.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
 size_t = ctypes.c_uint64
-hiprtcLinkAddData = _libraries['libhiprtc.so'].hiprtcLinkAddData
-hiprtcLinkAddData.restype = hiprtcResult
-hiprtcLinkAddData.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
-hiprtcLinkComplete = _libraries['libhiprtc.so'].hiprtcLinkComplete
-hiprtcLinkComplete.restype = hiprtcResult
-hiprtcLinkComplete.argtypes = [hiprtcLinkState, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
-hiprtcLinkDestroy = _libraries['libhiprtc.so'].hiprtcLinkDestroy
-hiprtcLinkDestroy.restype = hiprtcResult
-hiprtcLinkDestroy.argtypes = [hiprtcLinkState]
+try:
+    hiprtcLinkAddData = _libraries['libhiprtc.so'].hiprtcLinkAddData
+    hiprtcLinkAddData.restype = hiprtcResult
+    hiprtcLinkAddData.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkComplete = _libraries['libhiprtc.so'].hiprtcLinkComplete
+    hiprtcLinkComplete.restype = hiprtcResult
+    hiprtcLinkComplete.argtypes = [hiprtcLinkState, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkDestroy = _libraries['libhiprtc.so'].hiprtcLinkDestroy
+    hiprtcLinkDestroy.restype = hiprtcResult
+    hiprtcLinkDestroy.argtypes = [hiprtcLinkState]
+except AttributeError:
+    pass
 
 # values for enumeration 'c__Ea_HIP_SUCCESS'
 c__Ea_HIP_SUCCESS__enumvalues = {
@@ -1272,14 +1326,6 @@ class struct_hipResourceDesc(Structure):
 class union_hipResourceDesc_res(Union):
     pass
 
-class struct_hipResourceDesc_0_array(Structure):
-    pass
-
-struct_hipResourceDesc_0_array._pack_ = 1 # source:False
-struct_hipResourceDesc_0_array._fields_ = [
-    ('array', ctypes.POINTER(struct_hipArray)),
-]
-
 class struct_hipResourceDesc_0_linear(Structure):
     pass
 
@@ -1312,6 +1358,14 @@ struct_hipResourceDesc_0_mipmap._fields_ = [
     ('mipmap', ctypes.POINTER(struct_hipMipmappedArray)),
 ]
 
+class struct_hipResourceDesc_0_array(Structure):
+    pass
+
+struct_hipResourceDesc_0_array._pack_ = 1 # source:False
+struct_hipResourceDesc_0_array._fields_ = [
+    ('array', ctypes.POINTER(struct_hipArray)),
+]
+
 union_hipResourceDesc_res._pack_ = 1 # source:False
 union_hipResourceDesc_res._fields_ = [
     ('array', struct_hipResourceDesc_0_array),
@@ -1333,25 +1387,6 @@ class struct_HIP_RESOURCE_DESC_st(Structure):
 
 class union_HIP_RESOURCE_DESC_st_res(Union):
     pass
-
-class struct_HIP_RESOURCE_DESC_st_0_array(Structure):
-    pass
-
-struct_HIP_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
-struct_HIP_RESOURCE_DESC_st_0_array._fields_ = [
-    ('hArray', ctypes.POINTER(struct_hipArray)),
-]
-
-class struct_HIP_RESOURCE_DESC_st_0_linear(Structure):
-    pass
-
-struct_HIP_RESOURCE_DESC_st_0_linear._pack_ = 1 # source:False
-struct_HIP_RESOURCE_DESC_st_0_linear._fields_ = [
-    ('devPtr', ctypes.POINTER(None)),
-    ('format', hipArray_Format),
-    ('numChannels', ctypes.c_uint32),
-    ('sizeInBytes', ctypes.c_uint64),
-]
 
 class struct_HIP_RESOURCE_DESC_st_0_pitch2D(Structure):
     pass
@@ -1380,6 +1415,25 @@ class struct_HIP_RESOURCE_DESC_st_0_mipmap(Structure):
 struct_HIP_RESOURCE_DESC_st_0_mipmap._pack_ = 1 # source:False
 struct_HIP_RESOURCE_DESC_st_0_mipmap._fields_ = [
     ('hMipmappedArray', ctypes.POINTER(struct_hipMipmappedArray)),
+]
+
+class struct_HIP_RESOURCE_DESC_st_0_array(Structure):
+    pass
+
+struct_HIP_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
+struct_HIP_RESOURCE_DESC_st_0_array._fields_ = [
+    ('hArray', ctypes.POINTER(struct_hipArray)),
+]
+
+class struct_HIP_RESOURCE_DESC_st_0_linear(Structure):
+    pass
+
+struct_HIP_RESOURCE_DESC_st_0_linear._pack_ = 1 # source:False
+struct_HIP_RESOURCE_DESC_st_0_linear._fields_ = [
+    ('devPtr', ctypes.POINTER(None)),
+    ('format', hipArray_Format),
+    ('numChannels', ctypes.c_uint32),
+    ('sizeInBytes', ctypes.c_uint64),
 ]
 
 union_HIP_RESOURCE_DESC_st_res._pack_ = 1 # source:False
@@ -1535,15 +1589,24 @@ struct_HIP_MEMCPY3D._fields_ = [
 ]
 
 HIP_MEMCPY3D = struct_HIP_MEMCPY3D
-make_hipPitchedPtr = _libraries['FIXME_STUB'].make_hipPitchedPtr
-make_hipPitchedPtr.restype = struct_hipPitchedPtr
-make_hipPitchedPtr.argtypes = [ctypes.POINTER(None), size_t, size_t, size_t]
-make_hipPos = _libraries['FIXME_STUB'].make_hipPos
-make_hipPos.restype = struct_hipPos
-make_hipPos.argtypes = [size_t, size_t, size_t]
-make_hipExtent = _libraries['FIXME_STUB'].make_hipExtent
-make_hipExtent.restype = struct_hipExtent
-make_hipExtent.argtypes = [size_t, size_t, size_t]
+try:
+    make_hipPitchedPtr = _libraries['FIXME_STUB'].make_hipPitchedPtr
+    make_hipPitchedPtr.restype = struct_hipPitchedPtr
+    make_hipPitchedPtr.argtypes = [ctypes.POINTER(None), size_t, size_t, size_t]
+except AttributeError:
+    pass
+try:
+    make_hipPos = _libraries['FIXME_STUB'].make_hipPos
+    make_hipPos.restype = struct_hipPos
+    make_hipPos.argtypes = [size_t, size_t, size_t]
+except AttributeError:
+    pass
+try:
+    make_hipExtent = _libraries['FIXME_STUB'].make_hipExtent
+    make_hipExtent.restype = struct_hipExtent
+    make_hipExtent.argtypes = [size_t, size_t, size_t]
+except AttributeError:
+    pass
 
 # values for enumeration 'hipFunction_attribute'
 hipFunction_attribute__enumvalues = {
@@ -2161,9 +2224,12 @@ struct_hipExternalSemaphoreWaitParams_st._fields_ = [
 ]
 
 hipExternalSemaphoreWaitParams = struct_hipExternalSemaphoreWaitParams_st
-__hipGetPCH = _libraries['libamdhip64.so'].__hipGetPCH
-__hipGetPCH.restype = None
-__hipGetPCH.argtypes = [ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.c_uint32)]
+try:
+    __hipGetPCH = _libraries['libamdhip64.so'].__hipGetPCH
+    __hipGetPCH.restype = None
+    __hipGetPCH.argtypes = [ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hipGLDeviceList'
 hipGLDeviceList__enumvalues = {
@@ -2626,636 +2692,1239 @@ struct_hipArrayMapInfo._fields_ = [
 ]
 
 hipArrayMapInfo = struct_hipArrayMapInfo
-hipInit = _libraries['libamdhip64.so'].hipInit
-hipInit.restype = hipError_t
-hipInit.argtypes = [ctypes.c_uint32]
-hipDriverGetVersion = _libraries['libamdhip64.so'].hipDriverGetVersion
-hipDriverGetVersion.restype = hipError_t
-hipDriverGetVersion.argtypes = [ctypes.POINTER(ctypes.c_int32)]
-hipRuntimeGetVersion = _libraries['libamdhip64.so'].hipRuntimeGetVersion
-hipRuntimeGetVersion.restype = hipError_t
-hipRuntimeGetVersion.argtypes = [ctypes.POINTER(ctypes.c_int32)]
-hipDeviceGet = _libraries['libamdhip64.so'].hipDeviceGet
-hipDeviceGet.restype = hipError_t
-hipDeviceGet.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.c_int32]
-hipDeviceComputeCapability = _libraries['libamdhip64.so'].hipDeviceComputeCapability
-hipDeviceComputeCapability.restype = hipError_t
-hipDeviceComputeCapability.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), hipDevice_t]
-hipDeviceGetName = _libraries['libamdhip64.so'].hipDeviceGetName
-hipDeviceGetName.restype = hipError_t
-hipDeviceGetName.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.c_int32, hipDevice_t]
-hipDeviceGetUuid = _libraries['libamdhip64.so'].hipDeviceGetUuid
-hipDeviceGetUuid.restype = hipError_t
-hipDeviceGetUuid.argtypes = [ctypes.POINTER(struct_hipUUID_t), hipDevice_t]
-hipDeviceGetP2PAttribute = _libraries['libamdhip64.so'].hipDeviceGetP2PAttribute
-hipDeviceGetP2PAttribute.restype = hipError_t
-hipDeviceGetP2PAttribute.argtypes = [ctypes.POINTER(ctypes.c_int32), hipDeviceP2PAttr, ctypes.c_int32, ctypes.c_int32]
-hipDeviceGetPCIBusId = _libraries['libamdhip64.so'].hipDeviceGetPCIBusId
-hipDeviceGetPCIBusId.restype = hipError_t
-hipDeviceGetPCIBusId.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.c_int32]
-hipDeviceGetByPCIBusId = _libraries['libamdhip64.so'].hipDeviceGetByPCIBusId
-hipDeviceGetByPCIBusId.restype = hipError_t
-hipDeviceGetByPCIBusId.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_char)]
-hipDeviceTotalMem = _libraries['libamdhip64.so'].hipDeviceTotalMem
-hipDeviceTotalMem.restype = hipError_t
-hipDeviceTotalMem.argtypes = [ctypes.POINTER(ctypes.c_uint64), hipDevice_t]
-hipDeviceSynchronize = _libraries['libamdhip64.so'].hipDeviceSynchronize
-hipDeviceSynchronize.restype = hipError_t
-hipDeviceSynchronize.argtypes = []
-hipDeviceReset = _libraries['libamdhip64.so'].hipDeviceReset
-hipDeviceReset.restype = hipError_t
-hipDeviceReset.argtypes = []
-hipSetDevice = _libraries['libamdhip64.so'].hipSetDevice
-hipSetDevice.restype = hipError_t
-hipSetDevice.argtypes = [ctypes.c_int32]
-hipGetDevice = _libraries['libamdhip64.so'].hipGetDevice
-hipGetDevice.restype = hipError_t
-hipGetDevice.argtypes = [ctypes.POINTER(ctypes.c_int32)]
-hipGetDeviceCount = _libraries['libamdhip64.so'].hipGetDeviceCount
-hipGetDeviceCount.restype = hipError_t
-hipGetDeviceCount.argtypes = [ctypes.POINTER(ctypes.c_int32)]
-hipDeviceGetAttribute = _libraries['libamdhip64.so'].hipDeviceGetAttribute
-hipDeviceGetAttribute.restype = hipError_t
-hipDeviceGetAttribute.argtypes = [ctypes.POINTER(ctypes.c_int32), hipDeviceAttribute_t, ctypes.c_int32]
-hipDeviceGetDefaultMemPool = _libraries['libamdhip64.so'].hipDeviceGetDefaultMemPool
-hipDeviceGetDefaultMemPool.restype = hipError_t
-hipDeviceGetDefaultMemPool.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.c_int32]
-hipDeviceSetMemPool = _libraries['libamdhip64.so'].hipDeviceSetMemPool
-hipDeviceSetMemPool.restype = hipError_t
-hipDeviceSetMemPool.argtypes = [ctypes.c_int32, hipMemPool_t]
-hipDeviceGetMemPool = _libraries['libamdhip64.so'].hipDeviceGetMemPool
-hipDeviceGetMemPool.restype = hipError_t
-hipDeviceGetMemPool.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.c_int32]
-hipGetDeviceProperties = _libraries['libamdhip64.so'].hipGetDeviceProperties
-hipGetDeviceProperties.restype = hipError_t
-hipGetDeviceProperties.argtypes = [ctypes.POINTER(struct_hipDeviceProp_t), ctypes.c_int32]
-hipDeviceSetCacheConfig = _libraries['libamdhip64.so'].hipDeviceSetCacheConfig
-hipDeviceSetCacheConfig.restype = hipError_t
-hipDeviceSetCacheConfig.argtypes = [hipFuncCache_t]
-hipDeviceGetCacheConfig = _libraries['libamdhip64.so'].hipDeviceGetCacheConfig
-hipDeviceGetCacheConfig.restype = hipError_t
-hipDeviceGetCacheConfig.argtypes = [ctypes.POINTER(hipFuncCache_t)]
-hipDeviceGetLimit = _libraries['libamdhip64.so'].hipDeviceGetLimit
-hipDeviceGetLimit.restype = hipError_t
-hipDeviceGetLimit.argtypes = [ctypes.POINTER(ctypes.c_uint64), hipLimit_t]
-hipDeviceSetLimit = _libraries['libamdhip64.so'].hipDeviceSetLimit
-hipDeviceSetLimit.restype = hipError_t
-hipDeviceSetLimit.argtypes = [hipLimit_t, size_t]
-hipDeviceGetSharedMemConfig = _libraries['libamdhip64.so'].hipDeviceGetSharedMemConfig
-hipDeviceGetSharedMemConfig.restype = hipError_t
-hipDeviceGetSharedMemConfig.argtypes = [ctypes.POINTER(hipSharedMemConfig)]
-hipGetDeviceFlags = _libraries['libamdhip64.so'].hipGetDeviceFlags
-hipGetDeviceFlags.restype = hipError_t
-hipGetDeviceFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32)]
-hipDeviceSetSharedMemConfig = _libraries['libamdhip64.so'].hipDeviceSetSharedMemConfig
-hipDeviceSetSharedMemConfig.restype = hipError_t
-hipDeviceSetSharedMemConfig.argtypes = [hipSharedMemConfig]
-hipSetDeviceFlags = _libraries['libamdhip64.so'].hipSetDeviceFlags
-hipSetDeviceFlags.restype = hipError_t
-hipSetDeviceFlags.argtypes = [ctypes.c_uint32]
-hipChooseDevice = _libraries['libamdhip64.so'].hipChooseDevice
-hipChooseDevice.restype = hipError_t
-hipChooseDevice.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_hipDeviceProp_t)]
-hipExtGetLinkTypeAndHopCount = _libraries['libamdhip64.so'].hipExtGetLinkTypeAndHopCount
-hipExtGetLinkTypeAndHopCount.restype = hipError_t
-hipExtGetLinkTypeAndHopCount.argtypes = [ctypes.c_int32, ctypes.c_int32, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_uint32)]
-hipIpcGetMemHandle = _libraries['libamdhip64.so'].hipIpcGetMemHandle
-hipIpcGetMemHandle.restype = hipError_t
-hipIpcGetMemHandle.argtypes = [ctypes.POINTER(struct_hipIpcMemHandle_st), ctypes.POINTER(None)]
-hipIpcOpenMemHandle = _libraries['libamdhip64.so'].hipIpcOpenMemHandle
-hipIpcOpenMemHandle.restype = hipError_t
-hipIpcOpenMemHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), hipIpcMemHandle_t, ctypes.c_uint32]
-hipIpcCloseMemHandle = _libraries['libamdhip64.so'].hipIpcCloseMemHandle
-hipIpcCloseMemHandle.restype = hipError_t
-hipIpcCloseMemHandle.argtypes = [ctypes.POINTER(None)]
-hipIpcGetEventHandle = _libraries['libamdhip64.so'].hipIpcGetEventHandle
-hipIpcGetEventHandle.restype = hipError_t
-hipIpcGetEventHandle.argtypes = [ctypes.POINTER(struct_hipIpcEventHandle_st), hipEvent_t]
-hipIpcOpenEventHandle = _libraries['libamdhip64.so'].hipIpcOpenEventHandle
-hipIpcOpenEventHandle.restype = hipError_t
-hipIpcOpenEventHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t)), hipIpcEventHandle_t]
-hipFuncSetAttribute = _libraries['libamdhip64.so'].hipFuncSetAttribute
-hipFuncSetAttribute.restype = hipError_t
-hipFuncSetAttribute.argtypes = [ctypes.POINTER(None), hipFuncAttribute, ctypes.c_int32]
-hipFuncSetCacheConfig = _libraries['libamdhip64.so'].hipFuncSetCacheConfig
-hipFuncSetCacheConfig.restype = hipError_t
-hipFuncSetCacheConfig.argtypes = [ctypes.POINTER(None), hipFuncCache_t]
-hipFuncSetSharedMemConfig = _libraries['libamdhip64.so'].hipFuncSetSharedMemConfig
-hipFuncSetSharedMemConfig.restype = hipError_t
-hipFuncSetSharedMemConfig.argtypes = [ctypes.POINTER(None), hipSharedMemConfig]
-hipGetLastError = _libraries['libamdhip64.so'].hipGetLastError
-hipGetLastError.restype = hipError_t
-hipGetLastError.argtypes = []
-hipPeekAtLastError = _libraries['libamdhip64.so'].hipPeekAtLastError
-hipPeekAtLastError.restype = hipError_t
-hipPeekAtLastError.argtypes = []
-hipGetErrorName = _libraries['libamdhip64.so'].hipGetErrorName
-hipGetErrorName.restype = ctypes.POINTER(ctypes.c_char)
-hipGetErrorName.argtypes = [hipError_t]
-hipGetErrorString = _libraries['libamdhip64.so'].hipGetErrorString
-hipGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
-hipGetErrorString.argtypes = [hipError_t]
-hipDrvGetErrorName = _libraries['libamdhip64.so'].hipDrvGetErrorName
-hipDrvGetErrorName.restype = hipError_t
-hipDrvGetErrorName.argtypes = [hipError_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-hipDrvGetErrorString = _libraries['libamdhip64.so'].hipDrvGetErrorString
-hipDrvGetErrorString.restype = hipError_t
-hipDrvGetErrorString.argtypes = [hipError_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-hipStreamCreate = _libraries['libamdhip64.so'].hipStreamCreate
-hipStreamCreate.restype = hipError_t
-hipStreamCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t))]
-hipStreamCreateWithFlags = _libraries['libamdhip64.so'].hipStreamCreateWithFlags
-hipStreamCreateWithFlags.restype = hipError_t
-hipStreamCreateWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t)), ctypes.c_uint32]
-hipStreamCreateWithPriority = _libraries['libamdhip64.so'].hipStreamCreateWithPriority
-hipStreamCreateWithPriority.restype = hipError_t
-hipStreamCreateWithPriority.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t)), ctypes.c_uint32, ctypes.c_int32]
-hipDeviceGetStreamPriorityRange = _libraries['libamdhip64.so'].hipDeviceGetStreamPriorityRange
-hipDeviceGetStreamPriorityRange.restype = hipError_t
-hipDeviceGetStreamPriorityRange.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
-hipStreamDestroy = _libraries['libamdhip64.so'].hipStreamDestroy
-hipStreamDestroy.restype = hipError_t
-hipStreamDestroy.argtypes = [hipStream_t]
-hipStreamQuery = _libraries['libamdhip64.so'].hipStreamQuery
-hipStreamQuery.restype = hipError_t
-hipStreamQuery.argtypes = [hipStream_t]
-hipStreamSynchronize = _libraries['libamdhip64.so'].hipStreamSynchronize
-hipStreamSynchronize.restype = hipError_t
-hipStreamSynchronize.argtypes = [hipStream_t]
-hipStreamWaitEvent = _libraries['libamdhip64.so'].hipStreamWaitEvent
-hipStreamWaitEvent.restype = hipError_t
-hipStreamWaitEvent.argtypes = [hipStream_t, hipEvent_t, ctypes.c_uint32]
-hipStreamGetFlags = _libraries['libamdhip64.so'].hipStreamGetFlags
-hipStreamGetFlags.restype = hipError_t
-hipStreamGetFlags.argtypes = [hipStream_t, ctypes.POINTER(ctypes.c_uint32)]
-hipStreamGetPriority = _libraries['libamdhip64.so'].hipStreamGetPriority
-hipStreamGetPriority.restype = hipError_t
-hipStreamGetPriority.argtypes = [hipStream_t, ctypes.POINTER(ctypes.c_int32)]
-hipStreamGetDevice = _libraries['libamdhip64.so'].hipStreamGetDevice
-hipStreamGetDevice.restype = hipError_t
-hipStreamGetDevice.argtypes = [hipStream_t, ctypes.POINTER(ctypes.c_int32)]
+try:
+    hipInit = _libraries['libamdhip64.so'].hipInit
+    hipInit.restype = hipError_t
+    hipInit.argtypes = [ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipDriverGetVersion = _libraries['libamdhip64.so'].hipDriverGetVersion
+    hipDriverGetVersion.restype = hipError_t
+    hipDriverGetVersion.argtypes = [ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipRuntimeGetVersion = _libraries['libamdhip64.so'].hipRuntimeGetVersion
+    hipRuntimeGetVersion.restype = hipError_t
+    hipRuntimeGetVersion.argtypes = [ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipDeviceGet = _libraries['libamdhip64.so'].hipDeviceGet
+    hipDeviceGet.restype = hipError_t
+    hipDeviceGet.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceComputeCapability = _libraries['libamdhip64.so'].hipDeviceComputeCapability
+    hipDeviceComputeCapability.restype = hipError_t
+    hipDeviceComputeCapability.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetName = _libraries['libamdhip64.so'].hipDeviceGetName
+    hipDeviceGetName.restype = hipError_t
+    hipDeviceGetName.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.c_int32, hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetUuid = _libraries['libamdhip64.so'].hipDeviceGetUuid
+    hipDeviceGetUuid.restype = hipError_t
+    hipDeviceGetUuid.argtypes = [ctypes.POINTER(struct_hipUUID_t), hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetP2PAttribute = _libraries['libamdhip64.so'].hipDeviceGetP2PAttribute
+    hipDeviceGetP2PAttribute.restype = hipError_t
+    hipDeviceGetP2PAttribute.argtypes = [ctypes.POINTER(ctypes.c_int32), hipDeviceP2PAttr, ctypes.c_int32, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetPCIBusId = _libraries['libamdhip64.so'].hipDeviceGetPCIBusId
+    hipDeviceGetPCIBusId.restype = hipError_t
+    hipDeviceGetPCIBusId.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetByPCIBusId = _libraries['libamdhip64.so'].hipDeviceGetByPCIBusId
+    hipDeviceGetByPCIBusId.restype = hipError_t
+    hipDeviceGetByPCIBusId.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hipDeviceTotalMem = _libraries['libamdhip64.so'].hipDeviceTotalMem
+    hipDeviceTotalMem.restype = hipError_t
+    hipDeviceTotalMem.argtypes = [ctypes.POINTER(ctypes.c_uint64), hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceSynchronize = _libraries['libamdhip64.so'].hipDeviceSynchronize
+    hipDeviceSynchronize.restype = hipError_t
+    hipDeviceSynchronize.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipDeviceReset = _libraries['libamdhip64.so'].hipDeviceReset
+    hipDeviceReset.restype = hipError_t
+    hipDeviceReset.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipSetDevice = _libraries['libamdhip64.so'].hipSetDevice
+    hipSetDevice.restype = hipError_t
+    hipSetDevice.argtypes = [ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipGetDevice = _libraries['libamdhip64.so'].hipGetDevice
+    hipGetDevice.restype = hipError_t
+    hipGetDevice.argtypes = [ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipGetDeviceCount = _libraries['libamdhip64.so'].hipGetDeviceCount
+    hipGetDeviceCount.restype = hipError_t
+    hipGetDeviceCount.argtypes = [ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetAttribute = _libraries['libamdhip64.so'].hipDeviceGetAttribute
+    hipDeviceGetAttribute.restype = hipError_t
+    hipDeviceGetAttribute.argtypes = [ctypes.POINTER(ctypes.c_int32), hipDeviceAttribute_t, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetDefaultMemPool = _libraries['libamdhip64.so'].hipDeviceGetDefaultMemPool
+    hipDeviceGetDefaultMemPool.restype = hipError_t
+    hipDeviceGetDefaultMemPool.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceSetMemPool = _libraries['libamdhip64.so'].hipDeviceSetMemPool
+    hipDeviceSetMemPool.restype = hipError_t
+    hipDeviceSetMemPool.argtypes = [ctypes.c_int32, hipMemPool_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetMemPool = _libraries['libamdhip64.so'].hipDeviceGetMemPool
+    hipDeviceGetMemPool.restype = hipError_t
+    hipDeviceGetMemPool.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipGetDeviceProperties = _libraries['libamdhip64.so'].hipGetDeviceProperties
+    hipGetDeviceProperties.restype = hipError_t
+    hipGetDeviceProperties.argtypes = [ctypes.POINTER(struct_hipDeviceProp_t), ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceSetCacheConfig = _libraries['libamdhip64.so'].hipDeviceSetCacheConfig
+    hipDeviceSetCacheConfig.restype = hipError_t
+    hipDeviceSetCacheConfig.argtypes = [hipFuncCache_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetCacheConfig = _libraries['libamdhip64.so'].hipDeviceGetCacheConfig
+    hipDeviceGetCacheConfig.restype = hipError_t
+    hipDeviceGetCacheConfig.argtypes = [ctypes.POINTER(hipFuncCache_t)]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetLimit = _libraries['libamdhip64.so'].hipDeviceGetLimit
+    hipDeviceGetLimit.restype = hipError_t
+    hipDeviceGetLimit.argtypes = [ctypes.POINTER(ctypes.c_uint64), hipLimit_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceSetLimit = _libraries['libamdhip64.so'].hipDeviceSetLimit
+    hipDeviceSetLimit.restype = hipError_t
+    hipDeviceSetLimit.argtypes = [hipLimit_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetSharedMemConfig = _libraries['libamdhip64.so'].hipDeviceGetSharedMemConfig
+    hipDeviceGetSharedMemConfig.restype = hipError_t
+    hipDeviceGetSharedMemConfig.argtypes = [ctypes.POINTER(hipSharedMemConfig)]
+except AttributeError:
+    pass
+try:
+    hipGetDeviceFlags = _libraries['libamdhip64.so'].hipGetDeviceFlags
+    hipGetDeviceFlags.restype = hipError_t
+    hipGetDeviceFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hipDeviceSetSharedMemConfig = _libraries['libamdhip64.so'].hipDeviceSetSharedMemConfig
+    hipDeviceSetSharedMemConfig.restype = hipError_t
+    hipDeviceSetSharedMemConfig.argtypes = [hipSharedMemConfig]
+except AttributeError:
+    pass
+try:
+    hipSetDeviceFlags = _libraries['libamdhip64.so'].hipSetDeviceFlags
+    hipSetDeviceFlags.restype = hipError_t
+    hipSetDeviceFlags.argtypes = [ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipChooseDevice = _libraries['libamdhip64.so'].hipChooseDevice
+    hipChooseDevice.restype = hipError_t
+    hipChooseDevice.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_hipDeviceProp_t)]
+except AttributeError:
+    pass
+try:
+    hipExtGetLinkTypeAndHopCount = _libraries['libamdhip64.so'].hipExtGetLinkTypeAndHopCount
+    hipExtGetLinkTypeAndHopCount.restype = hipError_t
+    hipExtGetLinkTypeAndHopCount.argtypes = [ctypes.c_int32, ctypes.c_int32, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hipIpcGetMemHandle = _libraries['libamdhip64.so'].hipIpcGetMemHandle
+    hipIpcGetMemHandle.restype = hipError_t
+    hipIpcGetMemHandle.argtypes = [ctypes.POINTER(struct_hipIpcMemHandle_st), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipIpcOpenMemHandle = _libraries['libamdhip64.so'].hipIpcOpenMemHandle
+    hipIpcOpenMemHandle.restype = hipError_t
+    hipIpcOpenMemHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), hipIpcMemHandle_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipIpcCloseMemHandle = _libraries['libamdhip64.so'].hipIpcCloseMemHandle
+    hipIpcCloseMemHandle.restype = hipError_t
+    hipIpcCloseMemHandle.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipIpcGetEventHandle = _libraries['libamdhip64.so'].hipIpcGetEventHandle
+    hipIpcGetEventHandle.restype = hipError_t
+    hipIpcGetEventHandle.argtypes = [ctypes.POINTER(struct_hipIpcEventHandle_st), hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipIpcOpenEventHandle = _libraries['libamdhip64.so'].hipIpcOpenEventHandle
+    hipIpcOpenEventHandle.restype = hipError_t
+    hipIpcOpenEventHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t)), hipIpcEventHandle_t]
+except AttributeError:
+    pass
+try:
+    hipFuncSetAttribute = _libraries['libamdhip64.so'].hipFuncSetAttribute
+    hipFuncSetAttribute.restype = hipError_t
+    hipFuncSetAttribute.argtypes = [ctypes.POINTER(None), hipFuncAttribute, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipFuncSetCacheConfig = _libraries['libamdhip64.so'].hipFuncSetCacheConfig
+    hipFuncSetCacheConfig.restype = hipError_t
+    hipFuncSetCacheConfig.argtypes = [ctypes.POINTER(None), hipFuncCache_t]
+except AttributeError:
+    pass
+try:
+    hipFuncSetSharedMemConfig = _libraries['libamdhip64.so'].hipFuncSetSharedMemConfig
+    hipFuncSetSharedMemConfig.restype = hipError_t
+    hipFuncSetSharedMemConfig.argtypes = [ctypes.POINTER(None), hipSharedMemConfig]
+except AttributeError:
+    pass
+try:
+    hipGetLastError = _libraries['libamdhip64.so'].hipGetLastError
+    hipGetLastError.restype = hipError_t
+    hipGetLastError.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipPeekAtLastError = _libraries['libamdhip64.so'].hipPeekAtLastError
+    hipPeekAtLastError.restype = hipError_t
+    hipPeekAtLastError.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipGetErrorName = _libraries['libamdhip64.so'].hipGetErrorName
+    hipGetErrorName.restype = ctypes.POINTER(ctypes.c_char)
+    hipGetErrorName.argtypes = [hipError_t]
+except AttributeError:
+    pass
+try:
+    hipGetErrorString = _libraries['libamdhip64.so'].hipGetErrorString
+    hipGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
+    hipGetErrorString.argtypes = [hipError_t]
+except AttributeError:
+    pass
+try:
+    hipDrvGetErrorName = _libraries['libamdhip64.so'].hipDrvGetErrorName
+    hipDrvGetErrorName.restype = hipError_t
+    hipDrvGetErrorName.argtypes = [hipError_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hipDrvGetErrorString = _libraries['libamdhip64.so'].hipDrvGetErrorString
+    hipDrvGetErrorString.restype = hipError_t
+    hipDrvGetErrorString.argtypes = [hipError_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hipStreamCreate = _libraries['libamdhip64.so'].hipStreamCreate
+    hipStreamCreate.restype = hipError_t
+    hipStreamCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t))]
+except AttributeError:
+    pass
+try:
+    hipStreamCreateWithFlags = _libraries['libamdhip64.so'].hipStreamCreateWithFlags
+    hipStreamCreateWithFlags.restype = hipError_t
+    hipStreamCreateWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t)), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipStreamCreateWithPriority = _libraries['libamdhip64.so'].hipStreamCreateWithPriority
+    hipStreamCreateWithPriority.restype = hipError_t
+    hipStreamCreateWithPriority.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t)), ctypes.c_uint32, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetStreamPriorityRange = _libraries['libamdhip64.so'].hipDeviceGetStreamPriorityRange
+    hipDeviceGetStreamPriorityRange.restype = hipError_t
+    hipDeviceGetStreamPriorityRange.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipStreamDestroy = _libraries['libamdhip64.so'].hipStreamDestroy
+    hipStreamDestroy.restype = hipError_t
+    hipStreamDestroy.argtypes = [hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipStreamQuery = _libraries['libamdhip64.so'].hipStreamQuery
+    hipStreamQuery.restype = hipError_t
+    hipStreamQuery.argtypes = [hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipStreamSynchronize = _libraries['libamdhip64.so'].hipStreamSynchronize
+    hipStreamSynchronize.restype = hipError_t
+    hipStreamSynchronize.argtypes = [hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipStreamWaitEvent = _libraries['libamdhip64.so'].hipStreamWaitEvent
+    hipStreamWaitEvent.restype = hipError_t
+    hipStreamWaitEvent.argtypes = [hipStream_t, hipEvent_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipStreamGetFlags = _libraries['libamdhip64.so'].hipStreamGetFlags
+    hipStreamGetFlags.restype = hipError_t
+    hipStreamGetFlags.argtypes = [hipStream_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hipStreamGetPriority = _libraries['libamdhip64.so'].hipStreamGetPriority
+    hipStreamGetPriority.restype = hipError_t
+    hipStreamGetPriority.argtypes = [hipStream_t, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipStreamGetDevice = _libraries['libamdhip64.so'].hipStreamGetDevice
+    hipStreamGetDevice.restype = hipError_t
+    hipStreamGetDevice.argtypes = [hipStream_t, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
 uint32_t = ctypes.c_uint32
-hipExtStreamCreateWithCUMask = _libraries['libamdhip64.so'].hipExtStreamCreateWithCUMask
-hipExtStreamCreateWithCUMask.restype = hipError_t
-hipExtStreamCreateWithCUMask.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t)), uint32_t, ctypes.POINTER(ctypes.c_uint32)]
-hipExtStreamGetCUMask = _libraries['libamdhip64.so'].hipExtStreamGetCUMask
-hipExtStreamGetCUMask.restype = hipError_t
-hipExtStreamGetCUMask.argtypes = [hipStream_t, uint32_t, ctypes.POINTER(ctypes.c_uint32)]
+try:
+    hipExtStreamCreateWithCUMask = _libraries['libamdhip64.so'].hipExtStreamCreateWithCUMask
+    hipExtStreamCreateWithCUMask.restype = hipError_t
+    hipExtStreamCreateWithCUMask.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t)), uint32_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hipExtStreamGetCUMask = _libraries['libamdhip64.so'].hipExtStreamGetCUMask
+    hipExtStreamGetCUMask.restype = hipError_t
+    hipExtStreamGetCUMask.argtypes = [hipStream_t, uint32_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 hipStreamCallback_t = ctypes.CFUNCTYPE(None, ctypes.POINTER(struct_ihipStream_t), hipError_t, ctypes.POINTER(None))
-hipStreamAddCallback = _libraries['libamdhip64.so'].hipStreamAddCallback
-hipStreamAddCallback.restype = hipError_t
-hipStreamAddCallback.argtypes = [hipStream_t, hipStreamCallback_t, ctypes.POINTER(None), ctypes.c_uint32]
-hipStreamWaitValue32 = _libraries['libamdhip64.so'].hipStreamWaitValue32
-hipStreamWaitValue32.restype = hipError_t
-hipStreamWaitValue32.argtypes = [hipStream_t, ctypes.POINTER(None), uint32_t, ctypes.c_uint32, uint32_t]
+try:
+    hipStreamAddCallback = _libraries['libamdhip64.so'].hipStreamAddCallback
+    hipStreamAddCallback.restype = hipError_t
+    hipStreamAddCallback.argtypes = [hipStream_t, hipStreamCallback_t, ctypes.POINTER(None), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipStreamWaitValue32 = _libraries['libamdhip64.so'].hipStreamWaitValue32
+    hipStreamWaitValue32.restype = hipError_t
+    hipStreamWaitValue32.argtypes = [hipStream_t, ctypes.POINTER(None), uint32_t, ctypes.c_uint32, uint32_t]
+except AttributeError:
+    pass
 uint64_t = ctypes.c_uint64
-hipStreamWaitValue64 = _libraries['libamdhip64.so'].hipStreamWaitValue64
-hipStreamWaitValue64.restype = hipError_t
-hipStreamWaitValue64.argtypes = [hipStream_t, ctypes.POINTER(None), uint64_t, ctypes.c_uint32, uint64_t]
-hipStreamWriteValue32 = _libraries['libamdhip64.so'].hipStreamWriteValue32
-hipStreamWriteValue32.restype = hipError_t
-hipStreamWriteValue32.argtypes = [hipStream_t, ctypes.POINTER(None), uint32_t, ctypes.c_uint32]
-hipStreamWriteValue64 = _libraries['libamdhip64.so'].hipStreamWriteValue64
-hipStreamWriteValue64.restype = hipError_t
-hipStreamWriteValue64.argtypes = [hipStream_t, ctypes.POINTER(None), uint64_t, ctypes.c_uint32]
-hipEventCreateWithFlags = _libraries['libamdhip64.so'].hipEventCreateWithFlags
-hipEventCreateWithFlags.restype = hipError_t
-hipEventCreateWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t)), ctypes.c_uint32]
-hipEventCreate = _libraries['libamdhip64.so'].hipEventCreate
-hipEventCreate.restype = hipError_t
-hipEventCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t))]
-hipEventRecord = _libraries['libamdhip64.so'].hipEventRecord
-hipEventRecord.restype = hipError_t
-hipEventRecord.argtypes = [hipEvent_t, hipStream_t]
-hipEventDestroy = _libraries['libamdhip64.so'].hipEventDestroy
-hipEventDestroy.restype = hipError_t
-hipEventDestroy.argtypes = [hipEvent_t]
-hipEventSynchronize = _libraries['libamdhip64.so'].hipEventSynchronize
-hipEventSynchronize.restype = hipError_t
-hipEventSynchronize.argtypes = [hipEvent_t]
-hipEventElapsedTime = _libraries['libamdhip64.so'].hipEventElapsedTime
-hipEventElapsedTime.restype = hipError_t
-hipEventElapsedTime.argtypes = [ctypes.POINTER(ctypes.c_float), hipEvent_t, hipEvent_t]
-hipEventQuery = _libraries['libamdhip64.so'].hipEventQuery
-hipEventQuery.restype = hipError_t
-hipEventQuery.argtypes = [hipEvent_t]
-hipPointerSetAttribute = _libraries['libamdhip64.so'].hipPointerSetAttribute
-hipPointerSetAttribute.restype = hipError_t
-hipPointerSetAttribute.argtypes = [ctypes.POINTER(None), hipPointer_attribute, hipDeviceptr_t]
-hipPointerGetAttributes = _libraries['libamdhip64.so'].hipPointerGetAttributes
-hipPointerGetAttributes.restype = hipError_t
-hipPointerGetAttributes.argtypes = [ctypes.POINTER(struct_hipPointerAttribute_t), ctypes.POINTER(None)]
-hipPointerGetAttribute = _libraries['libamdhip64.so'].hipPointerGetAttribute
-hipPointerGetAttribute.restype = hipError_t
-hipPointerGetAttribute.argtypes = [ctypes.POINTER(None), hipPointer_attribute, hipDeviceptr_t]
-hipDrvPointerGetAttributes = _libraries['libamdhip64.so'].hipDrvPointerGetAttributes
-hipDrvPointerGetAttributes.restype = hipError_t
-hipDrvPointerGetAttributes.argtypes = [ctypes.c_uint32, ctypes.POINTER(hipPointer_attribute), ctypes.POINTER(ctypes.POINTER(None)), hipDeviceptr_t]
-hipImportExternalSemaphore = _libraries['libamdhip64.so'].hipImportExternalSemaphore
-hipImportExternalSemaphore.restype = hipError_t
-hipImportExternalSemaphore.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalSemaphoreHandleDesc_st)]
-hipSignalExternalSemaphoresAsync = _libraries['libamdhip64.so'].hipSignalExternalSemaphoresAsync
-hipSignalExternalSemaphoresAsync.restype = hipError_t
-hipSignalExternalSemaphoresAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalSemaphoreSignalParams_st), ctypes.c_uint32, hipStream_t]
-hipWaitExternalSemaphoresAsync = _libraries['libamdhip64.so'].hipWaitExternalSemaphoresAsync
-hipWaitExternalSemaphoresAsync.restype = hipError_t
-hipWaitExternalSemaphoresAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalSemaphoreWaitParams_st), ctypes.c_uint32, hipStream_t]
-hipDestroyExternalSemaphore = _libraries['libamdhip64.so'].hipDestroyExternalSemaphore
-hipDestroyExternalSemaphore.restype = hipError_t
-hipDestroyExternalSemaphore.argtypes = [hipExternalSemaphore_t]
-hipImportExternalMemory = _libraries['libamdhip64.so'].hipImportExternalMemory
-hipImportExternalMemory.restype = hipError_t
-hipImportExternalMemory.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalMemoryHandleDesc_st)]
-hipExternalMemoryGetMappedBuffer = _libraries['libamdhip64.so'].hipExternalMemoryGetMappedBuffer
-hipExternalMemoryGetMappedBuffer.restype = hipError_t
-hipExternalMemoryGetMappedBuffer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), hipExternalMemory_t, ctypes.POINTER(struct_hipExternalMemoryBufferDesc_st)]
-hipDestroyExternalMemory = _libraries['libamdhip64.so'].hipDestroyExternalMemory
-hipDestroyExternalMemory.restype = hipError_t
-hipDestroyExternalMemory.argtypes = [hipExternalMemory_t]
-hipMalloc = _libraries['libamdhip64.so'].hipMalloc
-hipMalloc.restype = hipError_t
-hipMalloc.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t]
-hipExtMallocWithFlags = _libraries['libamdhip64.so'].hipExtMallocWithFlags
-hipExtMallocWithFlags.restype = hipError_t
-hipExtMallocWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
-hipMallocHost = _libraries['libamdhip64.so'].hipMallocHost
-hipMallocHost.restype = hipError_t
-hipMallocHost.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t]
-hipMemAllocHost = _libraries['libamdhip64.so'].hipMemAllocHost
-hipMemAllocHost.restype = hipError_t
-hipMemAllocHost.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t]
-hipHostMalloc = _libraries['libamdhip64.so'].hipHostMalloc
-hipHostMalloc.restype = hipError_t
-hipHostMalloc.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
-hipMallocManaged = _libraries['libamdhip64.so'].hipMallocManaged
-hipMallocManaged.restype = hipError_t
-hipMallocManaged.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
-hipMemPrefetchAsync = _libraries['libamdhip64.so'].hipMemPrefetchAsync
-hipMemPrefetchAsync.restype = hipError_t
-hipMemPrefetchAsync.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_int32, hipStream_t]
-hipMemAdvise = _libraries['libamdhip64.so'].hipMemAdvise
-hipMemAdvise.restype = hipError_t
-hipMemAdvise.argtypes = [ctypes.POINTER(None), size_t, hipMemoryAdvise, ctypes.c_int32]
-hipMemRangeGetAttribute = _libraries['libamdhip64.so'].hipMemRangeGetAttribute
-hipMemRangeGetAttribute.restype = hipError_t
-hipMemRangeGetAttribute.argtypes = [ctypes.POINTER(None), size_t, hipMemRangeAttribute, ctypes.POINTER(None), size_t]
-hipMemRangeGetAttributes = _libraries['libamdhip64.so'].hipMemRangeGetAttributes
-hipMemRangeGetAttributes.restype = hipError_t
-hipMemRangeGetAttributes.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(hipMemRangeAttribute), size_t, ctypes.POINTER(None), size_t]
-hipStreamAttachMemAsync = _libraries['libamdhip64.so'].hipStreamAttachMemAsync
-hipStreamAttachMemAsync.restype = hipError_t
-hipStreamAttachMemAsync.argtypes = [hipStream_t, ctypes.POINTER(None), size_t, ctypes.c_uint32]
-hipMallocAsync = _libraries['libamdhip64.so'].hipMallocAsync
-hipMallocAsync.restype = hipError_t
-hipMallocAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, hipStream_t]
-hipFreeAsync = _libraries['libamdhip64.so'].hipFreeAsync
-hipFreeAsync.restype = hipError_t
-hipFreeAsync.argtypes = [ctypes.POINTER(None), hipStream_t]
-hipMemPoolTrimTo = _libraries['libamdhip64.so'].hipMemPoolTrimTo
-hipMemPoolTrimTo.restype = hipError_t
-hipMemPoolTrimTo.argtypes = [hipMemPool_t, size_t]
-hipMemPoolSetAttribute = _libraries['libamdhip64.so'].hipMemPoolSetAttribute
-hipMemPoolSetAttribute.restype = hipError_t
-hipMemPoolSetAttribute.argtypes = [hipMemPool_t, hipMemPoolAttr, ctypes.POINTER(None)]
-hipMemPoolGetAttribute = _libraries['libamdhip64.so'].hipMemPoolGetAttribute
-hipMemPoolGetAttribute.restype = hipError_t
-hipMemPoolGetAttribute.argtypes = [hipMemPool_t, hipMemPoolAttr, ctypes.POINTER(None)]
-hipMemPoolSetAccess = _libraries['libamdhip64.so'].hipMemPoolSetAccess
-hipMemPoolSetAccess.restype = hipError_t
-hipMemPoolSetAccess.argtypes = [hipMemPool_t, ctypes.POINTER(struct_hipMemAccessDesc), size_t]
-hipMemPoolGetAccess = _libraries['libamdhip64.so'].hipMemPoolGetAccess
-hipMemPoolGetAccess.restype = hipError_t
-hipMemPoolGetAccess.argtypes = [ctypes.POINTER(hipMemAccessFlags), hipMemPool_t, ctypes.POINTER(struct_hipMemLocation)]
-hipMemPoolCreate = _libraries['libamdhip64.so'].hipMemPoolCreate
-hipMemPoolCreate.restype = hipError_t
-hipMemPoolCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.POINTER(struct_hipMemPoolProps)]
-hipMemPoolDestroy = _libraries['libamdhip64.so'].hipMemPoolDestroy
-hipMemPoolDestroy.restype = hipError_t
-hipMemPoolDestroy.argtypes = [hipMemPool_t]
-hipMallocFromPoolAsync = _libraries['libamdhip64.so'].hipMallocFromPoolAsync
-hipMallocFromPoolAsync.restype = hipError_t
-hipMallocFromPoolAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, hipMemPool_t, hipStream_t]
-hipMemPoolExportToShareableHandle = _libraries['libamdhip64.so'].hipMemPoolExportToShareableHandle
-hipMemPoolExportToShareableHandle.restype = hipError_t
-hipMemPoolExportToShareableHandle.argtypes = [ctypes.POINTER(None), hipMemPool_t, hipMemAllocationHandleType, ctypes.c_uint32]
-hipMemPoolImportFromShareableHandle = _libraries['libamdhip64.so'].hipMemPoolImportFromShareableHandle
-hipMemPoolImportFromShareableHandle.restype = hipError_t
-hipMemPoolImportFromShareableHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.POINTER(None), hipMemAllocationHandleType, ctypes.c_uint32]
-hipMemPoolExportPointer = _libraries['libamdhip64.so'].hipMemPoolExportPointer
-hipMemPoolExportPointer.restype = hipError_t
-hipMemPoolExportPointer.argtypes = [ctypes.POINTER(struct_hipMemPoolPtrExportData), ctypes.POINTER(None)]
-hipMemPoolImportPointer = _libraries['libamdhip64.so'].hipMemPoolImportPointer
-hipMemPoolImportPointer.restype = hipError_t
-hipMemPoolImportPointer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), hipMemPool_t, ctypes.POINTER(struct_hipMemPoolPtrExportData)]
-hipHostAlloc = _libraries['libamdhip64.so'].hipHostAlloc
-hipHostAlloc.restype = hipError_t
-hipHostAlloc.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
-hipHostGetDevicePointer = _libraries['libamdhip64.so'].hipHostGetDevicePointer
-hipHostGetDevicePointer.restype = hipError_t
-hipHostGetDevicePointer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.c_uint32]
-hipHostGetFlags = _libraries['libamdhip64.so'].hipHostGetFlags
-hipHostGetFlags.restype = hipError_t
-hipHostGetFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(None)]
-hipHostRegister = _libraries['libamdhip64.so'].hipHostRegister
-hipHostRegister.restype = hipError_t
-hipHostRegister.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_uint32]
-hipHostUnregister = _libraries['libamdhip64.so'].hipHostUnregister
-hipHostUnregister.restype = hipError_t
-hipHostUnregister.argtypes = [ctypes.POINTER(None)]
-hipMallocPitch = _libraries['libamdhip64.so'].hipMallocPitch
-hipMallocPitch.restype = hipError_t
-hipMallocPitch.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), size_t, size_t]
-hipMemAllocPitch = _libraries['libamdhip64.so'].hipMemAllocPitch
-hipMemAllocPitch.restype = hipError_t
-hipMemAllocPitch.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, ctypes.c_uint32]
-hipFree = _libraries['libamdhip64.so'].hipFree
-hipFree.restype = hipError_t
-hipFree.argtypes = [ctypes.POINTER(None)]
-hipFreeHost = _libraries['libamdhip64.so'].hipFreeHost
-hipFreeHost.restype = hipError_t
-hipFreeHost.argtypes = [ctypes.POINTER(None)]
-hipHostFree = _libraries['libamdhip64.so'].hipHostFree
-hipHostFree.restype = hipError_t
-hipHostFree.argtypes = [ctypes.POINTER(None)]
-hipMemcpy = _libraries['libamdhip64.so'].hipMemcpy
-hipMemcpy.restype = hipError_t
-hipMemcpy.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
-hipMemcpyWithStream = _libraries['libamdhip64.so'].hipMemcpyWithStream
-hipMemcpyWithStream.restype = hipError_t
-hipMemcpyWithStream.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind, hipStream_t]
-hipMemcpyHtoD = _libraries['libamdhip64.so'].hipMemcpyHtoD
-hipMemcpyHtoD.restype = hipError_t
-hipMemcpyHtoD.argtypes = [hipDeviceptr_t, ctypes.POINTER(None), size_t]
-hipMemcpyDtoH = _libraries['libamdhip64.so'].hipMemcpyDtoH
-hipMemcpyDtoH.restype = hipError_t
-hipMemcpyDtoH.argtypes = [ctypes.POINTER(None), hipDeviceptr_t, size_t]
-hipMemcpyDtoD = _libraries['libamdhip64.so'].hipMemcpyDtoD
-hipMemcpyDtoD.restype = hipError_t
-hipMemcpyDtoD.argtypes = [hipDeviceptr_t, hipDeviceptr_t, size_t]
-hipMemcpyHtoDAsync = _libraries['libamdhip64.so'].hipMemcpyHtoDAsync
-hipMemcpyHtoDAsync.restype = hipError_t
-hipMemcpyHtoDAsync.argtypes = [hipDeviceptr_t, ctypes.POINTER(None), size_t, hipStream_t]
-hipMemcpyDtoHAsync = _libraries['libamdhip64.so'].hipMemcpyDtoHAsync
-hipMemcpyDtoHAsync.restype = hipError_t
-hipMemcpyDtoHAsync.argtypes = [ctypes.POINTER(None), hipDeviceptr_t, size_t, hipStream_t]
-hipMemcpyDtoDAsync = _libraries['libamdhip64.so'].hipMemcpyDtoDAsync
-hipMemcpyDtoDAsync.restype = hipError_t
-hipMemcpyDtoDAsync.argtypes = [hipDeviceptr_t, hipDeviceptr_t, size_t, hipStream_t]
-hipModuleGetGlobal = _libraries['libamdhip64.so'].hipModuleGetGlobal
-hipModuleGetGlobal.restype = hipError_t
-hipModuleGetGlobal.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), hipModule_t, ctypes.POINTER(ctypes.c_char)]
-hipGetSymbolAddress = _libraries['libamdhip64.so'].hipGetSymbolAddress
-hipGetSymbolAddress.restype = hipError_t
-hipGetSymbolAddress.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(None)]
-hipGetSymbolSize = _libraries['libamdhip64.so'].hipGetSymbolSize
-hipGetSymbolSize.restype = hipError_t
-hipGetSymbolSize.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(None)]
-hipMemcpyToSymbol = _libraries['libamdhip64.so'].hipMemcpyToSymbol
-hipMemcpyToSymbol.restype = hipError_t
-hipMemcpyToSymbol.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipMemcpyToSymbolAsync = _libraries['libamdhip64.so'].hipMemcpyToSymbolAsync
-hipMemcpyToSymbolAsync.restype = hipError_t
-hipMemcpyToSymbolAsync.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind, hipStream_t]
-hipMemcpyFromSymbol = _libraries['libamdhip64.so'].hipMemcpyFromSymbol
-hipMemcpyFromSymbol.restype = hipError_t
-hipMemcpyFromSymbol.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipMemcpyFromSymbolAsync = _libraries['libamdhip64.so'].hipMemcpyFromSymbolAsync
-hipMemcpyFromSymbolAsync.restype = hipError_t
-hipMemcpyFromSymbolAsync.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind, hipStream_t]
-hipMemcpyAsync = _libraries['libamdhip64.so'].hipMemcpyAsync
-hipMemcpyAsync.restype = hipError_t
-hipMemcpyAsync.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind, hipStream_t]
-hipMemset = _libraries['libamdhip64.so'].hipMemset
-hipMemset.restype = hipError_t
-hipMemset.argtypes = [ctypes.POINTER(None), ctypes.c_int32, size_t]
-hipMemsetD8 = _libraries['libamdhip64.so'].hipMemsetD8
-hipMemsetD8.restype = hipError_t
-hipMemsetD8.argtypes = [hipDeviceptr_t, ctypes.c_ubyte, size_t]
-hipMemsetD8Async = _libraries['libamdhip64.so'].hipMemsetD8Async
-hipMemsetD8Async.restype = hipError_t
-hipMemsetD8Async.argtypes = [hipDeviceptr_t, ctypes.c_ubyte, size_t, hipStream_t]
-hipMemsetD16 = _libraries['libamdhip64.so'].hipMemsetD16
-hipMemsetD16.restype = hipError_t
-hipMemsetD16.argtypes = [hipDeviceptr_t, ctypes.c_uint16, size_t]
-hipMemsetD16Async = _libraries['libamdhip64.so'].hipMemsetD16Async
-hipMemsetD16Async.restype = hipError_t
-hipMemsetD16Async.argtypes = [hipDeviceptr_t, ctypes.c_uint16, size_t, hipStream_t]
-hipMemsetD32 = _libraries['libamdhip64.so'].hipMemsetD32
-hipMemsetD32.restype = hipError_t
-hipMemsetD32.argtypes = [hipDeviceptr_t, ctypes.c_int32, size_t]
-hipMemsetAsync = _libraries['libamdhip64.so'].hipMemsetAsync
-hipMemsetAsync.restype = hipError_t
-hipMemsetAsync.argtypes = [ctypes.POINTER(None), ctypes.c_int32, size_t, hipStream_t]
-hipMemsetD32Async = _libraries['libamdhip64.so'].hipMemsetD32Async
-hipMemsetD32Async.restype = hipError_t
-hipMemsetD32Async.argtypes = [hipDeviceptr_t, ctypes.c_int32, size_t, hipStream_t]
-hipMemset2D = _libraries['libamdhip64.so'].hipMemset2D
-hipMemset2D.restype = hipError_t
-hipMemset2D.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_int32, size_t, size_t]
-hipMemset2DAsync = _libraries['libamdhip64.so'].hipMemset2DAsync
-hipMemset2DAsync.restype = hipError_t
-hipMemset2DAsync.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_int32, size_t, size_t, hipStream_t]
-hipMemset3D = _libraries['libamdhip64.so'].hipMemset3D
-hipMemset3D.restype = hipError_t
-hipMemset3D.argtypes = [hipPitchedPtr, ctypes.c_int32, hipExtent]
-hipMemset3DAsync = _libraries['libamdhip64.so'].hipMemset3DAsync
-hipMemset3DAsync.restype = hipError_t
-hipMemset3DAsync.argtypes = [hipPitchedPtr, ctypes.c_int32, hipExtent, hipStream_t]
-hipMemGetInfo = _libraries['libamdhip64.so'].hipMemGetInfo
-hipMemGetInfo.restype = hipError_t
-hipMemGetInfo.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64)]
-hipMemPtrGetInfo = _libraries['libamdhip64.so'].hipMemPtrGetInfo
-hipMemPtrGetInfo.restype = hipError_t
-hipMemPtrGetInfo.argtypes = [ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-hipMallocArray = _libraries['libamdhip64.so'].hipMallocArray
-hipMallocArray.restype = hipError_t
-hipMallocArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_hipChannelFormatDesc), size_t, size_t, ctypes.c_uint32]
-hipArrayCreate = _libraries['libamdhip64.so'].hipArrayCreate
-hipArrayCreate.restype = hipError_t
-hipArrayCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR)]
-hipArrayDestroy = _libraries['libamdhip64.so'].hipArrayDestroy
-hipArrayDestroy.restype = hipError_t
-hipArrayDestroy.argtypes = [ctypes.POINTER(struct_hipArray)]
-hipArray3DCreate = _libraries['libamdhip64.so'].hipArray3DCreate
-hipArray3DCreate.restype = hipError_t
-hipArray3DCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR)]
-hipMalloc3D = _libraries['libamdhip64.so'].hipMalloc3D
-hipMalloc3D.restype = hipError_t
-hipMalloc3D.argtypes = [ctypes.POINTER(struct_hipPitchedPtr), hipExtent]
-hipFreeArray = _libraries['libamdhip64.so'].hipFreeArray
-hipFreeArray.restype = hipError_t
-hipFreeArray.argtypes = [ctypes.POINTER(struct_hipArray)]
-hipMalloc3DArray = _libraries['libamdhip64.so'].hipMalloc3DArray
-hipMalloc3DArray.restype = hipError_t
-hipMalloc3DArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_hipChannelFormatDesc), struct_hipExtent, ctypes.c_uint32]
-hipArrayGetInfo = _libraries['libamdhip64.so'].hipArrayGetInfo
-hipArrayGetInfo.restype = hipError_t
-hipArrayGetInfo.argtypes = [ctypes.POINTER(struct_hipChannelFormatDesc), ctypes.POINTER(struct_hipExtent), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(struct_hipArray)]
-hipArrayGetDescriptor = _libraries['libamdhip64.so'].hipArrayGetDescriptor
-hipArrayGetDescriptor.restype = hipError_t
-hipArrayGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR), ctypes.POINTER(struct_hipArray)]
-hipArray3DGetDescriptor = _libraries['libamdhip64.so'].hipArray3DGetDescriptor
-hipArray3DGetDescriptor.restype = hipError_t
-hipArray3DGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR), ctypes.POINTER(struct_hipArray)]
-hipMemcpy2D = _libraries['libamdhip64.so'].hipMemcpy2D
-hipMemcpy2D.restype = hipError_t
-hipMemcpy2D.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind]
-hipMemcpyParam2D = _libraries['libamdhip64.so'].hipMemcpyParam2D
-hipMemcpyParam2D.restype = hipError_t
-hipMemcpyParam2D.argtypes = [ctypes.POINTER(struct_hip_Memcpy2D)]
-hipMemcpyParam2DAsync = _libraries['libamdhip64.so'].hipMemcpyParam2DAsync
-hipMemcpyParam2DAsync.restype = hipError_t
-hipMemcpyParam2DAsync.argtypes = [ctypes.POINTER(struct_hip_Memcpy2D), hipStream_t]
-hipMemcpy2DAsync = _libraries['libamdhip64.so'].hipMemcpy2DAsync
-hipMemcpy2DAsync.restype = hipError_t
-hipMemcpy2DAsync.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
-hipMemcpy2DToArray = _libraries['libamdhip64.so'].hipMemcpy2DToArray
-hipMemcpy2DToArray.restype = hipError_t
-hipMemcpy2DToArray.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind]
-hipMemcpy2DToArrayAsync = _libraries['libamdhip64.so'].hipMemcpy2DToArrayAsync
-hipMemcpy2DToArrayAsync.restype = hipError_t
-hipMemcpy2DToArrayAsync.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
-hipMemcpyToArray = _libraries['libamdhip64.so'].hipMemcpyToArray
-hipMemcpyToArray.restype = hipError_t
-hipMemcpyToArray.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, hipMemcpyKind]
-hipMemcpyFromArray = _libraries['libamdhip64.so'].hipMemcpyFromArray
-hipMemcpyFromArray.restype = hipError_t
-hipMemcpyFromArray.argtypes = [ctypes.POINTER(None), hipArray_const_t, size_t, size_t, size_t, hipMemcpyKind]
-hipMemcpy2DFromArray = _libraries['libamdhip64.so'].hipMemcpy2DFromArray
-hipMemcpy2DFromArray.restype = hipError_t
-hipMemcpy2DFromArray.argtypes = [ctypes.POINTER(None), size_t, hipArray_const_t, size_t, size_t, size_t, size_t, hipMemcpyKind]
-hipMemcpy2DFromArrayAsync = _libraries['libamdhip64.so'].hipMemcpy2DFromArrayAsync
-hipMemcpy2DFromArrayAsync.restype = hipError_t
-hipMemcpy2DFromArrayAsync.argtypes = [ctypes.POINTER(None), size_t, hipArray_const_t, size_t, size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
-hipMemcpyAtoH = _libraries['libamdhip64.so'].hipMemcpyAtoH
-hipMemcpyAtoH.restype = hipError_t
-hipMemcpyAtoH.argtypes = [ctypes.POINTER(None), ctypes.POINTER(struct_hipArray), size_t, size_t]
-hipMemcpyHtoA = _libraries['libamdhip64.so'].hipMemcpyHtoA
-hipMemcpyHtoA.restype = hipError_t
-hipMemcpyHtoA.argtypes = [ctypes.POINTER(struct_hipArray), size_t, ctypes.POINTER(None), size_t]
-hipMemcpy3D = _libraries['libamdhip64.so'].hipMemcpy3D
-hipMemcpy3D.restype = hipError_t
-hipMemcpy3D.argtypes = [ctypes.POINTER(struct_hipMemcpy3DParms)]
-hipMemcpy3DAsync = _libraries['libamdhip64.so'].hipMemcpy3DAsync
-hipMemcpy3DAsync.restype = hipError_t
-hipMemcpy3DAsync.argtypes = [ctypes.POINTER(struct_hipMemcpy3DParms), hipStream_t]
-hipDrvMemcpy3D = _libraries['libamdhip64.so'].hipDrvMemcpy3D
-hipDrvMemcpy3D.restype = hipError_t
-hipDrvMemcpy3D.argtypes = [ctypes.POINTER(struct_HIP_MEMCPY3D)]
-hipDrvMemcpy3DAsync = _libraries['libamdhip64.so'].hipDrvMemcpy3DAsync
-hipDrvMemcpy3DAsync.restype = hipError_t
-hipDrvMemcpy3DAsync.argtypes = [ctypes.POINTER(struct_HIP_MEMCPY3D), hipStream_t]
-hipDeviceCanAccessPeer = _libraries['libamdhip64.so'].hipDeviceCanAccessPeer
-hipDeviceCanAccessPeer.restype = hipError_t
-hipDeviceCanAccessPeer.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.c_int32, ctypes.c_int32]
-hipDeviceEnablePeerAccess = _libraries['libamdhip64.so'].hipDeviceEnablePeerAccess
-hipDeviceEnablePeerAccess.restype = hipError_t
-hipDeviceEnablePeerAccess.argtypes = [ctypes.c_int32, ctypes.c_uint32]
-hipDeviceDisablePeerAccess = _libraries['libamdhip64.so'].hipDeviceDisablePeerAccess
-hipDeviceDisablePeerAccess.restype = hipError_t
-hipDeviceDisablePeerAccess.argtypes = [ctypes.c_int32]
-hipMemGetAddressRange = _libraries['libamdhip64.so'].hipMemGetAddressRange
-hipMemGetAddressRange.restype = hipError_t
-hipMemGetAddressRange.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), hipDeviceptr_t]
-hipMemcpyPeer = _libraries['libamdhip64.so'].hipMemcpyPeer
-hipMemcpyPeer.restype = hipError_t
-hipMemcpyPeer.argtypes = [ctypes.POINTER(None), ctypes.c_int32, ctypes.POINTER(None), ctypes.c_int32, size_t]
-hipMemcpyPeerAsync = _libraries['libamdhip64.so'].hipMemcpyPeerAsync
-hipMemcpyPeerAsync.restype = hipError_t
-hipMemcpyPeerAsync.argtypes = [ctypes.POINTER(None), ctypes.c_int32, ctypes.POINTER(None), ctypes.c_int32, size_t, hipStream_t]
-hipCtxCreate = _libraries['libamdhip64.so'].hipCtxCreate
-hipCtxCreate.restype = hipError_t
-hipCtxCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t)), ctypes.c_uint32, hipDevice_t]
-hipCtxDestroy = _libraries['libamdhip64.so'].hipCtxDestroy
-hipCtxDestroy.restype = hipError_t
-hipCtxDestroy.argtypes = [hipCtx_t]
-hipCtxPopCurrent = _libraries['libamdhip64.so'].hipCtxPopCurrent
-hipCtxPopCurrent.restype = hipError_t
-hipCtxPopCurrent.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t))]
-hipCtxPushCurrent = _libraries['libamdhip64.so'].hipCtxPushCurrent
-hipCtxPushCurrent.restype = hipError_t
-hipCtxPushCurrent.argtypes = [hipCtx_t]
-hipCtxSetCurrent = _libraries['libamdhip64.so'].hipCtxSetCurrent
-hipCtxSetCurrent.restype = hipError_t
-hipCtxSetCurrent.argtypes = [hipCtx_t]
-hipCtxGetCurrent = _libraries['libamdhip64.so'].hipCtxGetCurrent
-hipCtxGetCurrent.restype = hipError_t
-hipCtxGetCurrent.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t))]
-hipCtxGetDevice = _libraries['libamdhip64.so'].hipCtxGetDevice
-hipCtxGetDevice.restype = hipError_t
-hipCtxGetDevice.argtypes = [ctypes.POINTER(ctypes.c_int32)]
-hipCtxGetApiVersion = _libraries['libamdhip64.so'].hipCtxGetApiVersion
-hipCtxGetApiVersion.restype = hipError_t
-hipCtxGetApiVersion.argtypes = [hipCtx_t, ctypes.POINTER(ctypes.c_int32)]
-hipCtxGetCacheConfig = _libraries['libamdhip64.so'].hipCtxGetCacheConfig
-hipCtxGetCacheConfig.restype = hipError_t
-hipCtxGetCacheConfig.argtypes = [ctypes.POINTER(hipFuncCache_t)]
-hipCtxSetCacheConfig = _libraries['libamdhip64.so'].hipCtxSetCacheConfig
-hipCtxSetCacheConfig.restype = hipError_t
-hipCtxSetCacheConfig.argtypes = [hipFuncCache_t]
-hipCtxSetSharedMemConfig = _libraries['libamdhip64.so'].hipCtxSetSharedMemConfig
-hipCtxSetSharedMemConfig.restype = hipError_t
-hipCtxSetSharedMemConfig.argtypes = [hipSharedMemConfig]
-hipCtxGetSharedMemConfig = _libraries['libamdhip64.so'].hipCtxGetSharedMemConfig
-hipCtxGetSharedMemConfig.restype = hipError_t
-hipCtxGetSharedMemConfig.argtypes = [ctypes.POINTER(hipSharedMemConfig)]
-hipCtxSynchronize = _libraries['libamdhip64.so'].hipCtxSynchronize
-hipCtxSynchronize.restype = hipError_t
-hipCtxSynchronize.argtypes = []
-hipCtxGetFlags = _libraries['libamdhip64.so'].hipCtxGetFlags
-hipCtxGetFlags.restype = hipError_t
-hipCtxGetFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32)]
-hipCtxEnablePeerAccess = _libraries['libamdhip64.so'].hipCtxEnablePeerAccess
-hipCtxEnablePeerAccess.restype = hipError_t
-hipCtxEnablePeerAccess.argtypes = [hipCtx_t, ctypes.c_uint32]
-hipCtxDisablePeerAccess = _libraries['libamdhip64.so'].hipCtxDisablePeerAccess
-hipCtxDisablePeerAccess.restype = hipError_t
-hipCtxDisablePeerAccess.argtypes = [hipCtx_t]
-hipDevicePrimaryCtxGetState = _libraries['libamdhip64.so'].hipDevicePrimaryCtxGetState
-hipDevicePrimaryCtxGetState.restype = hipError_t
-hipDevicePrimaryCtxGetState.argtypes = [hipDevice_t, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_int32)]
-hipDevicePrimaryCtxRelease = _libraries['libamdhip64.so'].hipDevicePrimaryCtxRelease
-hipDevicePrimaryCtxRelease.restype = hipError_t
-hipDevicePrimaryCtxRelease.argtypes = [hipDevice_t]
-hipDevicePrimaryCtxRetain = _libraries['libamdhip64.so'].hipDevicePrimaryCtxRetain
-hipDevicePrimaryCtxRetain.restype = hipError_t
-hipDevicePrimaryCtxRetain.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t)), hipDevice_t]
-hipDevicePrimaryCtxReset = _libraries['libamdhip64.so'].hipDevicePrimaryCtxReset
-hipDevicePrimaryCtxReset.restype = hipError_t
-hipDevicePrimaryCtxReset.argtypes = [hipDevice_t]
-hipDevicePrimaryCtxSetFlags = _libraries['libamdhip64.so'].hipDevicePrimaryCtxSetFlags
-hipDevicePrimaryCtxSetFlags.restype = hipError_t
-hipDevicePrimaryCtxSetFlags.argtypes = [hipDevice_t, ctypes.c_uint32]
-hipModuleLoad = _libraries['libamdhip64.so'].hipModuleLoad
-hipModuleLoad.restype = hipError_t
-hipModuleLoad.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModule_t)), ctypes.POINTER(ctypes.c_char)]
-hipModuleUnload = _libraries['libamdhip64.so'].hipModuleUnload
-hipModuleUnload.restype = hipError_t
-hipModuleUnload.argtypes = [hipModule_t]
-hipModuleGetFunction = _libraries['libamdhip64.so'].hipModuleGetFunction
-hipModuleGetFunction.restype = hipError_t
-hipModuleGetFunction.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModuleSymbol_t)), hipModule_t, ctypes.POINTER(ctypes.c_char)]
-hipFuncGetAttributes = _libraries['libamdhip64.so'].hipFuncGetAttributes
-hipFuncGetAttributes.restype = hipError_t
-hipFuncGetAttributes.argtypes = [ctypes.POINTER(struct_hipFuncAttributes), ctypes.POINTER(None)]
-hipFuncGetAttribute = _libraries['libamdhip64.so'].hipFuncGetAttribute
-hipFuncGetAttribute.restype = hipError_t
-hipFuncGetAttribute.argtypes = [ctypes.POINTER(ctypes.c_int32), hipFunction_attribute, hipFunction_t]
+try:
+    hipStreamWaitValue64 = _libraries['libamdhip64.so'].hipStreamWaitValue64
+    hipStreamWaitValue64.restype = hipError_t
+    hipStreamWaitValue64.argtypes = [hipStream_t, ctypes.POINTER(None), uint64_t, ctypes.c_uint32, uint64_t]
+except AttributeError:
+    pass
+try:
+    hipStreamWriteValue32 = _libraries['libamdhip64.so'].hipStreamWriteValue32
+    hipStreamWriteValue32.restype = hipError_t
+    hipStreamWriteValue32.argtypes = [hipStream_t, ctypes.POINTER(None), uint32_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipStreamWriteValue64 = _libraries['libamdhip64.so'].hipStreamWriteValue64
+    hipStreamWriteValue64.restype = hipError_t
+    hipStreamWriteValue64.argtypes = [hipStream_t, ctypes.POINTER(None), uint64_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipEventCreateWithFlags = _libraries['libamdhip64.so'].hipEventCreateWithFlags
+    hipEventCreateWithFlags.restype = hipError_t
+    hipEventCreateWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t)), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipEventCreate = _libraries['libamdhip64.so'].hipEventCreate
+    hipEventCreate.restype = hipError_t
+    hipEventCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t))]
+except AttributeError:
+    pass
+try:
+    hipEventRecord = _libraries['libamdhip64.so'].hipEventRecord
+    hipEventRecord.restype = hipError_t
+    hipEventRecord.argtypes = [hipEvent_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipEventDestroy = _libraries['libamdhip64.so'].hipEventDestroy
+    hipEventDestroy.restype = hipError_t
+    hipEventDestroy.argtypes = [hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipEventSynchronize = _libraries['libamdhip64.so'].hipEventSynchronize
+    hipEventSynchronize.restype = hipError_t
+    hipEventSynchronize.argtypes = [hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipEventElapsedTime = _libraries['libamdhip64.so'].hipEventElapsedTime
+    hipEventElapsedTime.restype = hipError_t
+    hipEventElapsedTime.argtypes = [ctypes.POINTER(ctypes.c_float), hipEvent_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipEventQuery = _libraries['libamdhip64.so'].hipEventQuery
+    hipEventQuery.restype = hipError_t
+    hipEventQuery.argtypes = [hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipPointerSetAttribute = _libraries['libamdhip64.so'].hipPointerSetAttribute
+    hipPointerSetAttribute.restype = hipError_t
+    hipPointerSetAttribute.argtypes = [ctypes.POINTER(None), hipPointer_attribute, hipDeviceptr_t]
+except AttributeError:
+    pass
+try:
+    hipPointerGetAttributes = _libraries['libamdhip64.so'].hipPointerGetAttributes
+    hipPointerGetAttributes.restype = hipError_t
+    hipPointerGetAttributes.argtypes = [ctypes.POINTER(struct_hipPointerAttribute_t), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipPointerGetAttribute = _libraries['libamdhip64.so'].hipPointerGetAttribute
+    hipPointerGetAttribute.restype = hipError_t
+    hipPointerGetAttribute.argtypes = [ctypes.POINTER(None), hipPointer_attribute, hipDeviceptr_t]
+except AttributeError:
+    pass
+try:
+    hipDrvPointerGetAttributes = _libraries['libamdhip64.so'].hipDrvPointerGetAttributes
+    hipDrvPointerGetAttributes.restype = hipError_t
+    hipDrvPointerGetAttributes.argtypes = [ctypes.c_uint32, ctypes.POINTER(hipPointer_attribute), ctypes.POINTER(ctypes.POINTER(None)), hipDeviceptr_t]
+except AttributeError:
+    pass
+try:
+    hipImportExternalSemaphore = _libraries['libamdhip64.so'].hipImportExternalSemaphore
+    hipImportExternalSemaphore.restype = hipError_t
+    hipImportExternalSemaphore.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalSemaphoreHandleDesc_st)]
+except AttributeError:
+    pass
+try:
+    hipSignalExternalSemaphoresAsync = _libraries['libamdhip64.so'].hipSignalExternalSemaphoresAsync
+    hipSignalExternalSemaphoresAsync.restype = hipError_t
+    hipSignalExternalSemaphoresAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalSemaphoreSignalParams_st), ctypes.c_uint32, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipWaitExternalSemaphoresAsync = _libraries['libamdhip64.so'].hipWaitExternalSemaphoresAsync
+    hipWaitExternalSemaphoresAsync.restype = hipError_t
+    hipWaitExternalSemaphoresAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalSemaphoreWaitParams_st), ctypes.c_uint32, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipDestroyExternalSemaphore = _libraries['libamdhip64.so'].hipDestroyExternalSemaphore
+    hipDestroyExternalSemaphore.restype = hipError_t
+    hipDestroyExternalSemaphore.argtypes = [hipExternalSemaphore_t]
+except AttributeError:
+    pass
+try:
+    hipImportExternalMemory = _libraries['libamdhip64.so'].hipImportExternalMemory
+    hipImportExternalMemory.restype = hipError_t
+    hipImportExternalMemory.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_hipExternalMemoryHandleDesc_st)]
+except AttributeError:
+    pass
+try:
+    hipExternalMemoryGetMappedBuffer = _libraries['libamdhip64.so'].hipExternalMemoryGetMappedBuffer
+    hipExternalMemoryGetMappedBuffer.restype = hipError_t
+    hipExternalMemoryGetMappedBuffer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), hipExternalMemory_t, ctypes.POINTER(struct_hipExternalMemoryBufferDesc_st)]
+except AttributeError:
+    pass
+try:
+    hipDestroyExternalMemory = _libraries['libamdhip64.so'].hipDestroyExternalMemory
+    hipDestroyExternalMemory.restype = hipError_t
+    hipDestroyExternalMemory.argtypes = [hipExternalMemory_t]
+except AttributeError:
+    pass
+try:
+    hipMalloc = _libraries['libamdhip64.so'].hipMalloc
+    hipMalloc.restype = hipError_t
+    hipMalloc.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t]
+except AttributeError:
+    pass
+try:
+    hipExtMallocWithFlags = _libraries['libamdhip64.so'].hipExtMallocWithFlags
+    hipExtMallocWithFlags.restype = hipError_t
+    hipExtMallocWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMallocHost = _libraries['libamdhip64.so'].hipMallocHost
+    hipMallocHost.restype = hipError_t
+    hipMallocHost.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemAllocHost = _libraries['libamdhip64.so'].hipMemAllocHost
+    hipMemAllocHost.restype = hipError_t
+    hipMemAllocHost.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t]
+except AttributeError:
+    pass
+try:
+    hipHostMalloc = _libraries['libamdhip64.so'].hipHostMalloc
+    hipHostMalloc.restype = hipError_t
+    hipHostMalloc.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMallocManaged = _libraries['libamdhip64.so'].hipMallocManaged
+    hipMallocManaged.restype = hipError_t
+    hipMallocManaged.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMemPrefetchAsync = _libraries['libamdhip64.so'].hipMemPrefetchAsync
+    hipMemPrefetchAsync.restype = hipError_t
+    hipMemPrefetchAsync.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_int32, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemAdvise = _libraries['libamdhip64.so'].hipMemAdvise
+    hipMemAdvise.restype = hipError_t
+    hipMemAdvise.argtypes = [ctypes.POINTER(None), size_t, hipMemoryAdvise, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipMemRangeGetAttribute = _libraries['libamdhip64.so'].hipMemRangeGetAttribute
+    hipMemRangeGetAttribute.restype = hipError_t
+    hipMemRangeGetAttribute.argtypes = [ctypes.POINTER(None), size_t, hipMemRangeAttribute, ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemRangeGetAttributes = _libraries['libamdhip64.so'].hipMemRangeGetAttributes
+    hipMemRangeGetAttributes.restype = hipError_t
+    hipMemRangeGetAttributes.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(hipMemRangeAttribute), size_t, ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hipStreamAttachMemAsync = _libraries['libamdhip64.so'].hipStreamAttachMemAsync
+    hipStreamAttachMemAsync.restype = hipError_t
+    hipStreamAttachMemAsync.argtypes = [hipStream_t, ctypes.POINTER(None), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMallocAsync = _libraries['libamdhip64.so'].hipMallocAsync
+    hipMallocAsync.restype = hipError_t
+    hipMallocAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipFreeAsync = _libraries['libamdhip64.so'].hipFreeAsync
+    hipFreeAsync.restype = hipError_t
+    hipFreeAsync.argtypes = [ctypes.POINTER(None), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemPoolTrimTo = _libraries['libamdhip64.so'].hipMemPoolTrimTo
+    hipMemPoolTrimTo.restype = hipError_t
+    hipMemPoolTrimTo.argtypes = [hipMemPool_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemPoolSetAttribute = _libraries['libamdhip64.so'].hipMemPoolSetAttribute
+    hipMemPoolSetAttribute.restype = hipError_t
+    hipMemPoolSetAttribute.argtypes = [hipMemPool_t, hipMemPoolAttr, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemPoolGetAttribute = _libraries['libamdhip64.so'].hipMemPoolGetAttribute
+    hipMemPoolGetAttribute.restype = hipError_t
+    hipMemPoolGetAttribute.argtypes = [hipMemPool_t, hipMemPoolAttr, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemPoolSetAccess = _libraries['libamdhip64.so'].hipMemPoolSetAccess
+    hipMemPoolSetAccess.restype = hipError_t
+    hipMemPoolSetAccess.argtypes = [hipMemPool_t, ctypes.POINTER(struct_hipMemAccessDesc), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemPoolGetAccess = _libraries['libamdhip64.so'].hipMemPoolGetAccess
+    hipMemPoolGetAccess.restype = hipError_t
+    hipMemPoolGetAccess.argtypes = [ctypes.POINTER(hipMemAccessFlags), hipMemPool_t, ctypes.POINTER(struct_hipMemLocation)]
+except AttributeError:
+    pass
+try:
+    hipMemPoolCreate = _libraries['libamdhip64.so'].hipMemPoolCreate
+    hipMemPoolCreate.restype = hipError_t
+    hipMemPoolCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.POINTER(struct_hipMemPoolProps)]
+except AttributeError:
+    pass
+try:
+    hipMemPoolDestroy = _libraries['libamdhip64.so'].hipMemPoolDestroy
+    hipMemPoolDestroy.restype = hipError_t
+    hipMemPoolDestroy.argtypes = [hipMemPool_t]
+except AttributeError:
+    pass
+try:
+    hipMallocFromPoolAsync = _libraries['libamdhip64.so'].hipMallocFromPoolAsync
+    hipMallocFromPoolAsync.restype = hipError_t
+    hipMallocFromPoolAsync.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, hipMemPool_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemPoolExportToShareableHandle = _libraries['libamdhip64.so'].hipMemPoolExportToShareableHandle
+    hipMemPoolExportToShareableHandle.restype = hipError_t
+    hipMemPoolExportToShareableHandle.argtypes = [ctypes.POINTER(None), hipMemPool_t, hipMemAllocationHandleType, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMemPoolImportFromShareableHandle = _libraries['libamdhip64.so'].hipMemPoolImportFromShareableHandle
+    hipMemPoolImportFromShareableHandle.restype = hipError_t
+    hipMemPoolImportFromShareableHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemPoolHandle_t)), ctypes.POINTER(None), hipMemAllocationHandleType, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMemPoolExportPointer = _libraries['libamdhip64.so'].hipMemPoolExportPointer
+    hipMemPoolExportPointer.restype = hipError_t
+    hipMemPoolExportPointer.argtypes = [ctypes.POINTER(struct_hipMemPoolPtrExportData), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemPoolImportPointer = _libraries['libamdhip64.so'].hipMemPoolImportPointer
+    hipMemPoolImportPointer.restype = hipError_t
+    hipMemPoolImportPointer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), hipMemPool_t, ctypes.POINTER(struct_hipMemPoolPtrExportData)]
+except AttributeError:
+    pass
+try:
+    hipHostAlloc = _libraries['libamdhip64.so'].hipHostAlloc
+    hipHostAlloc.restype = hipError_t
+    hipHostAlloc.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipHostGetDevicePointer = _libraries['libamdhip64.so'].hipHostGetDevicePointer
+    hipHostGetDevicePointer.restype = hipError_t
+    hipHostGetDevicePointer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipHostGetFlags = _libraries['libamdhip64.so'].hipHostGetFlags
+    hipHostGetFlags.restype = hipError_t
+    hipHostGetFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipHostRegister = _libraries['libamdhip64.so'].hipHostRegister
+    hipHostRegister.restype = hipError_t
+    hipHostRegister.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipHostUnregister = _libraries['libamdhip64.so'].hipHostUnregister
+    hipHostUnregister.restype = hipError_t
+    hipHostUnregister.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMallocPitch = _libraries['libamdhip64.so'].hipMallocPitch
+    hipMallocPitch.restype = hipError_t
+    hipMallocPitch.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), size_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemAllocPitch = _libraries['libamdhip64.so'].hipMemAllocPitch
+    hipMemAllocPitch.restype = hipError_t
+    hipMemAllocPitch.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipFree = _libraries['libamdhip64.so'].hipFree
+    hipFree.restype = hipError_t
+    hipFree.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipFreeHost = _libraries['libamdhip64.so'].hipFreeHost
+    hipFreeHost.restype = hipError_t
+    hipFreeHost.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipHostFree = _libraries['libamdhip64.so'].hipHostFree
+    hipHostFree.restype = hipError_t
+    hipHostFree.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemcpy = _libraries['libamdhip64.so'].hipMemcpy
+    hipMemcpy.restype = hipError_t
+    hipMemcpy.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpyWithStream = _libraries['libamdhip64.so'].hipMemcpyWithStream
+    hipMemcpyWithStream.restype = hipError_t
+    hipMemcpyWithStream.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyHtoD = _libraries['libamdhip64.so'].hipMemcpyHtoD
+    hipMemcpyHtoD.restype = hipError_t
+    hipMemcpyHtoD.argtypes = [hipDeviceptr_t, ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyDtoH = _libraries['libamdhip64.so'].hipMemcpyDtoH
+    hipMemcpyDtoH.restype = hipError_t
+    hipMemcpyDtoH.argtypes = [ctypes.POINTER(None), hipDeviceptr_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyDtoD = _libraries['libamdhip64.so'].hipMemcpyDtoD
+    hipMemcpyDtoD.restype = hipError_t
+    hipMemcpyDtoD.argtypes = [hipDeviceptr_t, hipDeviceptr_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyHtoDAsync = _libraries['libamdhip64.so'].hipMemcpyHtoDAsync
+    hipMemcpyHtoDAsync.restype = hipError_t
+    hipMemcpyHtoDAsync.argtypes = [hipDeviceptr_t, ctypes.POINTER(None), size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyDtoHAsync = _libraries['libamdhip64.so'].hipMemcpyDtoHAsync
+    hipMemcpyDtoHAsync.restype = hipError_t
+    hipMemcpyDtoHAsync.argtypes = [ctypes.POINTER(None), hipDeviceptr_t, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyDtoDAsync = _libraries['libamdhip64.so'].hipMemcpyDtoDAsync
+    hipMemcpyDtoDAsync.restype = hipError_t
+    hipMemcpyDtoDAsync.argtypes = [hipDeviceptr_t, hipDeviceptr_t, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipModuleGetGlobal = _libraries['libamdhip64.so'].hipModuleGetGlobal
+    hipModuleGetGlobal.restype = hipError_t
+    hipModuleGetGlobal.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), hipModule_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hipGetSymbolAddress = _libraries['libamdhip64.so'].hipGetSymbolAddress
+    hipGetSymbolAddress.restype = hipError_t
+    hipGetSymbolAddress.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipGetSymbolSize = _libraries['libamdhip64.so'].hipGetSymbolSize
+    hipGetSymbolSize.restype = hipError_t
+    hipGetSymbolSize.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemcpyToSymbol = _libraries['libamdhip64.so'].hipMemcpyToSymbol
+    hipMemcpyToSymbol.restype = hipError_t
+    hipMemcpyToSymbol.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpyToSymbolAsync = _libraries['libamdhip64.so'].hipMemcpyToSymbolAsync
+    hipMemcpyToSymbolAsync.restype = hipError_t
+    hipMemcpyToSymbolAsync.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyFromSymbol = _libraries['libamdhip64.so'].hipMemcpyFromSymbol
+    hipMemcpyFromSymbol.restype = hipError_t
+    hipMemcpyFromSymbol.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpyFromSymbolAsync = _libraries['libamdhip64.so'].hipMemcpyFromSymbolAsync
+    hipMemcpyFromSymbolAsync.restype = hipError_t
+    hipMemcpyFromSymbolAsync.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyAsync = _libraries['libamdhip64.so'].hipMemcpyAsync
+    hipMemcpyAsync.restype = hipError_t
+    hipMemcpyAsync.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemset = _libraries['libamdhip64.so'].hipMemset
+    hipMemset.restype = hipError_t
+    hipMemset.argtypes = [ctypes.POINTER(None), ctypes.c_int32, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetD8 = _libraries['libamdhip64.so'].hipMemsetD8
+    hipMemsetD8.restype = hipError_t
+    hipMemsetD8.argtypes = [hipDeviceptr_t, ctypes.c_ubyte, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetD8Async = _libraries['libamdhip64.so'].hipMemsetD8Async
+    hipMemsetD8Async.restype = hipError_t
+    hipMemsetD8Async.argtypes = [hipDeviceptr_t, ctypes.c_ubyte, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetD16 = _libraries['libamdhip64.so'].hipMemsetD16
+    hipMemsetD16.restype = hipError_t
+    hipMemsetD16.argtypes = [hipDeviceptr_t, ctypes.c_uint16, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetD16Async = _libraries['libamdhip64.so'].hipMemsetD16Async
+    hipMemsetD16Async.restype = hipError_t
+    hipMemsetD16Async.argtypes = [hipDeviceptr_t, ctypes.c_uint16, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetD32 = _libraries['libamdhip64.so'].hipMemsetD32
+    hipMemsetD32.restype = hipError_t
+    hipMemsetD32.argtypes = [hipDeviceptr_t, ctypes.c_int32, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetAsync = _libraries['libamdhip64.so'].hipMemsetAsync
+    hipMemsetAsync.restype = hipError_t
+    hipMemsetAsync.argtypes = [ctypes.POINTER(None), ctypes.c_int32, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemsetD32Async = _libraries['libamdhip64.so'].hipMemsetD32Async
+    hipMemsetD32Async.restype = hipError_t
+    hipMemsetD32Async.argtypes = [hipDeviceptr_t, ctypes.c_int32, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemset2D = _libraries['libamdhip64.so'].hipMemset2D
+    hipMemset2D.restype = hipError_t
+    hipMemset2D.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_int32, size_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemset2DAsync = _libraries['libamdhip64.so'].hipMemset2DAsync
+    hipMemset2DAsync.restype = hipError_t
+    hipMemset2DAsync.argtypes = [ctypes.POINTER(None), size_t, ctypes.c_int32, size_t, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemset3D = _libraries['libamdhip64.so'].hipMemset3D
+    hipMemset3D.restype = hipError_t
+    hipMemset3D.argtypes = [hipPitchedPtr, ctypes.c_int32, hipExtent]
+except AttributeError:
+    pass
+try:
+    hipMemset3DAsync = _libraries['libamdhip64.so'].hipMemset3DAsync
+    hipMemset3DAsync.restype = hipError_t
+    hipMemset3DAsync.argtypes = [hipPitchedPtr, ctypes.c_int32, hipExtent, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemGetInfo = _libraries['libamdhip64.so'].hipMemGetInfo
+    hipMemGetInfo.restype = hipError_t
+    hipMemGetInfo.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipMemPtrGetInfo = _libraries['libamdhip64.so'].hipMemPtrGetInfo
+    hipMemPtrGetInfo.restype = hipError_t
+    hipMemPtrGetInfo.argtypes = [ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipMallocArray = _libraries['libamdhip64.so'].hipMallocArray
+    hipMallocArray.restype = hipError_t
+    hipMallocArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_hipChannelFormatDesc), size_t, size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipArrayCreate = _libraries['libamdhip64.so'].hipArrayCreate
+    hipArrayCreate.restype = hipError_t
+    hipArrayCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR)]
+except AttributeError:
+    pass
+try:
+    hipArrayDestroy = _libraries['libamdhip64.so'].hipArrayDestroy
+    hipArrayDestroy.restype = hipError_t
+    hipArrayDestroy.argtypes = [ctypes.POINTER(struct_hipArray)]
+except AttributeError:
+    pass
+try:
+    hipArray3DCreate = _libraries['libamdhip64.so'].hipArray3DCreate
+    hipArray3DCreate.restype = hipError_t
+    hipArray3DCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR)]
+except AttributeError:
+    pass
+try:
+    hipMalloc3D = _libraries['libamdhip64.so'].hipMalloc3D
+    hipMalloc3D.restype = hipError_t
+    hipMalloc3D.argtypes = [ctypes.POINTER(struct_hipPitchedPtr), hipExtent]
+except AttributeError:
+    pass
+try:
+    hipFreeArray = _libraries['libamdhip64.so'].hipFreeArray
+    hipFreeArray.restype = hipError_t
+    hipFreeArray.argtypes = [ctypes.POINTER(struct_hipArray)]
+except AttributeError:
+    pass
+try:
+    hipMalloc3DArray = _libraries['libamdhip64.so'].hipMalloc3DArray
+    hipMalloc3DArray.restype = hipError_t
+    hipMalloc3DArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), ctypes.POINTER(struct_hipChannelFormatDesc), struct_hipExtent, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipArrayGetInfo = _libraries['libamdhip64.so'].hipArrayGetInfo
+    hipArrayGetInfo.restype = hipError_t
+    hipArrayGetInfo.argtypes = [ctypes.POINTER(struct_hipChannelFormatDesc), ctypes.POINTER(struct_hipExtent), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(struct_hipArray)]
+except AttributeError:
+    pass
+try:
+    hipArrayGetDescriptor = _libraries['libamdhip64.so'].hipArrayGetDescriptor
+    hipArrayGetDescriptor.restype = hipError_t
+    hipArrayGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR), ctypes.POINTER(struct_hipArray)]
+except AttributeError:
+    pass
+try:
+    hipArray3DGetDescriptor = _libraries['libamdhip64.so'].hipArray3DGetDescriptor
+    hipArray3DGetDescriptor.restype = hipError_t
+    hipArray3DGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR), ctypes.POINTER(struct_hipArray)]
+except AttributeError:
+    pass
+try:
+    hipMemcpy2D = _libraries['libamdhip64.so'].hipMemcpy2D
+    hipMemcpy2D.restype = hipError_t
+    hipMemcpy2D.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpyParam2D = _libraries['libamdhip64.so'].hipMemcpyParam2D
+    hipMemcpyParam2D.restype = hipError_t
+    hipMemcpyParam2D.argtypes = [ctypes.POINTER(struct_hip_Memcpy2D)]
+except AttributeError:
+    pass
+try:
+    hipMemcpyParam2DAsync = _libraries['libamdhip64.so'].hipMemcpyParam2DAsync
+    hipMemcpyParam2DAsync.restype = hipError_t
+    hipMemcpyParam2DAsync.argtypes = [ctypes.POINTER(struct_hip_Memcpy2D), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpy2DAsync = _libraries['libamdhip64.so'].hipMemcpy2DAsync
+    hipMemcpy2DAsync.restype = hipError_t
+    hipMemcpy2DAsync.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpy2DToArray = _libraries['libamdhip64.so'].hipMemcpy2DToArray
+    hipMemcpy2DToArray.restype = hipError_t
+    hipMemcpy2DToArray.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpy2DToArrayAsync = _libraries['libamdhip64.so'].hipMemcpy2DToArrayAsync
+    hipMemcpy2DToArrayAsync.restype = hipError_t
+    hipMemcpy2DToArrayAsync.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyToArray = _libraries['libamdhip64.so'].hipMemcpyToArray
+    hipMemcpyToArray.restype = hipError_t
+    hipMemcpyToArray.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpyFromArray = _libraries['libamdhip64.so'].hipMemcpyFromArray
+    hipMemcpyFromArray.restype = hipError_t
+    hipMemcpyFromArray.argtypes = [ctypes.POINTER(None), hipArray_const_t, size_t, size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpy2DFromArray = _libraries['libamdhip64.so'].hipMemcpy2DFromArray
+    hipMemcpy2DFromArray.restype = hipError_t
+    hipMemcpy2DFromArray.argtypes = [ctypes.POINTER(None), size_t, hipArray_const_t, size_t, size_t, size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipMemcpy2DFromArrayAsync = _libraries['libamdhip64.so'].hipMemcpy2DFromArrayAsync
+    hipMemcpy2DFromArrayAsync.restype = hipError_t
+    hipMemcpy2DFromArrayAsync.argtypes = [ctypes.POINTER(None), size_t, hipArray_const_t, size_t, size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyAtoH = _libraries['libamdhip64.so'].hipMemcpyAtoH
+    hipMemcpyAtoH.restype = hipError_t
+    hipMemcpyAtoH.argtypes = [ctypes.POINTER(None), ctypes.POINTER(struct_hipArray), size_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyHtoA = _libraries['libamdhip64.so'].hipMemcpyHtoA
+    hipMemcpyHtoA.restype = hipError_t
+    hipMemcpyHtoA.argtypes = [ctypes.POINTER(struct_hipArray), size_t, ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpy3D = _libraries['libamdhip64.so'].hipMemcpy3D
+    hipMemcpy3D.restype = hipError_t
+    hipMemcpy3D.argtypes = [ctypes.POINTER(struct_hipMemcpy3DParms)]
+except AttributeError:
+    pass
+try:
+    hipMemcpy3DAsync = _libraries['libamdhip64.so'].hipMemcpy3DAsync
+    hipMemcpy3DAsync.restype = hipError_t
+    hipMemcpy3DAsync.argtypes = [ctypes.POINTER(struct_hipMemcpy3DParms), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipDrvMemcpy3D = _libraries['libamdhip64.so'].hipDrvMemcpy3D
+    hipDrvMemcpy3D.restype = hipError_t
+    hipDrvMemcpy3D.argtypes = [ctypes.POINTER(struct_HIP_MEMCPY3D)]
+except AttributeError:
+    pass
+try:
+    hipDrvMemcpy3DAsync = _libraries['libamdhip64.so'].hipDrvMemcpy3DAsync
+    hipDrvMemcpy3DAsync.restype = hipError_t
+    hipDrvMemcpy3DAsync.argtypes = [ctypes.POINTER(struct_HIP_MEMCPY3D), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipDeviceCanAccessPeer = _libraries['libamdhip64.so'].hipDeviceCanAccessPeer
+    hipDeviceCanAccessPeer.restype = hipError_t
+    hipDeviceCanAccessPeer.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.c_int32, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipDeviceEnablePeerAccess = _libraries['libamdhip64.so'].hipDeviceEnablePeerAccess
+    hipDeviceEnablePeerAccess.restype = hipError_t
+    hipDeviceEnablePeerAccess.argtypes = [ctypes.c_int32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipDeviceDisablePeerAccess = _libraries['libamdhip64.so'].hipDeviceDisablePeerAccess
+    hipDeviceDisablePeerAccess.restype = hipError_t
+    hipDeviceDisablePeerAccess.argtypes = [ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipMemGetAddressRange = _libraries['libamdhip64.so'].hipMemGetAddressRange
+    hipMemGetAddressRange.restype = hipError_t
+    hipMemGetAddressRange.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), hipDeviceptr_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyPeer = _libraries['libamdhip64.so'].hipMemcpyPeer
+    hipMemcpyPeer.restype = hipError_t
+    hipMemcpyPeer.argtypes = [ctypes.POINTER(None), ctypes.c_int32, ctypes.POINTER(None), ctypes.c_int32, size_t]
+except AttributeError:
+    pass
+try:
+    hipMemcpyPeerAsync = _libraries['libamdhip64.so'].hipMemcpyPeerAsync
+    hipMemcpyPeerAsync.restype = hipError_t
+    hipMemcpyPeerAsync.argtypes = [ctypes.POINTER(None), ctypes.c_int32, ctypes.POINTER(None), ctypes.c_int32, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipCtxCreate = _libraries['libamdhip64.so'].hipCtxCreate
+    hipCtxCreate.restype = hipError_t
+    hipCtxCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t)), ctypes.c_uint32, hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipCtxDestroy = _libraries['libamdhip64.so'].hipCtxDestroy
+    hipCtxDestroy.restype = hipError_t
+    hipCtxDestroy.argtypes = [hipCtx_t]
+except AttributeError:
+    pass
+try:
+    hipCtxPopCurrent = _libraries['libamdhip64.so'].hipCtxPopCurrent
+    hipCtxPopCurrent.restype = hipError_t
+    hipCtxPopCurrent.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t))]
+except AttributeError:
+    pass
+try:
+    hipCtxPushCurrent = _libraries['libamdhip64.so'].hipCtxPushCurrent
+    hipCtxPushCurrent.restype = hipError_t
+    hipCtxPushCurrent.argtypes = [hipCtx_t]
+except AttributeError:
+    pass
+try:
+    hipCtxSetCurrent = _libraries['libamdhip64.so'].hipCtxSetCurrent
+    hipCtxSetCurrent.restype = hipError_t
+    hipCtxSetCurrent.argtypes = [hipCtx_t]
+except AttributeError:
+    pass
+try:
+    hipCtxGetCurrent = _libraries['libamdhip64.so'].hipCtxGetCurrent
+    hipCtxGetCurrent.restype = hipError_t
+    hipCtxGetCurrent.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t))]
+except AttributeError:
+    pass
+try:
+    hipCtxGetDevice = _libraries['libamdhip64.so'].hipCtxGetDevice
+    hipCtxGetDevice.restype = hipError_t
+    hipCtxGetDevice.argtypes = [ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipCtxGetApiVersion = _libraries['libamdhip64.so'].hipCtxGetApiVersion
+    hipCtxGetApiVersion.restype = hipError_t
+    hipCtxGetApiVersion.argtypes = [hipCtx_t, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipCtxGetCacheConfig = _libraries['libamdhip64.so'].hipCtxGetCacheConfig
+    hipCtxGetCacheConfig.restype = hipError_t
+    hipCtxGetCacheConfig.argtypes = [ctypes.POINTER(hipFuncCache_t)]
+except AttributeError:
+    pass
+try:
+    hipCtxSetCacheConfig = _libraries['libamdhip64.so'].hipCtxSetCacheConfig
+    hipCtxSetCacheConfig.restype = hipError_t
+    hipCtxSetCacheConfig.argtypes = [hipFuncCache_t]
+except AttributeError:
+    pass
+try:
+    hipCtxSetSharedMemConfig = _libraries['libamdhip64.so'].hipCtxSetSharedMemConfig
+    hipCtxSetSharedMemConfig.restype = hipError_t
+    hipCtxSetSharedMemConfig.argtypes = [hipSharedMemConfig]
+except AttributeError:
+    pass
+try:
+    hipCtxGetSharedMemConfig = _libraries['libamdhip64.so'].hipCtxGetSharedMemConfig
+    hipCtxGetSharedMemConfig.restype = hipError_t
+    hipCtxGetSharedMemConfig.argtypes = [ctypes.POINTER(hipSharedMemConfig)]
+except AttributeError:
+    pass
+try:
+    hipCtxSynchronize = _libraries['libamdhip64.so'].hipCtxSynchronize
+    hipCtxSynchronize.restype = hipError_t
+    hipCtxSynchronize.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipCtxGetFlags = _libraries['libamdhip64.so'].hipCtxGetFlags
+    hipCtxGetFlags.restype = hipError_t
+    hipCtxGetFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hipCtxEnablePeerAccess = _libraries['libamdhip64.so'].hipCtxEnablePeerAccess
+    hipCtxEnablePeerAccess.restype = hipError_t
+    hipCtxEnablePeerAccess.argtypes = [hipCtx_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipCtxDisablePeerAccess = _libraries['libamdhip64.so'].hipCtxDisablePeerAccess
+    hipCtxDisablePeerAccess.restype = hipError_t
+    hipCtxDisablePeerAccess.argtypes = [hipCtx_t]
+except AttributeError:
+    pass
+try:
+    hipDevicePrimaryCtxGetState = _libraries['libamdhip64.so'].hipDevicePrimaryCtxGetState
+    hipDevicePrimaryCtxGetState.restype = hipError_t
+    hipDevicePrimaryCtxGetState.argtypes = [hipDevice_t, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    hipDevicePrimaryCtxRelease = _libraries['libamdhip64.so'].hipDevicePrimaryCtxRelease
+    hipDevicePrimaryCtxRelease.restype = hipError_t
+    hipDevicePrimaryCtxRelease.argtypes = [hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDevicePrimaryCtxRetain = _libraries['libamdhip64.so'].hipDevicePrimaryCtxRetain
+    hipDevicePrimaryCtxRetain.restype = hipError_t
+    hipDevicePrimaryCtxRetain.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipCtx_t)), hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDevicePrimaryCtxReset = _libraries['libamdhip64.so'].hipDevicePrimaryCtxReset
+    hipDevicePrimaryCtxReset.restype = hipError_t
+    hipDevicePrimaryCtxReset.argtypes = [hipDevice_t]
+except AttributeError:
+    pass
+try:
+    hipDevicePrimaryCtxSetFlags = _libraries['libamdhip64.so'].hipDevicePrimaryCtxSetFlags
+    hipDevicePrimaryCtxSetFlags.restype = hipError_t
+    hipDevicePrimaryCtxSetFlags.argtypes = [hipDevice_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipModuleLoad = _libraries['libamdhip64.so'].hipModuleLoad
+    hipModuleLoad.restype = hipError_t
+    hipModuleLoad.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModule_t)), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hipModuleUnload = _libraries['libamdhip64.so'].hipModuleUnload
+    hipModuleUnload.restype = hipError_t
+    hipModuleUnload.argtypes = [hipModule_t]
+except AttributeError:
+    pass
+try:
+    hipModuleGetFunction = _libraries['libamdhip64.so'].hipModuleGetFunction
+    hipModuleGetFunction.restype = hipError_t
+    hipModuleGetFunction.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModuleSymbol_t)), hipModule_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hipFuncGetAttributes = _libraries['libamdhip64.so'].hipFuncGetAttributes
+    hipFuncGetAttributes.restype = hipError_t
+    hipFuncGetAttributes.argtypes = [ctypes.POINTER(struct_hipFuncAttributes), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipFuncGetAttribute = _libraries['libamdhip64.so'].hipFuncGetAttribute
+    hipFuncGetAttribute.restype = hipError_t
+    hipFuncGetAttribute.argtypes = [ctypes.POINTER(ctypes.c_int32), hipFunction_attribute, hipFunction_t]
+except AttributeError:
+    pass
 class struct_textureReference(Structure):
     pass
 
 class struct___hip_texture(Structure):
     pass
 
-
-# values for enumeration 'hipTextureFilterMode'
-hipTextureFilterMode__enumvalues = {
-    0: 'hipFilterModePoint',
-    1: 'hipFilterModeLinear',
-}
-hipFilterModePoint = 0
-hipFilterModeLinear = 1
-hipTextureFilterMode = ctypes.c_uint32 # enum
 
 # values for enumeration 'hipTextureAddressMode'
 hipTextureAddressMode__enumvalues = {
@@ -3278,6 +3947,15 @@ hipTextureReadMode__enumvalues = {
 hipReadModeElementType = 0
 hipReadModeNormalizedFloat = 1
 hipTextureReadMode = ctypes.c_uint32 # enum
+
+# values for enumeration 'hipTextureFilterMode'
+hipTextureFilterMode__enumvalues = {
+    0: 'hipFilterModePoint',
+    1: 'hipFilterModeLinear',
+}
+hipFilterModePoint = 0
+hipFilterModeLinear = 1
+hipTextureFilterMode = ctypes.c_uint32 # enum
 struct_textureReference._pack_ = 1 # source:False
 struct_textureReference._fields_ = [
     ('normalized', ctypes.c_int32),
@@ -3297,87 +3975,168 @@ struct_textureReference._fields_ = [
     ('format', hipArray_Format),
 ]
 
-hipModuleGetTexRef = _libraries['libamdhip64.so'].hipModuleGetTexRef
-hipModuleGetTexRef.restype = hipError_t
-hipModuleGetTexRef.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_textureReference)), hipModule_t, ctypes.POINTER(ctypes.c_char)]
-hipModuleLoadData = _libraries['libamdhip64.so'].hipModuleLoadData
-hipModuleLoadData.restype = hipError_t
-hipModuleLoadData.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModule_t)), ctypes.POINTER(None)]
-hipModuleLoadDataEx = _libraries['libamdhip64.so'].hipModuleLoadDataEx
-hipModuleLoadDataEx.restype = hipError_t
-hipModuleLoadDataEx.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModule_t)), ctypes.POINTER(None), ctypes.c_uint32, ctypes.POINTER(hipJitOption), ctypes.POINTER(ctypes.POINTER(None))]
-hipModuleLaunchKernel = _libraries['libamdhip64.so'].hipModuleLaunchKernel
-hipModuleLaunchKernel.restype = hipError_t
-hipModuleLaunchKernel.argtypes = [hipFunction_t, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, hipStream_t, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(None))]
-hipModuleLaunchCooperativeKernel = _libraries['libamdhip64.so'].hipModuleLaunchCooperativeKernel
-hipModuleLaunchCooperativeKernel.restype = hipError_t
-hipModuleLaunchCooperativeKernel.argtypes = [hipFunction_t, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, hipStream_t, ctypes.POINTER(ctypes.POINTER(None))]
-hipModuleLaunchCooperativeKernelMultiDevice = _libraries['libamdhip64.so'].hipModuleLaunchCooperativeKernelMultiDevice
-hipModuleLaunchCooperativeKernelMultiDevice.restype = hipError_t
-hipModuleLaunchCooperativeKernelMultiDevice.argtypes = [ctypes.POINTER(struct_hipFunctionLaunchParams_t), ctypes.c_uint32, ctypes.c_uint32]
-hipLaunchCooperativeKernel = _libraries['libamdhip64.so'].hipLaunchCooperativeKernel
-hipLaunchCooperativeKernel.restype = hipError_t
-hipLaunchCooperativeKernel.argtypes = [ctypes.POINTER(None), dim3, dim3, ctypes.POINTER(ctypes.POINTER(None)), ctypes.c_uint32, hipStream_t]
-hipLaunchCooperativeKernelMultiDevice = _libraries['libamdhip64.so'].hipLaunchCooperativeKernelMultiDevice
-hipLaunchCooperativeKernelMultiDevice.restype = hipError_t
-hipLaunchCooperativeKernelMultiDevice.argtypes = [ctypes.POINTER(struct_hipLaunchParams_t), ctypes.c_int32, ctypes.c_uint32]
-hipExtLaunchMultiKernelMultiDevice = _libraries['libamdhip64.so'].hipExtLaunchMultiKernelMultiDevice
-hipExtLaunchMultiKernelMultiDevice.restype = hipError_t
-hipExtLaunchMultiKernelMultiDevice.argtypes = [ctypes.POINTER(struct_hipLaunchParams_t), ctypes.c_int32, ctypes.c_uint32]
-hipModuleOccupancyMaxPotentialBlockSize = _libraries['libamdhip64.so'].hipModuleOccupancyMaxPotentialBlockSize
-hipModuleOccupancyMaxPotentialBlockSize.restype = hipError_t
-hipModuleOccupancyMaxPotentialBlockSize.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), hipFunction_t, size_t, ctypes.c_int32]
-hipModuleOccupancyMaxPotentialBlockSizeWithFlags = _libraries['libamdhip64.so'].hipModuleOccupancyMaxPotentialBlockSizeWithFlags
-hipModuleOccupancyMaxPotentialBlockSizeWithFlags.restype = hipError_t
-hipModuleOccupancyMaxPotentialBlockSizeWithFlags.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), hipFunction_t, size_t, ctypes.c_int32, ctypes.c_uint32]
-hipModuleOccupancyMaxActiveBlocksPerMultiprocessor = _libraries['libamdhip64.so'].hipModuleOccupancyMaxActiveBlocksPerMultiprocessor
-hipModuleOccupancyMaxActiveBlocksPerMultiprocessor.restype = hipError_t
-hipModuleOccupancyMaxActiveBlocksPerMultiprocessor.argtypes = [ctypes.POINTER(ctypes.c_int32), hipFunction_t, ctypes.c_int32, size_t]
-hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags = _libraries['libamdhip64.so'].hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags
-hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.restype = hipError_t
-hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.argtypes = [ctypes.POINTER(ctypes.c_int32), hipFunction_t, ctypes.c_int32, size_t, ctypes.c_uint32]
-hipOccupancyMaxActiveBlocksPerMultiprocessor = _libraries['libamdhip64.so'].hipOccupancyMaxActiveBlocksPerMultiprocessor
-hipOccupancyMaxActiveBlocksPerMultiprocessor.restype = hipError_t
-hipOccupancyMaxActiveBlocksPerMultiprocessor.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(None), ctypes.c_int32, size_t]
-hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags = _libraries['libamdhip64.so'].hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags
-hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.restype = hipError_t
-hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(None), ctypes.c_int32, size_t, ctypes.c_uint32]
-hipOccupancyMaxPotentialBlockSize = _libraries['libamdhip64.so'].hipOccupancyMaxPotentialBlockSize
-hipOccupancyMaxPotentialBlockSize.restype = hipError_t
-hipOccupancyMaxPotentialBlockSize.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(None), size_t, ctypes.c_int32]
-hipProfilerStart = _libraries['libamdhip64.so'].hipProfilerStart
-hipProfilerStart.restype = hipError_t
-hipProfilerStart.argtypes = []
-hipProfilerStop = _libraries['libamdhip64.so'].hipProfilerStop
-hipProfilerStop.restype = hipError_t
-hipProfilerStop.argtypes = []
-hipConfigureCall = _libraries['libamdhip64.so'].hipConfigureCall
-hipConfigureCall.restype = hipError_t
-hipConfigureCall.argtypes = [dim3, dim3, size_t, hipStream_t]
-hipSetupArgument = _libraries['libamdhip64.so'].hipSetupArgument
-hipSetupArgument.restype = hipError_t
-hipSetupArgument.argtypes = [ctypes.POINTER(None), size_t, size_t]
-hipLaunchByPtr = _libraries['libamdhip64.so'].hipLaunchByPtr
-hipLaunchByPtr.restype = hipError_t
-hipLaunchByPtr.argtypes = [ctypes.POINTER(None)]
-__hipPushCallConfiguration = _libraries['libamdhip64.so'].__hipPushCallConfiguration
-__hipPushCallConfiguration.restype = hipError_t
-__hipPushCallConfiguration.argtypes = [dim3, dim3, size_t, hipStream_t]
-__hipPopCallConfiguration = _libraries['libamdhip64.so'].__hipPopCallConfiguration
-__hipPopCallConfiguration.restype = hipError_t
-__hipPopCallConfiguration.argtypes = [ctypes.POINTER(struct_dim3), ctypes.POINTER(struct_dim3), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t))]
-hipLaunchKernel = _libraries['libamdhip64.so'].hipLaunchKernel
-hipLaunchKernel.restype = hipError_t
-hipLaunchKernel.argtypes = [ctypes.POINTER(None), dim3, dim3, ctypes.POINTER(ctypes.POINTER(None)), size_t, hipStream_t]
-hipLaunchHostFunc = _libraries['libamdhip64.so'].hipLaunchHostFunc
-hipLaunchHostFunc.restype = hipError_t
-hipLaunchHostFunc.argtypes = [hipStream_t, hipHostFn_t, ctypes.POINTER(None)]
-hipDrvMemcpy2DUnaligned = _libraries['libamdhip64.so'].hipDrvMemcpy2DUnaligned
-hipDrvMemcpy2DUnaligned.restype = hipError_t
-hipDrvMemcpy2DUnaligned.argtypes = [ctypes.POINTER(struct_hip_Memcpy2D)]
-hipExtLaunchKernel = _libraries['libamdhip64.so'].hipExtLaunchKernel
-hipExtLaunchKernel.restype = hipError_t
-hipExtLaunchKernel.argtypes = [ctypes.POINTER(None), dim3, dim3, ctypes.POINTER(ctypes.POINTER(None)), size_t, hipStream_t, hipEvent_t, hipEvent_t, ctypes.c_int32]
+try:
+    hipModuleGetTexRef = _libraries['libamdhip64.so'].hipModuleGetTexRef
+    hipModuleGetTexRef.restype = hipError_t
+    hipModuleGetTexRef.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_textureReference)), hipModule_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hipModuleLoadData = _libraries['libamdhip64.so'].hipModuleLoadData
+    hipModuleLoadData.restype = hipError_t
+    hipModuleLoadData.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModule_t)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipModuleLoadDataEx = _libraries['libamdhip64.so'].hipModuleLoadDataEx
+    hipModuleLoadDataEx.restype = hipError_t
+    hipModuleLoadDataEx.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipModule_t)), ctypes.POINTER(None), ctypes.c_uint32, ctypes.POINTER(hipJitOption), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hipModuleLaunchKernel = _libraries['libamdhip64.so'].hipModuleLaunchKernel
+    hipModuleLaunchKernel.restype = hipError_t
+    hipModuleLaunchKernel.argtypes = [hipFunction_t, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, hipStream_t, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hipModuleLaunchCooperativeKernel = _libraries['libamdhip64.so'].hipModuleLaunchCooperativeKernel
+    hipModuleLaunchCooperativeKernel.restype = hipError_t
+    hipModuleLaunchCooperativeKernel.argtypes = [hipFunction_t, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_uint32, hipStream_t, ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hipModuleLaunchCooperativeKernelMultiDevice = _libraries['libamdhip64.so'].hipModuleLaunchCooperativeKernelMultiDevice
+    hipModuleLaunchCooperativeKernelMultiDevice.restype = hipError_t
+    hipModuleLaunchCooperativeKernelMultiDevice.argtypes = [ctypes.POINTER(struct_hipFunctionLaunchParams_t), ctypes.c_uint32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipLaunchCooperativeKernel = _libraries['libamdhip64.so'].hipLaunchCooperativeKernel
+    hipLaunchCooperativeKernel.restype = hipError_t
+    hipLaunchCooperativeKernel.argtypes = [ctypes.POINTER(None), dim3, dim3, ctypes.POINTER(ctypes.POINTER(None)), ctypes.c_uint32, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipLaunchCooperativeKernelMultiDevice = _libraries['libamdhip64.so'].hipLaunchCooperativeKernelMultiDevice
+    hipLaunchCooperativeKernelMultiDevice.restype = hipError_t
+    hipLaunchCooperativeKernelMultiDevice.argtypes = [ctypes.POINTER(struct_hipLaunchParams_t), ctypes.c_int32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipExtLaunchMultiKernelMultiDevice = _libraries['libamdhip64.so'].hipExtLaunchMultiKernelMultiDevice
+    hipExtLaunchMultiKernelMultiDevice.restype = hipError_t
+    hipExtLaunchMultiKernelMultiDevice.argtypes = [ctypes.POINTER(struct_hipLaunchParams_t), ctypes.c_int32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipModuleOccupancyMaxPotentialBlockSize = _libraries['libamdhip64.so'].hipModuleOccupancyMaxPotentialBlockSize
+    hipModuleOccupancyMaxPotentialBlockSize.restype = hipError_t
+    hipModuleOccupancyMaxPotentialBlockSize.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), hipFunction_t, size_t, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipModuleOccupancyMaxPotentialBlockSizeWithFlags = _libraries['libamdhip64.so'].hipModuleOccupancyMaxPotentialBlockSizeWithFlags
+    hipModuleOccupancyMaxPotentialBlockSizeWithFlags.restype = hipError_t
+    hipModuleOccupancyMaxPotentialBlockSizeWithFlags.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), hipFunction_t, size_t, ctypes.c_int32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipModuleOccupancyMaxActiveBlocksPerMultiprocessor = _libraries['libamdhip64.so'].hipModuleOccupancyMaxActiveBlocksPerMultiprocessor
+    hipModuleOccupancyMaxActiveBlocksPerMultiprocessor.restype = hipError_t
+    hipModuleOccupancyMaxActiveBlocksPerMultiprocessor.argtypes = [ctypes.POINTER(ctypes.c_int32), hipFunction_t, ctypes.c_int32, size_t]
+except AttributeError:
+    pass
+try:
+    hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags = _libraries['libamdhip64.so'].hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags
+    hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.restype = hipError_t
+    hipModuleOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.argtypes = [ctypes.POINTER(ctypes.c_int32), hipFunction_t, ctypes.c_int32, size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipOccupancyMaxActiveBlocksPerMultiprocessor = _libraries['libamdhip64.so'].hipOccupancyMaxActiveBlocksPerMultiprocessor
+    hipOccupancyMaxActiveBlocksPerMultiprocessor.restype = hipError_t
+    hipOccupancyMaxActiveBlocksPerMultiprocessor.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(None), ctypes.c_int32, size_t]
+except AttributeError:
+    pass
+try:
+    hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags = _libraries['libamdhip64.so'].hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags
+    hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.restype = hipError_t
+    hipOccupancyMaxActiveBlocksPerMultiprocessorWithFlags.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(None), ctypes.c_int32, size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipOccupancyMaxPotentialBlockSize = _libraries['libamdhip64.so'].hipOccupancyMaxPotentialBlockSize
+    hipOccupancyMaxPotentialBlockSize.restype = hipError_t
+    hipOccupancyMaxPotentialBlockSize.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(None), size_t, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipProfilerStart = _libraries['libamdhip64.so'].hipProfilerStart
+    hipProfilerStart.restype = hipError_t
+    hipProfilerStart.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipProfilerStop = _libraries['libamdhip64.so'].hipProfilerStop
+    hipProfilerStop.restype = hipError_t
+    hipProfilerStop.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipConfigureCall = _libraries['libamdhip64.so'].hipConfigureCall
+    hipConfigureCall.restype = hipError_t
+    hipConfigureCall.argtypes = [dim3, dim3, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipSetupArgument = _libraries['libamdhip64.so'].hipSetupArgument
+    hipSetupArgument.restype = hipError_t
+    hipSetupArgument.argtypes = [ctypes.POINTER(None), size_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipLaunchByPtr = _libraries['libamdhip64.so'].hipLaunchByPtr
+    hipLaunchByPtr.restype = hipError_t
+    hipLaunchByPtr.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    __hipPushCallConfiguration = _libraries['libamdhip64.so'].__hipPushCallConfiguration
+    __hipPushCallConfiguration.restype = hipError_t
+    __hipPushCallConfiguration.argtypes = [dim3, dim3, size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    __hipPopCallConfiguration = _libraries['libamdhip64.so'].__hipPopCallConfiguration
+    __hipPopCallConfiguration.restype = hipError_t
+    __hipPopCallConfiguration.argtypes = [ctypes.POINTER(struct_dim3), ctypes.POINTER(struct_dim3), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(struct_ihipStream_t))]
+except AttributeError:
+    pass
+try:
+    hipLaunchKernel = _libraries['libamdhip64.so'].hipLaunchKernel
+    hipLaunchKernel.restype = hipError_t
+    hipLaunchKernel.argtypes = [ctypes.POINTER(None), dim3, dim3, ctypes.POINTER(ctypes.POINTER(None)), size_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipLaunchHostFunc = _libraries['libamdhip64.so'].hipLaunchHostFunc
+    hipLaunchHostFunc.restype = hipError_t
+    hipLaunchHostFunc.argtypes = [hipStream_t, hipHostFn_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipDrvMemcpy2DUnaligned = _libraries['libamdhip64.so'].hipDrvMemcpy2DUnaligned
+    hipDrvMemcpy2DUnaligned.restype = hipError_t
+    hipDrvMemcpy2DUnaligned.argtypes = [ctypes.POINTER(struct_hip_Memcpy2D)]
+except AttributeError:
+    pass
+try:
+    hipExtLaunchKernel = _libraries['libamdhip64.so'].hipExtLaunchKernel
+    hipExtLaunchKernel.restype = hipError_t
+    hipExtLaunchKernel.argtypes = [ctypes.POINTER(None), dim3, dim3, ctypes.POINTER(ctypes.POINTER(None)), size_t, hipStream_t, hipEvent_t, hipEvent_t, ctypes.c_int32]
+except AttributeError:
+    pass
 class struct_hipTextureDesc(Structure):
     pass
 
@@ -3396,505 +4155,997 @@ struct_hipTextureDesc._fields_ = [
     ('maxMipmapLevelClamp', ctypes.c_float),
 ]
 
-hipCreateTextureObject = _libraries['libamdhip64.so'].hipCreateTextureObject
-hipCreateTextureObject.restype = hipError_t
-hipCreateTextureObject.argtypes = [ctypes.POINTER(ctypes.POINTER(struct___hip_texture)), ctypes.POINTER(struct_hipResourceDesc), ctypes.POINTER(struct_hipTextureDesc), ctypes.POINTER(struct_hipResourceViewDesc)]
+try:
+    hipCreateTextureObject = _libraries['libamdhip64.so'].hipCreateTextureObject
+    hipCreateTextureObject.restype = hipError_t
+    hipCreateTextureObject.argtypes = [ctypes.POINTER(ctypes.POINTER(struct___hip_texture)), ctypes.POINTER(struct_hipResourceDesc), ctypes.POINTER(struct_hipTextureDesc), ctypes.POINTER(struct_hipResourceViewDesc)]
+except AttributeError:
+    pass
 hipTextureObject_t = ctypes.POINTER(struct___hip_texture)
-hipDestroyTextureObject = _libraries['libamdhip64.so'].hipDestroyTextureObject
-hipDestroyTextureObject.restype = hipError_t
-hipDestroyTextureObject.argtypes = [hipTextureObject_t]
-hipGetChannelDesc = _libraries['libamdhip64.so'].hipGetChannelDesc
-hipGetChannelDesc.restype = hipError_t
-hipGetChannelDesc.argtypes = [ctypes.POINTER(struct_hipChannelFormatDesc), hipArray_const_t]
-hipGetTextureObjectResourceDesc = _libraries['libamdhip64.so'].hipGetTextureObjectResourceDesc
-hipGetTextureObjectResourceDesc.restype = hipError_t
-hipGetTextureObjectResourceDesc.argtypes = [ctypes.POINTER(struct_hipResourceDesc), hipTextureObject_t]
-hipGetTextureObjectResourceViewDesc = _libraries['libamdhip64.so'].hipGetTextureObjectResourceViewDesc
-hipGetTextureObjectResourceViewDesc.restype = hipError_t
-hipGetTextureObjectResourceViewDesc.argtypes = [ctypes.POINTER(struct_hipResourceViewDesc), hipTextureObject_t]
-hipGetTextureObjectTextureDesc = _libraries['libamdhip64.so'].hipGetTextureObjectTextureDesc
-hipGetTextureObjectTextureDesc.restype = hipError_t
-hipGetTextureObjectTextureDesc.argtypes = [ctypes.POINTER(struct_hipTextureDesc), hipTextureObject_t]
-hipTexObjectCreate = _libraries['libamdhip64.so'].hipTexObjectCreate
-hipTexObjectCreate.restype = hipError_t
-hipTexObjectCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct___hip_texture)), ctypes.POINTER(struct_HIP_RESOURCE_DESC_st), ctypes.POINTER(struct_HIP_TEXTURE_DESC_st), ctypes.POINTER(struct_HIP_RESOURCE_VIEW_DESC_st)]
-hipTexObjectDestroy = _libraries['libamdhip64.so'].hipTexObjectDestroy
-hipTexObjectDestroy.restype = hipError_t
-hipTexObjectDestroy.argtypes = [hipTextureObject_t]
-hipTexObjectGetResourceDesc = _libraries['libamdhip64.so'].hipTexObjectGetResourceDesc
-hipTexObjectGetResourceDesc.restype = hipError_t
-hipTexObjectGetResourceDesc.argtypes = [ctypes.POINTER(struct_HIP_RESOURCE_DESC_st), hipTextureObject_t]
-hipTexObjectGetResourceViewDesc = _libraries['libamdhip64.so'].hipTexObjectGetResourceViewDesc
-hipTexObjectGetResourceViewDesc.restype = hipError_t
-hipTexObjectGetResourceViewDesc.argtypes = [ctypes.POINTER(struct_HIP_RESOURCE_VIEW_DESC_st), hipTextureObject_t]
-hipTexObjectGetTextureDesc = _libraries['libamdhip64.so'].hipTexObjectGetTextureDesc
-hipTexObjectGetTextureDesc.restype = hipError_t
-hipTexObjectGetTextureDesc.argtypes = [ctypes.POINTER(struct_HIP_TEXTURE_DESC_st), hipTextureObject_t]
-hipMallocMipmappedArray = _libraries['libamdhip64.so'].hipMallocMipmappedArray
-hipMallocMipmappedArray.restype = hipError_t
-hipMallocMipmappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), ctypes.POINTER(struct_hipChannelFormatDesc), struct_hipExtent, ctypes.c_uint32, ctypes.c_uint32]
-hipFreeMipmappedArray = _libraries['libamdhip64.so'].hipFreeMipmappedArray
-hipFreeMipmappedArray.restype = hipError_t
-hipFreeMipmappedArray.argtypes = [hipMipmappedArray_t]
-hipGetMipmappedArrayLevel = _libraries['libamdhip64.so'].hipGetMipmappedArrayLevel
-hipGetMipmappedArrayLevel.restype = hipError_t
-hipGetMipmappedArrayLevel.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), hipMipmappedArray_const_t, ctypes.c_uint32]
-hipMipmappedArrayCreate = _libraries['libamdhip64.so'].hipMipmappedArrayCreate
-hipMipmappedArrayCreate.restype = hipError_t
-hipMipmappedArrayCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR), ctypes.c_uint32]
-hipMipmappedArrayDestroy = _libraries['libamdhip64.so'].hipMipmappedArrayDestroy
-hipMipmappedArrayDestroy.restype = hipError_t
-hipMipmappedArrayDestroy.argtypes = [hipMipmappedArray_t]
-hipMipmappedArrayGetLevel = _libraries['libamdhip64.so'].hipMipmappedArrayGetLevel
-hipMipmappedArrayGetLevel.restype = hipError_t
-hipMipmappedArrayGetLevel.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), hipMipmappedArray_t, ctypes.c_uint32]
-hipBindTextureToMipmappedArray = _libraries['libamdhip64.so'].hipBindTextureToMipmappedArray
-hipBindTextureToMipmappedArray.restype = hipError_t
-hipBindTextureToMipmappedArray.argtypes = [ctypes.POINTER(struct_textureReference), hipMipmappedArray_const_t, ctypes.POINTER(struct_hipChannelFormatDesc)]
-hipGetTextureReference = _libraries['libamdhip64.so'].hipGetTextureReference
-hipGetTextureReference.restype = hipError_t
-hipGetTextureReference.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_textureReference)), ctypes.POINTER(None)]
-hipTexRefSetAddressMode = _libraries['libamdhip64.so'].hipTexRefSetAddressMode
-hipTexRefSetAddressMode.restype = hipError_t
-hipTexRefSetAddressMode.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_int32, hipTextureAddressMode]
-hipTexRefSetArray = _libraries['libamdhip64.so'].hipTexRefSetArray
-hipTexRefSetArray.restype = hipError_t
-hipTexRefSetArray.argtypes = [ctypes.POINTER(struct_textureReference), hipArray_const_t, ctypes.c_uint32]
-hipTexRefSetFilterMode = _libraries['libamdhip64.so'].hipTexRefSetFilterMode
-hipTexRefSetFilterMode.restype = hipError_t
-hipTexRefSetFilterMode.argtypes = [ctypes.POINTER(struct_textureReference), hipTextureFilterMode]
-hipTexRefSetFlags = _libraries['libamdhip64.so'].hipTexRefSetFlags
-hipTexRefSetFlags.restype = hipError_t
-hipTexRefSetFlags.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_uint32]
-hipTexRefSetFormat = _libraries['libamdhip64.so'].hipTexRefSetFormat
-hipTexRefSetFormat.restype = hipError_t
-hipTexRefSetFormat.argtypes = [ctypes.POINTER(struct_textureReference), hipArray_Format, ctypes.c_int32]
-hipBindTexture = _libraries['libamdhip64.so'].hipBindTexture
-hipBindTexture.restype = hipError_t
-hipBindTexture.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference), ctypes.POINTER(None), ctypes.POINTER(struct_hipChannelFormatDesc), size_t]
-hipBindTexture2D = _libraries['libamdhip64.so'].hipBindTexture2D
-hipBindTexture2D.restype = hipError_t
-hipBindTexture2D.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference), ctypes.POINTER(None), ctypes.POINTER(struct_hipChannelFormatDesc), size_t, size_t, size_t]
-hipBindTextureToArray = _libraries['libamdhip64.so'].hipBindTextureToArray
-hipBindTextureToArray.restype = hipError_t
-hipBindTextureToArray.argtypes = [ctypes.POINTER(struct_textureReference), hipArray_const_t, ctypes.POINTER(struct_hipChannelFormatDesc)]
-hipGetTextureAlignmentOffset = _libraries['libamdhip64.so'].hipGetTextureAlignmentOffset
-hipGetTextureAlignmentOffset.restype = hipError_t
-hipGetTextureAlignmentOffset.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference)]
-hipUnbindTexture = _libraries['libamdhip64.so'].hipUnbindTexture
-hipUnbindTexture.restype = hipError_t
-hipUnbindTexture.argtypes = [ctypes.POINTER(struct_textureReference)]
-hipTexRefGetAddress = _libraries['libamdhip64.so'].hipTexRefGetAddress
-hipTexRefGetAddress.restype = hipError_t
-hipTexRefGetAddress.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetAddressMode = _libraries['libamdhip64.so'].hipTexRefGetAddressMode
-hipTexRefGetAddressMode.restype = hipError_t
-hipTexRefGetAddressMode.argtypes = [ctypes.POINTER(hipTextureAddressMode), ctypes.POINTER(struct_textureReference), ctypes.c_int32]
-hipTexRefGetFilterMode = _libraries['libamdhip64.so'].hipTexRefGetFilterMode
-hipTexRefGetFilterMode.restype = hipError_t
-hipTexRefGetFilterMode.argtypes = [ctypes.POINTER(hipTextureFilterMode), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetFlags = _libraries['libamdhip64.so'].hipTexRefGetFlags
-hipTexRefGetFlags.restype = hipError_t
-hipTexRefGetFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetFormat = _libraries['libamdhip64.so'].hipTexRefGetFormat
-hipTexRefGetFormat.restype = hipError_t
-hipTexRefGetFormat.argtypes = [ctypes.POINTER(hipArray_Format), ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetMaxAnisotropy = _libraries['libamdhip64.so'].hipTexRefGetMaxAnisotropy
-hipTexRefGetMaxAnisotropy.restype = hipError_t
-hipTexRefGetMaxAnisotropy.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetMipmapFilterMode = _libraries['libamdhip64.so'].hipTexRefGetMipmapFilterMode
-hipTexRefGetMipmapFilterMode.restype = hipError_t
-hipTexRefGetMipmapFilterMode.argtypes = [ctypes.POINTER(hipTextureFilterMode), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetMipmapLevelBias = _libraries['libamdhip64.so'].hipTexRefGetMipmapLevelBias
-hipTexRefGetMipmapLevelBias.restype = hipError_t
-hipTexRefGetMipmapLevelBias.argtypes = [ctypes.POINTER(ctypes.c_float), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetMipmapLevelClamp = _libraries['libamdhip64.so'].hipTexRefGetMipmapLevelClamp
-hipTexRefGetMipmapLevelClamp.restype = hipError_t
-hipTexRefGetMipmapLevelClamp.argtypes = [ctypes.POINTER(ctypes.c_float), ctypes.POINTER(ctypes.c_float), ctypes.POINTER(struct_textureReference)]
-hipTexRefGetMipMappedArray = _libraries['FIXME_STUB'].hipTexRefGetMipMappedArray
-hipTexRefGetMipMappedArray.restype = hipError_t
-hipTexRefGetMipMappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), ctypes.POINTER(struct_textureReference)]
-hipTexRefSetAddress = _libraries['libamdhip64.so'].hipTexRefSetAddress
-hipTexRefSetAddress.restype = hipError_t
-hipTexRefSetAddress.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference), hipDeviceptr_t, size_t]
-hipTexRefSetAddress2D = _libraries['libamdhip64.so'].hipTexRefSetAddress2D
-hipTexRefSetAddress2D.restype = hipError_t
-hipTexRefSetAddress2D.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR), hipDeviceptr_t, size_t]
-hipTexRefSetMaxAnisotropy = _libraries['libamdhip64.so'].hipTexRefSetMaxAnisotropy
-hipTexRefSetMaxAnisotropy.restype = hipError_t
-hipTexRefSetMaxAnisotropy.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_uint32]
-hipTexRefSetBorderColor = _libraries['libamdhip64.so'].hipTexRefSetBorderColor
-hipTexRefSetBorderColor.restype = hipError_t
-hipTexRefSetBorderColor.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.POINTER(ctypes.c_float)]
-hipTexRefSetMipmapFilterMode = _libraries['libamdhip64.so'].hipTexRefSetMipmapFilterMode
-hipTexRefSetMipmapFilterMode.restype = hipError_t
-hipTexRefSetMipmapFilterMode.argtypes = [ctypes.POINTER(struct_textureReference), hipTextureFilterMode]
-hipTexRefSetMipmapLevelBias = _libraries['libamdhip64.so'].hipTexRefSetMipmapLevelBias
-hipTexRefSetMipmapLevelBias.restype = hipError_t
-hipTexRefSetMipmapLevelBias.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_float]
-hipTexRefSetMipmapLevelClamp = _libraries['libamdhip64.so'].hipTexRefSetMipmapLevelClamp
-hipTexRefSetMipmapLevelClamp.restype = hipError_t
-hipTexRefSetMipmapLevelClamp.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_float, ctypes.c_float]
-hipTexRefSetMipmappedArray = _libraries['libamdhip64.so'].hipTexRefSetMipmappedArray
-hipTexRefSetMipmappedArray.restype = hipError_t
-hipTexRefSetMipmappedArray.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.POINTER(struct_hipMipmappedArray), ctypes.c_uint32]
-hipApiName = _libraries['libamdhip64.so'].hipApiName
-hipApiName.restype = ctypes.POINTER(ctypes.c_char)
-hipApiName.argtypes = [uint32_t]
-hipKernelNameRef = _libraries['libamdhip64.so'].hipKernelNameRef
-hipKernelNameRef.restype = ctypes.POINTER(ctypes.c_char)
-hipKernelNameRef.argtypes = [hipFunction_t]
-hipKernelNameRefByPtr = _libraries['libamdhip64.so'].hipKernelNameRefByPtr
-hipKernelNameRefByPtr.restype = ctypes.POINTER(ctypes.c_char)
-hipKernelNameRefByPtr.argtypes = [ctypes.POINTER(None), hipStream_t]
-hipGetStreamDeviceId = _libraries['libamdhip64.so'].hipGetStreamDeviceId
-hipGetStreamDeviceId.restype = ctypes.c_int32
-hipGetStreamDeviceId.argtypes = [hipStream_t]
-hipStreamBeginCapture = _libraries['libamdhip64.so'].hipStreamBeginCapture
-hipStreamBeginCapture.restype = hipError_t
-hipStreamBeginCapture.argtypes = [hipStream_t, hipStreamCaptureMode]
-hipStreamEndCapture = _libraries['libamdhip64.so'].hipStreamEndCapture
-hipStreamEndCapture.restype = hipError_t
-hipStreamEndCapture.argtypes = [hipStream_t, ctypes.POINTER(ctypes.POINTER(struct_ihipGraph))]
-hipStreamGetCaptureInfo = _libraries['libamdhip64.so'].hipStreamGetCaptureInfo
-hipStreamGetCaptureInfo.restype = hipError_t
-hipStreamGetCaptureInfo.argtypes = [hipStream_t, ctypes.POINTER(hipStreamCaptureStatus), ctypes.POINTER(ctypes.c_uint64)]
-hipStreamGetCaptureInfo_v2 = _libraries['libamdhip64.so'].hipStreamGetCaptureInfo_v2
-hipStreamGetCaptureInfo_v2.restype = hipError_t
-hipStreamGetCaptureInfo_v2.argtypes = [hipStream_t, ctypes.POINTER(hipStreamCaptureStatus), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(struct_ihipGraph)), ctypes.POINTER(ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode))), ctypes.POINTER(ctypes.c_uint64)]
-hipStreamIsCapturing = _libraries['libamdhip64.so'].hipStreamIsCapturing
-hipStreamIsCapturing.restype = hipError_t
-hipStreamIsCapturing.argtypes = [hipStream_t, ctypes.POINTER(hipStreamCaptureStatus)]
-hipStreamUpdateCaptureDependencies = _libraries['libamdhip64.so'].hipStreamUpdateCaptureDependencies
-hipStreamUpdateCaptureDependencies.restype = hipError_t
-hipStreamUpdateCaptureDependencies.argtypes = [hipStream_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.c_uint32]
-hipThreadExchangeStreamCaptureMode = _libraries['libamdhip64.so'].hipThreadExchangeStreamCaptureMode
-hipThreadExchangeStreamCaptureMode.restype = hipError_t
-hipThreadExchangeStreamCaptureMode.argtypes = [ctypes.POINTER(hipStreamCaptureMode)]
-hipGraphCreate = _libraries['libamdhip64.so'].hipGraphCreate
-hipGraphCreate.restype = hipError_t
-hipGraphCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipGraph)), ctypes.c_uint32]
-hipGraphDestroy = _libraries['libamdhip64.so'].hipGraphDestroy
-hipGraphDestroy.restype = hipError_t
-hipGraphDestroy.argtypes = [hipGraph_t]
-hipGraphAddDependencies = _libraries['libamdhip64.so'].hipGraphAddDependencies
-hipGraphAddDependencies.restype = hipError_t
-hipGraphAddDependencies.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t]
-hipGraphRemoveDependencies = _libraries['libamdhip64.so'].hipGraphRemoveDependencies
-hipGraphRemoveDependencies.restype = hipError_t
-hipGraphRemoveDependencies.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t]
-hipGraphGetEdges = _libraries['libamdhip64.so'].hipGraphGetEdges
-hipGraphGetEdges.restype = hipError_t
-hipGraphGetEdges.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
-hipGraphGetNodes = _libraries['libamdhip64.so'].hipGraphGetNodes
-hipGraphGetNodes.restype = hipError_t
-hipGraphGetNodes.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
-hipGraphGetRootNodes = _libraries['libamdhip64.so'].hipGraphGetRootNodes
-hipGraphGetRootNodes.restype = hipError_t
-hipGraphGetRootNodes.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
-hipGraphNodeGetDependencies = _libraries['libamdhip64.so'].hipGraphNodeGetDependencies
-hipGraphNodeGetDependencies.restype = hipError_t
-hipGraphNodeGetDependencies.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
-hipGraphNodeGetDependentNodes = _libraries['libamdhip64.so'].hipGraphNodeGetDependentNodes
-hipGraphNodeGetDependentNodes.restype = hipError_t
-hipGraphNodeGetDependentNodes.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
-hipGraphNodeGetType = _libraries['libamdhip64.so'].hipGraphNodeGetType
-hipGraphNodeGetType.restype = hipError_t
-hipGraphNodeGetType.argtypes = [hipGraphNode_t, ctypes.POINTER(hipGraphNodeType)]
-hipGraphDestroyNode = _libraries['libamdhip64.so'].hipGraphDestroyNode
-hipGraphDestroyNode.restype = hipError_t
-hipGraphDestroyNode.argtypes = [hipGraphNode_t]
-hipGraphClone = _libraries['libamdhip64.so'].hipGraphClone
-hipGraphClone.restype = hipError_t
-hipGraphClone.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipGraph)), hipGraph_t]
-hipGraphNodeFindInClone = _libraries['libamdhip64.so'].hipGraphNodeFindInClone
-hipGraphNodeFindInClone.restype = hipError_t
-hipGraphNodeFindInClone.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraphNode_t, hipGraph_t]
-hipGraphInstantiate = _libraries['libamdhip64.so'].hipGraphInstantiate
-hipGraphInstantiate.restype = hipError_t
-hipGraphInstantiate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphExec)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_char), size_t]
-hipGraphInstantiateWithFlags = _libraries['libamdhip64.so'].hipGraphInstantiateWithFlags
-hipGraphInstantiateWithFlags.restype = hipError_t
-hipGraphInstantiateWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphExec)), hipGraph_t, ctypes.c_uint64]
-hipGraphLaunch = _libraries['libamdhip64.so'].hipGraphLaunch
-hipGraphLaunch.restype = hipError_t
-hipGraphLaunch.argtypes = [hipGraphExec_t, hipStream_t]
-hipGraphUpload = _libraries['libamdhip64.so'].hipGraphUpload
-hipGraphUpload.restype = hipError_t
-hipGraphUpload.argtypes = [hipGraphExec_t, hipStream_t]
-hipGraphExecDestroy = _libraries['libamdhip64.so'].hipGraphExecDestroy
-hipGraphExecDestroy.restype = hipError_t
-hipGraphExecDestroy.argtypes = [hipGraphExec_t]
-hipGraphExecUpdate = _libraries['libamdhip64.so'].hipGraphExecUpdate
-hipGraphExecUpdate.restype = hipError_t
-hipGraphExecUpdate.argtypes = [hipGraphExec_t, hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(hipGraphExecUpdateResult)]
-hipGraphAddKernelNode = _libraries['libamdhip64.so'].hipGraphAddKernelNode
-hipGraphAddKernelNode.restype = hipError_t
-hipGraphAddKernelNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipKernelNodeParams)]
-hipGraphKernelNodeGetParams = _libraries['libamdhip64.so'].hipGraphKernelNodeGetParams
-hipGraphKernelNodeGetParams.restype = hipError_t
-hipGraphKernelNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipKernelNodeParams)]
-hipGraphKernelNodeSetParams = _libraries['libamdhip64.so'].hipGraphKernelNodeSetParams
-hipGraphKernelNodeSetParams.restype = hipError_t
-hipGraphKernelNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipKernelNodeParams)]
-hipGraphExecKernelNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecKernelNodeSetParams
-hipGraphExecKernelNodeSetParams.restype = hipError_t
-hipGraphExecKernelNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipKernelNodeParams)]
-hipGraphAddMemcpyNode = _libraries['libamdhip64.so'].hipGraphAddMemcpyNode
-hipGraphAddMemcpyNode.restype = hipError_t
-hipGraphAddMemcpyNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
-hipGraphMemcpyNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemcpyNodeGetParams
-hipGraphMemcpyNodeGetParams.restype = hipError_t
-hipGraphMemcpyNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
-hipGraphMemcpyNodeSetParams = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParams
-hipGraphMemcpyNodeSetParams.restype = hipError_t
-hipGraphMemcpyNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
-hipGraphKernelNodeSetAttribute = _libraries['libamdhip64.so'].hipGraphKernelNodeSetAttribute
-hipGraphKernelNodeSetAttribute.restype = hipError_t
-hipGraphKernelNodeSetAttribute.argtypes = [hipGraphNode_t, hipKernelNodeAttrID, ctypes.POINTER(union_hipKernelNodeAttrValue)]
-hipGraphKernelNodeGetAttribute = _libraries['libamdhip64.so'].hipGraphKernelNodeGetAttribute
-hipGraphKernelNodeGetAttribute.restype = hipError_t
-hipGraphKernelNodeGetAttribute.argtypes = [hipGraphNode_t, hipKernelNodeAttrID, ctypes.POINTER(union_hipKernelNodeAttrValue)]
-hipGraphExecMemcpyNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParams
-hipGraphExecMemcpyNodeSetParams.restype = hipError_t
-hipGraphExecMemcpyNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
-hipGraphAddMemcpyNode1D = _libraries['libamdhip64.so'].hipGraphAddMemcpyNode1D
-hipGraphAddMemcpyNode1D.restype = hipError_t
-hipGraphAddMemcpyNode1D.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
-hipGraphMemcpyNodeSetParams1D = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParams1D
-hipGraphMemcpyNodeSetParams1D.restype = hipError_t
-hipGraphMemcpyNodeSetParams1D.argtypes = [hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
-hipGraphExecMemcpyNodeSetParams1D = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParams1D
-hipGraphExecMemcpyNodeSetParams1D.restype = hipError_t
-hipGraphExecMemcpyNodeSetParams1D.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
-hipGraphAddMemcpyNodeFromSymbol = _libraries['libamdhip64.so'].hipGraphAddMemcpyNodeFromSymbol
-hipGraphAddMemcpyNodeFromSymbol.restype = hipError_t
-hipGraphAddMemcpyNodeFromSymbol.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipGraphMemcpyNodeSetParamsFromSymbol = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParamsFromSymbol
-hipGraphMemcpyNodeSetParamsFromSymbol.restype = hipError_t
-hipGraphMemcpyNodeSetParamsFromSymbol.argtypes = [hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipGraphExecMemcpyNodeSetParamsFromSymbol = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParamsFromSymbol
-hipGraphExecMemcpyNodeSetParamsFromSymbol.restype = hipError_t
-hipGraphExecMemcpyNodeSetParamsFromSymbol.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipGraphAddMemcpyNodeToSymbol = _libraries['libamdhip64.so'].hipGraphAddMemcpyNodeToSymbol
-hipGraphAddMemcpyNodeToSymbol.restype = hipError_t
-hipGraphAddMemcpyNodeToSymbol.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipGraphMemcpyNodeSetParamsToSymbol = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParamsToSymbol
-hipGraphMemcpyNodeSetParamsToSymbol.restype = hipError_t
-hipGraphMemcpyNodeSetParamsToSymbol.argtypes = [hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipGraphExecMemcpyNodeSetParamsToSymbol = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParamsToSymbol
-hipGraphExecMemcpyNodeSetParamsToSymbol.restype = hipError_t
-hipGraphExecMemcpyNodeSetParamsToSymbol.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
-hipGraphAddMemsetNode = _libraries['libamdhip64.so'].hipGraphAddMemsetNode
-hipGraphAddMemsetNode.restype = hipError_t
-hipGraphAddMemsetNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemsetParams)]
-hipGraphMemsetNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemsetNodeGetParams
-hipGraphMemsetNodeGetParams.restype = hipError_t
-hipGraphMemsetNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemsetParams)]
-hipGraphMemsetNodeSetParams = _libraries['libamdhip64.so'].hipGraphMemsetNodeSetParams
-hipGraphMemsetNodeSetParams.restype = hipError_t
-hipGraphMemsetNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemsetParams)]
-hipGraphExecMemsetNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecMemsetNodeSetParams
-hipGraphExecMemsetNodeSetParams.restype = hipError_t
-hipGraphExecMemsetNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipMemsetParams)]
-hipGraphAddHostNode = _libraries['libamdhip64.so'].hipGraphAddHostNode
-hipGraphAddHostNode.restype = hipError_t
-hipGraphAddHostNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipHostNodeParams)]
-hipGraphHostNodeGetParams = _libraries['libamdhip64.so'].hipGraphHostNodeGetParams
-hipGraphHostNodeGetParams.restype = hipError_t
-hipGraphHostNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipHostNodeParams)]
-hipGraphHostNodeSetParams = _libraries['libamdhip64.so'].hipGraphHostNodeSetParams
-hipGraphHostNodeSetParams.restype = hipError_t
-hipGraphHostNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipHostNodeParams)]
-hipGraphExecHostNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecHostNodeSetParams
-hipGraphExecHostNodeSetParams.restype = hipError_t
-hipGraphExecHostNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipHostNodeParams)]
-hipGraphAddChildGraphNode = _libraries['libamdhip64.so'].hipGraphAddChildGraphNode
-hipGraphAddChildGraphNode.restype = hipError_t
-hipGraphAddChildGraphNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, hipGraph_t]
-hipGraphChildGraphNodeGetGraph = _libraries['libamdhip64.so'].hipGraphChildGraphNodeGetGraph
-hipGraphChildGraphNodeGetGraph.restype = hipError_t
-hipGraphChildGraphNodeGetGraph.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_ihipGraph))]
-hipGraphExecChildGraphNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecChildGraphNodeSetParams
-hipGraphExecChildGraphNodeSetParams.restype = hipError_t
-hipGraphExecChildGraphNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, hipGraph_t]
-hipGraphAddEmptyNode = _libraries['libamdhip64.so'].hipGraphAddEmptyNode
-hipGraphAddEmptyNode.restype = hipError_t
-hipGraphAddEmptyNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t]
-hipGraphAddEventRecordNode = _libraries['libamdhip64.so'].hipGraphAddEventRecordNode
-hipGraphAddEventRecordNode.restype = hipError_t
-hipGraphAddEventRecordNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, hipEvent_t]
-hipGraphEventRecordNodeGetEvent = _libraries['libamdhip64.so'].hipGraphEventRecordNodeGetEvent
-hipGraphEventRecordNodeGetEvent.restype = hipError_t
-hipGraphEventRecordNodeGetEvent.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t))]
-hipGraphEventRecordNodeSetEvent = _libraries['libamdhip64.so'].hipGraphEventRecordNodeSetEvent
-hipGraphEventRecordNodeSetEvent.restype = hipError_t
-hipGraphEventRecordNodeSetEvent.argtypes = [hipGraphNode_t, hipEvent_t]
-hipGraphExecEventRecordNodeSetEvent = _libraries['libamdhip64.so'].hipGraphExecEventRecordNodeSetEvent
-hipGraphExecEventRecordNodeSetEvent.restype = hipError_t
-hipGraphExecEventRecordNodeSetEvent.argtypes = [hipGraphExec_t, hipGraphNode_t, hipEvent_t]
-hipGraphAddEventWaitNode = _libraries['libamdhip64.so'].hipGraphAddEventWaitNode
-hipGraphAddEventWaitNode.restype = hipError_t
-hipGraphAddEventWaitNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, hipEvent_t]
-hipGraphEventWaitNodeGetEvent = _libraries['libamdhip64.so'].hipGraphEventWaitNodeGetEvent
-hipGraphEventWaitNodeGetEvent.restype = hipError_t
-hipGraphEventWaitNodeGetEvent.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t))]
-hipGraphEventWaitNodeSetEvent = _libraries['libamdhip64.so'].hipGraphEventWaitNodeSetEvent
-hipGraphEventWaitNodeSetEvent.restype = hipError_t
-hipGraphEventWaitNodeSetEvent.argtypes = [hipGraphNode_t, hipEvent_t]
-hipGraphExecEventWaitNodeSetEvent = _libraries['libamdhip64.so'].hipGraphExecEventWaitNodeSetEvent
-hipGraphExecEventWaitNodeSetEvent.restype = hipError_t
-hipGraphExecEventWaitNodeSetEvent.argtypes = [hipGraphExec_t, hipGraphNode_t, hipEvent_t]
-hipGraphAddMemAllocNode = _libraries['libamdhip64.so'].hipGraphAddMemAllocNode
-hipGraphAddMemAllocNode.restype = hipError_t
-hipGraphAddMemAllocNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemAllocNodeParams)]
-hipGraphMemAllocNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemAllocNodeGetParams
-hipGraphMemAllocNodeGetParams.restype = hipError_t
-hipGraphMemAllocNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemAllocNodeParams)]
-hipGraphAddMemFreeNode = _libraries['libamdhip64.so'].hipGraphAddMemFreeNode
-hipGraphAddMemFreeNode.restype = hipError_t
-hipGraphAddMemFreeNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None)]
-hipGraphMemFreeNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemFreeNodeGetParams
-hipGraphMemFreeNodeGetParams.restype = hipError_t
-hipGraphMemFreeNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(None)]
-hipDeviceGetGraphMemAttribute = _libraries['libamdhip64.so'].hipDeviceGetGraphMemAttribute
-hipDeviceGetGraphMemAttribute.restype = hipError_t
-hipDeviceGetGraphMemAttribute.argtypes = [ctypes.c_int32, hipGraphMemAttributeType, ctypes.POINTER(None)]
-hipDeviceSetGraphMemAttribute = _libraries['libamdhip64.so'].hipDeviceSetGraphMemAttribute
-hipDeviceSetGraphMemAttribute.restype = hipError_t
-hipDeviceSetGraphMemAttribute.argtypes = [ctypes.c_int32, hipGraphMemAttributeType, ctypes.POINTER(None)]
-hipDeviceGraphMemTrim = _libraries['libamdhip64.so'].hipDeviceGraphMemTrim
-hipDeviceGraphMemTrim.restype = hipError_t
-hipDeviceGraphMemTrim.argtypes = [ctypes.c_int32]
-hipUserObjectCreate = _libraries['libamdhip64.so'].hipUserObjectCreate
-hipUserObjectCreate.restype = hipError_t
-hipUserObjectCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipUserObject)), ctypes.POINTER(None), hipHostFn_t, ctypes.c_uint32, ctypes.c_uint32]
-hipUserObjectRelease = _libraries['libamdhip64.so'].hipUserObjectRelease
-hipUserObjectRelease.restype = hipError_t
-hipUserObjectRelease.argtypes = [hipUserObject_t, ctypes.c_uint32]
-hipUserObjectRetain = _libraries['libamdhip64.so'].hipUserObjectRetain
-hipUserObjectRetain.restype = hipError_t
-hipUserObjectRetain.argtypes = [hipUserObject_t, ctypes.c_uint32]
-hipGraphRetainUserObject = _libraries['libamdhip64.so'].hipGraphRetainUserObject
-hipGraphRetainUserObject.restype = hipError_t
-hipGraphRetainUserObject.argtypes = [hipGraph_t, hipUserObject_t, ctypes.c_uint32, ctypes.c_uint32]
-hipGraphReleaseUserObject = _libraries['libamdhip64.so'].hipGraphReleaseUserObject
-hipGraphReleaseUserObject.restype = hipError_t
-hipGraphReleaseUserObject.argtypes = [hipGraph_t, hipUserObject_t, ctypes.c_uint32]
-hipGraphDebugDotPrint = _libraries['libamdhip64.so'].hipGraphDebugDotPrint
-hipGraphDebugDotPrint.restype = hipError_t
-hipGraphDebugDotPrint.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32]
-hipGraphKernelNodeCopyAttributes = _libraries['libamdhip64.so'].hipGraphKernelNodeCopyAttributes
-hipGraphKernelNodeCopyAttributes.restype = hipError_t
-hipGraphKernelNodeCopyAttributes.argtypes = [hipGraphNode_t, hipGraphNode_t]
-hipGraphNodeSetEnabled = _libraries['libamdhip64.so'].hipGraphNodeSetEnabled
-hipGraphNodeSetEnabled.restype = hipError_t
-hipGraphNodeSetEnabled.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.c_uint32]
-hipGraphNodeGetEnabled = _libraries['libamdhip64.so'].hipGraphNodeGetEnabled
-hipGraphNodeGetEnabled.restype = hipError_t
-hipGraphNodeGetEnabled.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(ctypes.c_uint32)]
-hipGraphAddExternalSemaphoresWaitNode = _libraries['FIXME_STUB'].hipGraphAddExternalSemaphoresWaitNode
-hipGraphAddExternalSemaphoresWaitNode.restype = hipError_t
-hipGraphAddExternalSemaphoresWaitNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-hipGraphAddExternalSemaphoresSignalNode = _libraries['FIXME_STUB'].hipGraphAddExternalSemaphoresSignalNode
-hipGraphAddExternalSemaphoresSignalNode.restype = hipError_t
-hipGraphAddExternalSemaphoresSignalNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-hipGraphExternalSemaphoresSignalNodeSetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresSignalNodeSetParams
-hipGraphExternalSemaphoresSignalNodeSetParams.restype = hipError_t
-hipGraphExternalSemaphoresSignalNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-hipGraphExternalSemaphoresWaitNodeSetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresWaitNodeSetParams
-hipGraphExternalSemaphoresWaitNodeSetParams.restype = hipError_t
-hipGraphExternalSemaphoresWaitNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-hipGraphExternalSemaphoresSignalNodeGetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresSignalNodeGetParams
-hipGraphExternalSemaphoresSignalNodeGetParams.restype = hipError_t
-hipGraphExternalSemaphoresSignalNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-hipGraphExternalSemaphoresWaitNodeGetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresWaitNodeGetParams
-hipGraphExternalSemaphoresWaitNodeGetParams.restype = hipError_t
-hipGraphExternalSemaphoresWaitNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-hipGraphExecExternalSemaphoresSignalNodeSetParams = _libraries['FIXME_STUB'].hipGraphExecExternalSemaphoresSignalNodeSetParams
-hipGraphExecExternalSemaphoresSignalNodeSetParams.restype = hipError_t
-hipGraphExecExternalSemaphoresSignalNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-hipGraphExecExternalSemaphoresWaitNodeSetParams = _libraries['FIXME_STUB'].hipGraphExecExternalSemaphoresWaitNodeSetParams
-hipGraphExecExternalSemaphoresWaitNodeSetParams.restype = hipError_t
-hipGraphExecExternalSemaphoresWaitNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-hipMemAddressFree = _libraries['libamdhip64.so'].hipMemAddressFree
-hipMemAddressFree.restype = hipError_t
-hipMemAddressFree.argtypes = [ctypes.POINTER(None), size_t]
-hipMemAddressReserve = _libraries['libamdhip64.so'].hipMemAddressReserve
-hipMemAddressReserve.restype = hipError_t
-hipMemAddressReserve.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, size_t, ctypes.POINTER(None), ctypes.c_uint64]
-hipMemCreate = _libraries['libamdhip64.so'].hipMemCreate
-hipMemCreate.restype = hipError_t
-hipMemCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemGenericAllocationHandle)), size_t, ctypes.POINTER(struct_hipMemAllocationProp), ctypes.c_uint64]
-hipMemExportToShareableHandle = _libraries['libamdhip64.so'].hipMemExportToShareableHandle
-hipMemExportToShareableHandle.restype = hipError_t
-hipMemExportToShareableHandle.argtypes = [ctypes.POINTER(None), hipMemGenericAllocationHandle_t, hipMemAllocationHandleType, ctypes.c_uint64]
-hipMemGetAccess = _libraries['libamdhip64.so'].hipMemGetAccess
-hipMemGetAccess.restype = hipError_t
-hipMemGetAccess.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_hipMemLocation), ctypes.POINTER(None)]
-hipMemGetAllocationGranularity = _libraries['libamdhip64.so'].hipMemGetAllocationGranularity
-hipMemGetAllocationGranularity.restype = hipError_t
-hipMemGetAllocationGranularity.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_hipMemAllocationProp), hipMemAllocationGranularity_flags]
-hipMemGetAllocationPropertiesFromHandle = _libraries['libamdhip64.so'].hipMemGetAllocationPropertiesFromHandle
-hipMemGetAllocationPropertiesFromHandle.restype = hipError_t
-hipMemGetAllocationPropertiesFromHandle.argtypes = [ctypes.POINTER(struct_hipMemAllocationProp), hipMemGenericAllocationHandle_t]
-hipMemImportFromShareableHandle = _libraries['libamdhip64.so'].hipMemImportFromShareableHandle
-hipMemImportFromShareableHandle.restype = hipError_t
-hipMemImportFromShareableHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemGenericAllocationHandle)), ctypes.POINTER(None), hipMemAllocationHandleType]
-hipMemMap = _libraries['libamdhip64.so'].hipMemMap
-hipMemMap.restype = hipError_t
-hipMemMap.argtypes = [ctypes.POINTER(None), size_t, size_t, hipMemGenericAllocationHandle_t, ctypes.c_uint64]
-hipMemMapArrayAsync = _libraries['libamdhip64.so'].hipMemMapArrayAsync
-hipMemMapArrayAsync.restype = hipError_t
-hipMemMapArrayAsync.argtypes = [ctypes.POINTER(struct_hipArrayMapInfo), ctypes.c_uint32, hipStream_t]
-hipMemRelease = _libraries['libamdhip64.so'].hipMemRelease
-hipMemRelease.restype = hipError_t
-hipMemRelease.argtypes = [hipMemGenericAllocationHandle_t]
-hipMemRetainAllocationHandle = _libraries['libamdhip64.so'].hipMemRetainAllocationHandle
-hipMemRetainAllocationHandle.restype = hipError_t
-hipMemRetainAllocationHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemGenericAllocationHandle)), ctypes.POINTER(None)]
-hipMemSetAccess = _libraries['libamdhip64.so'].hipMemSetAccess
-hipMemSetAccess.restype = hipError_t
-hipMemSetAccess.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hipMemAccessDesc), size_t]
-hipMemUnmap = _libraries['libamdhip64.so'].hipMemUnmap
-hipMemUnmap.restype = hipError_t
-hipMemUnmap.argtypes = [ctypes.POINTER(None), size_t]
+try:
+    hipDestroyTextureObject = _libraries['libamdhip64.so'].hipDestroyTextureObject
+    hipDestroyTextureObject.restype = hipError_t
+    hipDestroyTextureObject.argtypes = [hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipGetChannelDesc = _libraries['libamdhip64.so'].hipGetChannelDesc
+    hipGetChannelDesc.restype = hipError_t
+    hipGetChannelDesc.argtypes = [ctypes.POINTER(struct_hipChannelFormatDesc), hipArray_const_t]
+except AttributeError:
+    pass
+try:
+    hipGetTextureObjectResourceDesc = _libraries['libamdhip64.so'].hipGetTextureObjectResourceDesc
+    hipGetTextureObjectResourceDesc.restype = hipError_t
+    hipGetTextureObjectResourceDesc.argtypes = [ctypes.POINTER(struct_hipResourceDesc), hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipGetTextureObjectResourceViewDesc = _libraries['libamdhip64.so'].hipGetTextureObjectResourceViewDesc
+    hipGetTextureObjectResourceViewDesc.restype = hipError_t
+    hipGetTextureObjectResourceViewDesc.argtypes = [ctypes.POINTER(struct_hipResourceViewDesc), hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipGetTextureObjectTextureDesc = _libraries['libamdhip64.so'].hipGetTextureObjectTextureDesc
+    hipGetTextureObjectTextureDesc.restype = hipError_t
+    hipGetTextureObjectTextureDesc.argtypes = [ctypes.POINTER(struct_hipTextureDesc), hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipTexObjectCreate = _libraries['libamdhip64.so'].hipTexObjectCreate
+    hipTexObjectCreate.restype = hipError_t
+    hipTexObjectCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct___hip_texture)), ctypes.POINTER(struct_HIP_RESOURCE_DESC_st), ctypes.POINTER(struct_HIP_TEXTURE_DESC_st), ctypes.POINTER(struct_HIP_RESOURCE_VIEW_DESC_st)]
+except AttributeError:
+    pass
+try:
+    hipTexObjectDestroy = _libraries['libamdhip64.so'].hipTexObjectDestroy
+    hipTexObjectDestroy.restype = hipError_t
+    hipTexObjectDestroy.argtypes = [hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipTexObjectGetResourceDesc = _libraries['libamdhip64.so'].hipTexObjectGetResourceDesc
+    hipTexObjectGetResourceDesc.restype = hipError_t
+    hipTexObjectGetResourceDesc.argtypes = [ctypes.POINTER(struct_HIP_RESOURCE_DESC_st), hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipTexObjectGetResourceViewDesc = _libraries['libamdhip64.so'].hipTexObjectGetResourceViewDesc
+    hipTexObjectGetResourceViewDesc.restype = hipError_t
+    hipTexObjectGetResourceViewDesc.argtypes = [ctypes.POINTER(struct_HIP_RESOURCE_VIEW_DESC_st), hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipTexObjectGetTextureDesc = _libraries['libamdhip64.so'].hipTexObjectGetTextureDesc
+    hipTexObjectGetTextureDesc.restype = hipError_t
+    hipTexObjectGetTextureDesc.argtypes = [ctypes.POINTER(struct_HIP_TEXTURE_DESC_st), hipTextureObject_t]
+except AttributeError:
+    pass
+try:
+    hipMallocMipmappedArray = _libraries['libamdhip64.so'].hipMallocMipmappedArray
+    hipMallocMipmappedArray.restype = hipError_t
+    hipMallocMipmappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), ctypes.POINTER(struct_hipChannelFormatDesc), struct_hipExtent, ctypes.c_uint32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipFreeMipmappedArray = _libraries['libamdhip64.so'].hipFreeMipmappedArray
+    hipFreeMipmappedArray.restype = hipError_t
+    hipFreeMipmappedArray.argtypes = [hipMipmappedArray_t]
+except AttributeError:
+    pass
+try:
+    hipGetMipmappedArrayLevel = _libraries['libamdhip64.so'].hipGetMipmappedArrayLevel
+    hipGetMipmappedArrayLevel.restype = hipError_t
+    hipGetMipmappedArrayLevel.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), hipMipmappedArray_const_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMipmappedArrayCreate = _libraries['libamdhip64.so'].hipMipmappedArrayCreate
+    hipMipmappedArrayCreate.restype = hipError_t
+    hipMipmappedArrayCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipMipmappedArrayDestroy = _libraries['libamdhip64.so'].hipMipmappedArrayDestroy
+    hipMipmappedArrayDestroy.restype = hipError_t
+    hipMipmappedArrayDestroy.argtypes = [hipMipmappedArray_t]
+except AttributeError:
+    pass
+try:
+    hipMipmappedArrayGetLevel = _libraries['libamdhip64.so'].hipMipmappedArrayGetLevel
+    hipMipmappedArrayGetLevel.restype = hipError_t
+    hipMipmappedArrayGetLevel.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), hipMipmappedArray_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipBindTextureToMipmappedArray = _libraries['libamdhip64.so'].hipBindTextureToMipmappedArray
+    hipBindTextureToMipmappedArray.restype = hipError_t
+    hipBindTextureToMipmappedArray.argtypes = [ctypes.POINTER(struct_textureReference), hipMipmappedArray_const_t, ctypes.POINTER(struct_hipChannelFormatDesc)]
+except AttributeError:
+    pass
+try:
+    hipGetTextureReference = _libraries['libamdhip64.so'].hipGetTextureReference
+    hipGetTextureReference.restype = hipError_t
+    hipGetTextureReference.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_textureReference)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetAddressMode = _libraries['libamdhip64.so'].hipTexRefSetAddressMode
+    hipTexRefSetAddressMode.restype = hipError_t
+    hipTexRefSetAddressMode.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_int32, hipTextureAddressMode]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetArray = _libraries['libamdhip64.so'].hipTexRefSetArray
+    hipTexRefSetArray.restype = hipError_t
+    hipTexRefSetArray.argtypes = [ctypes.POINTER(struct_textureReference), hipArray_const_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetFilterMode = _libraries['libamdhip64.so'].hipTexRefSetFilterMode
+    hipTexRefSetFilterMode.restype = hipError_t
+    hipTexRefSetFilterMode.argtypes = [ctypes.POINTER(struct_textureReference), hipTextureFilterMode]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetFlags = _libraries['libamdhip64.so'].hipTexRefSetFlags
+    hipTexRefSetFlags.restype = hipError_t
+    hipTexRefSetFlags.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetFormat = _libraries['libamdhip64.so'].hipTexRefSetFormat
+    hipTexRefSetFormat.restype = hipError_t
+    hipTexRefSetFormat.argtypes = [ctypes.POINTER(struct_textureReference), hipArray_Format, ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipBindTexture = _libraries['libamdhip64.so'].hipBindTexture
+    hipBindTexture.restype = hipError_t
+    hipBindTexture.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference), ctypes.POINTER(None), ctypes.POINTER(struct_hipChannelFormatDesc), size_t]
+except AttributeError:
+    pass
+try:
+    hipBindTexture2D = _libraries['libamdhip64.so'].hipBindTexture2D
+    hipBindTexture2D.restype = hipError_t
+    hipBindTexture2D.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference), ctypes.POINTER(None), ctypes.POINTER(struct_hipChannelFormatDesc), size_t, size_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipBindTextureToArray = _libraries['libamdhip64.so'].hipBindTextureToArray
+    hipBindTextureToArray.restype = hipError_t
+    hipBindTextureToArray.argtypes = [ctypes.POINTER(struct_textureReference), hipArray_const_t, ctypes.POINTER(struct_hipChannelFormatDesc)]
+except AttributeError:
+    pass
+try:
+    hipGetTextureAlignmentOffset = _libraries['libamdhip64.so'].hipGetTextureAlignmentOffset
+    hipGetTextureAlignmentOffset.restype = hipError_t
+    hipGetTextureAlignmentOffset.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipUnbindTexture = _libraries['libamdhip64.so'].hipUnbindTexture
+    hipUnbindTexture.restype = hipError_t
+    hipUnbindTexture.argtypes = [ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetAddress = _libraries['libamdhip64.so'].hipTexRefGetAddress
+    hipTexRefGetAddress.restype = hipError_t
+    hipTexRefGetAddress.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetAddressMode = _libraries['libamdhip64.so'].hipTexRefGetAddressMode
+    hipTexRefGetAddressMode.restype = hipError_t
+    hipTexRefGetAddressMode.argtypes = [ctypes.POINTER(hipTextureAddressMode), ctypes.POINTER(struct_textureReference), ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetFilterMode = _libraries['libamdhip64.so'].hipTexRefGetFilterMode
+    hipTexRefGetFilterMode.restype = hipError_t
+    hipTexRefGetFilterMode.argtypes = [ctypes.POINTER(hipTextureFilterMode), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetFlags = _libraries['libamdhip64.so'].hipTexRefGetFlags
+    hipTexRefGetFlags.restype = hipError_t
+    hipTexRefGetFlags.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetFormat = _libraries['libamdhip64.so'].hipTexRefGetFormat
+    hipTexRefGetFormat.restype = hipError_t
+    hipTexRefGetFormat.argtypes = [ctypes.POINTER(hipArray_Format), ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetMaxAnisotropy = _libraries['libamdhip64.so'].hipTexRefGetMaxAnisotropy
+    hipTexRefGetMaxAnisotropy.restype = hipError_t
+    hipTexRefGetMaxAnisotropy.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetMipmapFilterMode = _libraries['libamdhip64.so'].hipTexRefGetMipmapFilterMode
+    hipTexRefGetMipmapFilterMode.restype = hipError_t
+    hipTexRefGetMipmapFilterMode.argtypes = [ctypes.POINTER(hipTextureFilterMode), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetMipmapLevelBias = _libraries['libamdhip64.so'].hipTexRefGetMipmapLevelBias
+    hipTexRefGetMipmapLevelBias.restype = hipError_t
+    hipTexRefGetMipmapLevelBias.argtypes = [ctypes.POINTER(ctypes.c_float), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetMipmapLevelClamp = _libraries['libamdhip64.so'].hipTexRefGetMipmapLevelClamp
+    hipTexRefGetMipmapLevelClamp.restype = hipError_t
+    hipTexRefGetMipmapLevelClamp.argtypes = [ctypes.POINTER(ctypes.c_float), ctypes.POINTER(ctypes.c_float), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefGetMipMappedArray = _libraries['FIXME_STUB'].hipTexRefGetMipMappedArray
+    hipTexRefGetMipMappedArray.restype = hipError_t
+    hipTexRefGetMipMappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), ctypes.POINTER(struct_textureReference)]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetAddress = _libraries['libamdhip64.so'].hipTexRefSetAddress
+    hipTexRefSetAddress.restype = hipError_t
+    hipTexRefSetAddress.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_textureReference), hipDeviceptr_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetAddress2D = _libraries['libamdhip64.so'].hipTexRefSetAddress2D
+    hipTexRefSetAddress2D.restype = hipError_t
+    hipTexRefSetAddress2D.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR), hipDeviceptr_t, size_t]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetMaxAnisotropy = _libraries['libamdhip64.so'].hipTexRefSetMaxAnisotropy
+    hipTexRefSetMaxAnisotropy.restype = hipError_t
+    hipTexRefSetMaxAnisotropy.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetBorderColor = _libraries['libamdhip64.so'].hipTexRefSetBorderColor
+    hipTexRefSetBorderColor.restype = hipError_t
+    hipTexRefSetBorderColor.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.POINTER(ctypes.c_float)]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetMipmapFilterMode = _libraries['libamdhip64.so'].hipTexRefSetMipmapFilterMode
+    hipTexRefSetMipmapFilterMode.restype = hipError_t
+    hipTexRefSetMipmapFilterMode.argtypes = [ctypes.POINTER(struct_textureReference), hipTextureFilterMode]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetMipmapLevelBias = _libraries['libamdhip64.so'].hipTexRefSetMipmapLevelBias
+    hipTexRefSetMipmapLevelBias.restype = hipError_t
+    hipTexRefSetMipmapLevelBias.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_float]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetMipmapLevelClamp = _libraries['libamdhip64.so'].hipTexRefSetMipmapLevelClamp
+    hipTexRefSetMipmapLevelClamp.restype = hipError_t
+    hipTexRefSetMipmapLevelClamp.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.c_float, ctypes.c_float]
+except AttributeError:
+    pass
+try:
+    hipTexRefSetMipmappedArray = _libraries['libamdhip64.so'].hipTexRefSetMipmappedArray
+    hipTexRefSetMipmappedArray.restype = hipError_t
+    hipTexRefSetMipmappedArray.argtypes = [ctypes.POINTER(struct_textureReference), ctypes.POINTER(struct_hipMipmappedArray), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipApiName = _libraries['libamdhip64.so'].hipApiName
+    hipApiName.restype = ctypes.POINTER(ctypes.c_char)
+    hipApiName.argtypes = [uint32_t]
+except AttributeError:
+    pass
+try:
+    hipKernelNameRef = _libraries['libamdhip64.so'].hipKernelNameRef
+    hipKernelNameRef.restype = ctypes.POINTER(ctypes.c_char)
+    hipKernelNameRef.argtypes = [hipFunction_t]
+except AttributeError:
+    pass
+try:
+    hipKernelNameRefByPtr = _libraries['libamdhip64.so'].hipKernelNameRefByPtr
+    hipKernelNameRefByPtr.restype = ctypes.POINTER(ctypes.c_char)
+    hipKernelNameRefByPtr.argtypes = [ctypes.POINTER(None), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipGetStreamDeviceId = _libraries['libamdhip64.so'].hipGetStreamDeviceId
+    hipGetStreamDeviceId.restype = ctypes.c_int32
+    hipGetStreamDeviceId.argtypes = [hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipStreamBeginCapture = _libraries['libamdhip64.so'].hipStreamBeginCapture
+    hipStreamBeginCapture.restype = hipError_t
+    hipStreamBeginCapture.argtypes = [hipStream_t, hipStreamCaptureMode]
+except AttributeError:
+    pass
+try:
+    hipStreamEndCapture = _libraries['libamdhip64.so'].hipStreamEndCapture
+    hipStreamEndCapture.restype = hipError_t
+    hipStreamEndCapture.argtypes = [hipStream_t, ctypes.POINTER(ctypes.POINTER(struct_ihipGraph))]
+except AttributeError:
+    pass
+try:
+    hipStreamGetCaptureInfo = _libraries['libamdhip64.so'].hipStreamGetCaptureInfo
+    hipStreamGetCaptureInfo.restype = hipError_t
+    hipStreamGetCaptureInfo.argtypes = [hipStream_t, ctypes.POINTER(hipStreamCaptureStatus), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipStreamGetCaptureInfo_v2 = _libraries['libamdhip64.so'].hipStreamGetCaptureInfo_v2
+    hipStreamGetCaptureInfo_v2.restype = hipError_t
+    hipStreamGetCaptureInfo_v2.argtypes = [hipStream_t, ctypes.POINTER(hipStreamCaptureStatus), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(struct_ihipGraph)), ctypes.POINTER(ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode))), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipStreamIsCapturing = _libraries['libamdhip64.so'].hipStreamIsCapturing
+    hipStreamIsCapturing.restype = hipError_t
+    hipStreamIsCapturing.argtypes = [hipStream_t, ctypes.POINTER(hipStreamCaptureStatus)]
+except AttributeError:
+    pass
+try:
+    hipStreamUpdateCaptureDependencies = _libraries['libamdhip64.so'].hipStreamUpdateCaptureDependencies
+    hipStreamUpdateCaptureDependencies.restype = hipError_t
+    hipStreamUpdateCaptureDependencies.argtypes = [hipStream_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipThreadExchangeStreamCaptureMode = _libraries['libamdhip64.so'].hipThreadExchangeStreamCaptureMode
+    hipThreadExchangeStreamCaptureMode.restype = hipError_t
+    hipThreadExchangeStreamCaptureMode.argtypes = [ctypes.POINTER(hipStreamCaptureMode)]
+except AttributeError:
+    pass
+try:
+    hipGraphCreate = _libraries['libamdhip64.so'].hipGraphCreate
+    hipGraphCreate.restype = hipError_t
+    hipGraphCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipGraph)), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphDestroy = _libraries['libamdhip64.so'].hipGraphDestroy
+    hipGraphDestroy.restype = hipError_t
+    hipGraphDestroy.argtypes = [hipGraph_t]
+except AttributeError:
+    pass
+try:
+    hipGraphAddDependencies = _libraries['libamdhip64.so'].hipGraphAddDependencies
+    hipGraphAddDependencies.restype = hipError_t
+    hipGraphAddDependencies.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t]
+except AttributeError:
+    pass
+try:
+    hipGraphRemoveDependencies = _libraries['libamdhip64.so'].hipGraphRemoveDependencies
+    hipGraphRemoveDependencies.restype = hipError_t
+    hipGraphRemoveDependencies.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t]
+except AttributeError:
+    pass
+try:
+    hipGraphGetEdges = _libraries['libamdhip64.so'].hipGraphGetEdges
+    hipGraphGetEdges.restype = hipError_t
+    hipGraphGetEdges.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipGraphGetNodes = _libraries['libamdhip64.so'].hipGraphGetNodes
+    hipGraphGetNodes.restype = hipError_t
+    hipGraphGetNodes.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipGraphGetRootNodes = _libraries['libamdhip64.so'].hipGraphGetRootNodes
+    hipGraphGetRootNodes.restype = hipError_t
+    hipGraphGetRootNodes.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipGraphNodeGetDependencies = _libraries['libamdhip64.so'].hipGraphNodeGetDependencies
+    hipGraphNodeGetDependencies.restype = hipError_t
+    hipGraphNodeGetDependencies.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipGraphNodeGetDependentNodes = _libraries['libamdhip64.so'].hipGraphNodeGetDependentNodes
+    hipGraphNodeGetDependentNodes.restype = hipError_t
+    hipGraphNodeGetDependentNodes.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hipGraphNodeGetType = _libraries['libamdhip64.so'].hipGraphNodeGetType
+    hipGraphNodeGetType.restype = hipError_t
+    hipGraphNodeGetType.argtypes = [hipGraphNode_t, ctypes.POINTER(hipGraphNodeType)]
+except AttributeError:
+    pass
+try:
+    hipGraphDestroyNode = _libraries['libamdhip64.so'].hipGraphDestroyNode
+    hipGraphDestroyNode.restype = hipError_t
+    hipGraphDestroyNode.argtypes = [hipGraphNode_t]
+except AttributeError:
+    pass
+try:
+    hipGraphClone = _libraries['libamdhip64.so'].hipGraphClone
+    hipGraphClone.restype = hipError_t
+    hipGraphClone.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipGraph)), hipGraph_t]
+except AttributeError:
+    pass
+try:
+    hipGraphNodeFindInClone = _libraries['libamdhip64.so'].hipGraphNodeFindInClone
+    hipGraphNodeFindInClone.restype = hipError_t
+    hipGraphNodeFindInClone.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraphNode_t, hipGraph_t]
+except AttributeError:
+    pass
+try:
+    hipGraphInstantiate = _libraries['libamdhip64.so'].hipGraphInstantiate
+    hipGraphInstantiate.restype = hipError_t
+    hipGraphInstantiate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphExec)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(ctypes.c_char), size_t]
+except AttributeError:
+    pass
+try:
+    hipGraphInstantiateWithFlags = _libraries['libamdhip64.so'].hipGraphInstantiateWithFlags
+    hipGraphInstantiateWithFlags.restype = hipError_t
+    hipGraphInstantiateWithFlags.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphExec)), hipGraph_t, ctypes.c_uint64]
+except AttributeError:
+    pass
+try:
+    hipGraphLaunch = _libraries['libamdhip64.so'].hipGraphLaunch
+    hipGraphLaunch.restype = hipError_t
+    hipGraphLaunch.argtypes = [hipGraphExec_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipGraphUpload = _libraries['libamdhip64.so'].hipGraphUpload
+    hipGraphUpload.restype = hipError_t
+    hipGraphUpload.argtypes = [hipGraphExec_t, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipGraphExecDestroy = _libraries['libamdhip64.so'].hipGraphExecDestroy
+    hipGraphExecDestroy.restype = hipError_t
+    hipGraphExecDestroy.argtypes = [hipGraphExec_t]
+except AttributeError:
+    pass
+try:
+    hipGraphExecUpdate = _libraries['libamdhip64.so'].hipGraphExecUpdate
+    hipGraphExecUpdate.restype = hipError_t
+    hipGraphExecUpdate.argtypes = [hipGraphExec_t, hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), ctypes.POINTER(hipGraphExecUpdateResult)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddKernelNode = _libraries['libamdhip64.so'].hipGraphAddKernelNode
+    hipGraphAddKernelNode.restype = hipError_t
+    hipGraphAddKernelNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipKernelNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphKernelNodeGetParams = _libraries['libamdhip64.so'].hipGraphKernelNodeGetParams
+    hipGraphKernelNodeGetParams.restype = hipError_t
+    hipGraphKernelNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipKernelNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphKernelNodeSetParams = _libraries['libamdhip64.so'].hipGraphKernelNodeSetParams
+    hipGraphKernelNodeSetParams.restype = hipError_t
+    hipGraphKernelNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipKernelNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExecKernelNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecKernelNodeSetParams
+    hipGraphExecKernelNodeSetParams.restype = hipError_t
+    hipGraphExecKernelNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipKernelNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemcpyNode = _libraries['libamdhip64.so'].hipGraphAddMemcpyNode
+    hipGraphAddMemcpyNode.restype = hipError_t
+    hipGraphAddMemcpyNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
+except AttributeError:
+    pass
+try:
+    hipGraphMemcpyNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemcpyNodeGetParams
+    hipGraphMemcpyNodeGetParams.restype = hipError_t
+    hipGraphMemcpyNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
+except AttributeError:
+    pass
+try:
+    hipGraphMemcpyNodeSetParams = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParams
+    hipGraphMemcpyNodeSetParams.restype = hipError_t
+    hipGraphMemcpyNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
+except AttributeError:
+    pass
+try:
+    hipGraphKernelNodeSetAttribute = _libraries['libamdhip64.so'].hipGraphKernelNodeSetAttribute
+    hipGraphKernelNodeSetAttribute.restype = hipError_t
+    hipGraphKernelNodeSetAttribute.argtypes = [hipGraphNode_t, hipKernelNodeAttrID, ctypes.POINTER(union_hipKernelNodeAttrValue)]
+except AttributeError:
+    pass
+try:
+    hipGraphKernelNodeGetAttribute = _libraries['libamdhip64.so'].hipGraphKernelNodeGetAttribute
+    hipGraphKernelNodeGetAttribute.restype = hipError_t
+    hipGraphKernelNodeGetAttribute.argtypes = [hipGraphNode_t, hipKernelNodeAttrID, ctypes.POINTER(union_hipKernelNodeAttrValue)]
+except AttributeError:
+    pass
+try:
+    hipGraphExecMemcpyNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParams
+    hipGraphExecMemcpyNodeSetParams.restype = hipError_t
+    hipGraphExecMemcpyNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemcpyNode1D = _libraries['libamdhip64.so'].hipGraphAddMemcpyNode1D
+    hipGraphAddMemcpyNode1D.restype = hipError_t
+    hipGraphAddMemcpyNode1D.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphMemcpyNodeSetParams1D = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParams1D
+    hipGraphMemcpyNodeSetParams1D.restype = hipError_t
+    hipGraphMemcpyNodeSetParams1D.argtypes = [hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphExecMemcpyNodeSetParams1D = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParams1D
+    hipGraphExecMemcpyNodeSetParams1D.restype = hipError_t
+    hipGraphExecMemcpyNodeSetParams1D.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemcpyNodeFromSymbol = _libraries['libamdhip64.so'].hipGraphAddMemcpyNodeFromSymbol
+    hipGraphAddMemcpyNodeFromSymbol.restype = hipError_t
+    hipGraphAddMemcpyNodeFromSymbol.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphMemcpyNodeSetParamsFromSymbol = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParamsFromSymbol
+    hipGraphMemcpyNodeSetParamsFromSymbol.restype = hipError_t
+    hipGraphMemcpyNodeSetParamsFromSymbol.argtypes = [hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphExecMemcpyNodeSetParamsFromSymbol = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParamsFromSymbol
+    hipGraphExecMemcpyNodeSetParamsFromSymbol.restype = hipError_t
+    hipGraphExecMemcpyNodeSetParamsFromSymbol.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemcpyNodeToSymbol = _libraries['libamdhip64.so'].hipGraphAddMemcpyNodeToSymbol
+    hipGraphAddMemcpyNodeToSymbol.restype = hipError_t
+    hipGraphAddMemcpyNodeToSymbol.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphMemcpyNodeSetParamsToSymbol = _libraries['libamdhip64.so'].hipGraphMemcpyNodeSetParamsToSymbol
+    hipGraphMemcpyNodeSetParamsToSymbol.restype = hipError_t
+    hipGraphMemcpyNodeSetParamsToSymbol.argtypes = [hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphExecMemcpyNodeSetParamsToSymbol = _libraries['libamdhip64.so'].hipGraphExecMemcpyNodeSetParamsToSymbol
+    hipGraphExecMemcpyNodeSetParamsToSymbol.restype = hipError_t
+    hipGraphExecMemcpyNodeSetParamsToSymbol.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, hipMemcpyKind]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemsetNode = _libraries['libamdhip64.so'].hipGraphAddMemsetNode
+    hipGraphAddMemsetNode.restype = hipError_t
+    hipGraphAddMemsetNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemsetParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphMemsetNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemsetNodeGetParams
+    hipGraphMemsetNodeGetParams.restype = hipError_t
+    hipGraphMemsetNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemsetParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphMemsetNodeSetParams = _libraries['libamdhip64.so'].hipGraphMemsetNodeSetParams
+    hipGraphMemsetNodeSetParams.restype = hipError_t
+    hipGraphMemsetNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemsetParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExecMemsetNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecMemsetNodeSetParams
+    hipGraphExecMemsetNodeSetParams.restype = hipError_t
+    hipGraphExecMemsetNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipMemsetParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddHostNode = _libraries['libamdhip64.so'].hipGraphAddHostNode
+    hipGraphAddHostNode.restype = hipError_t
+    hipGraphAddHostNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipHostNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphHostNodeGetParams = _libraries['libamdhip64.so'].hipGraphHostNodeGetParams
+    hipGraphHostNodeGetParams.restype = hipError_t
+    hipGraphHostNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipHostNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphHostNodeSetParams = _libraries['libamdhip64.so'].hipGraphHostNodeSetParams
+    hipGraphHostNodeSetParams.restype = hipError_t
+    hipGraphHostNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipHostNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExecHostNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecHostNodeSetParams
+    hipGraphExecHostNodeSetParams.restype = hipError_t
+    hipGraphExecHostNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipHostNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddChildGraphNode = _libraries['libamdhip64.so'].hipGraphAddChildGraphNode
+    hipGraphAddChildGraphNode.restype = hipError_t
+    hipGraphAddChildGraphNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, hipGraph_t]
+except AttributeError:
+    pass
+try:
+    hipGraphChildGraphNodeGetGraph = _libraries['libamdhip64.so'].hipGraphChildGraphNodeGetGraph
+    hipGraphChildGraphNodeGetGraph.restype = hipError_t
+    hipGraphChildGraphNodeGetGraph.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_ihipGraph))]
+except AttributeError:
+    pass
+try:
+    hipGraphExecChildGraphNodeSetParams = _libraries['libamdhip64.so'].hipGraphExecChildGraphNodeSetParams
+    hipGraphExecChildGraphNodeSetParams.restype = hipError_t
+    hipGraphExecChildGraphNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, hipGraph_t]
+except AttributeError:
+    pass
+try:
+    hipGraphAddEmptyNode = _libraries['libamdhip64.so'].hipGraphAddEmptyNode
+    hipGraphAddEmptyNode.restype = hipError_t
+    hipGraphAddEmptyNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t]
+except AttributeError:
+    pass
+try:
+    hipGraphAddEventRecordNode = _libraries['libamdhip64.so'].hipGraphAddEventRecordNode
+    hipGraphAddEventRecordNode.restype = hipError_t
+    hipGraphAddEventRecordNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipGraphEventRecordNodeGetEvent = _libraries['libamdhip64.so'].hipGraphEventRecordNodeGetEvent
+    hipGraphEventRecordNodeGetEvent.restype = hipError_t
+    hipGraphEventRecordNodeGetEvent.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t))]
+except AttributeError:
+    pass
+try:
+    hipGraphEventRecordNodeSetEvent = _libraries['libamdhip64.so'].hipGraphEventRecordNodeSetEvent
+    hipGraphEventRecordNodeSetEvent.restype = hipError_t
+    hipGraphEventRecordNodeSetEvent.argtypes = [hipGraphNode_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipGraphExecEventRecordNodeSetEvent = _libraries['libamdhip64.so'].hipGraphExecEventRecordNodeSetEvent
+    hipGraphExecEventRecordNodeSetEvent.restype = hipError_t
+    hipGraphExecEventRecordNodeSetEvent.argtypes = [hipGraphExec_t, hipGraphNode_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipGraphAddEventWaitNode = _libraries['libamdhip64.so'].hipGraphAddEventWaitNode
+    hipGraphAddEventWaitNode.restype = hipError_t
+    hipGraphAddEventWaitNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipGraphEventWaitNodeGetEvent = _libraries['libamdhip64.so'].hipGraphEventWaitNodeGetEvent
+    hipGraphEventWaitNodeGetEvent.restype = hipError_t
+    hipGraphEventWaitNodeGetEvent.argtypes = [hipGraphNode_t, ctypes.POINTER(ctypes.POINTER(struct_ihipEvent_t))]
+except AttributeError:
+    pass
+try:
+    hipGraphEventWaitNodeSetEvent = _libraries['libamdhip64.so'].hipGraphEventWaitNodeSetEvent
+    hipGraphEventWaitNodeSetEvent.restype = hipError_t
+    hipGraphEventWaitNodeSetEvent.argtypes = [hipGraphNode_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipGraphExecEventWaitNodeSetEvent = _libraries['libamdhip64.so'].hipGraphExecEventWaitNodeSetEvent
+    hipGraphExecEventWaitNodeSetEvent.restype = hipError_t
+    hipGraphExecEventWaitNodeSetEvent.argtypes = [hipGraphExec_t, hipGraphNode_t, hipEvent_t]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemAllocNode = _libraries['libamdhip64.so'].hipGraphAddMemAllocNode
+    hipGraphAddMemAllocNode.restype = hipError_t
+    hipGraphAddMemAllocNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemAllocNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphMemAllocNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemAllocNodeGetParams
+    hipGraphMemAllocNodeGetParams.restype = hipError_t
+    hipGraphMemAllocNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipMemAllocNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddMemFreeNode = _libraries['libamdhip64.so'].hipGraphAddMemFreeNode
+    hipGraphAddMemFreeNode.restype = hipError_t
+    hipGraphAddMemFreeNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipGraphMemFreeNodeGetParams = _libraries['libamdhip64.so'].hipGraphMemFreeNodeGetParams
+    hipGraphMemFreeNodeGetParams.restype = hipError_t
+    hipGraphMemFreeNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipDeviceGetGraphMemAttribute = _libraries['libamdhip64.so'].hipDeviceGetGraphMemAttribute
+    hipDeviceGetGraphMemAttribute.restype = hipError_t
+    hipDeviceGetGraphMemAttribute.argtypes = [ctypes.c_int32, hipGraphMemAttributeType, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipDeviceSetGraphMemAttribute = _libraries['libamdhip64.so'].hipDeviceSetGraphMemAttribute
+    hipDeviceSetGraphMemAttribute.restype = hipError_t
+    hipDeviceSetGraphMemAttribute.argtypes = [ctypes.c_int32, hipGraphMemAttributeType, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipDeviceGraphMemTrim = _libraries['libamdhip64.so'].hipDeviceGraphMemTrim
+    hipDeviceGraphMemTrim.restype = hipError_t
+    hipDeviceGraphMemTrim.argtypes = [ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hipUserObjectCreate = _libraries['libamdhip64.so'].hipUserObjectCreate
+    hipUserObjectCreate.restype = hipError_t
+    hipUserObjectCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipUserObject)), ctypes.POINTER(None), hipHostFn_t, ctypes.c_uint32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipUserObjectRelease = _libraries['libamdhip64.so'].hipUserObjectRelease
+    hipUserObjectRelease.restype = hipError_t
+    hipUserObjectRelease.argtypes = [hipUserObject_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipUserObjectRetain = _libraries['libamdhip64.so'].hipUserObjectRetain
+    hipUserObjectRetain.restype = hipError_t
+    hipUserObjectRetain.argtypes = [hipUserObject_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphRetainUserObject = _libraries['libamdhip64.so'].hipGraphRetainUserObject
+    hipGraphRetainUserObject.restype = hipError_t
+    hipGraphRetainUserObject.argtypes = [hipGraph_t, hipUserObject_t, ctypes.c_uint32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphReleaseUserObject = _libraries['libamdhip64.so'].hipGraphReleaseUserObject
+    hipGraphReleaseUserObject.restype = hipError_t
+    hipGraphReleaseUserObject.argtypes = [hipGraph_t, hipUserObject_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphDebugDotPrint = _libraries['libamdhip64.so'].hipGraphDebugDotPrint
+    hipGraphDebugDotPrint.restype = hipError_t
+    hipGraphDebugDotPrint.argtypes = [hipGraph_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphKernelNodeCopyAttributes = _libraries['libamdhip64.so'].hipGraphKernelNodeCopyAttributes
+    hipGraphKernelNodeCopyAttributes.restype = hipError_t
+    hipGraphKernelNodeCopyAttributes.argtypes = [hipGraphNode_t, hipGraphNode_t]
+except AttributeError:
+    pass
+try:
+    hipGraphNodeSetEnabled = _libraries['libamdhip64.so'].hipGraphNodeSetEnabled
+    hipGraphNodeSetEnabled.restype = hipError_t
+    hipGraphNodeSetEnabled.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphNodeGetEnabled = _libraries['libamdhip64.so'].hipGraphNodeGetEnabled
+    hipGraphNodeGetEnabled.restype = hipError_t
+    hipGraphNodeGetEnabled.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddExternalSemaphoresWaitNode = _libraries['FIXME_STUB'].hipGraphAddExternalSemaphoresWaitNode
+    hipGraphAddExternalSemaphoresWaitNode.restype = hipError_t
+    hipGraphAddExternalSemaphoresWaitNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphAddExternalSemaphoresSignalNode = _libraries['FIXME_STUB'].hipGraphAddExternalSemaphoresSignalNode
+    hipGraphAddExternalSemaphoresSignalNode.restype = hipError_t
+    hipGraphAddExternalSemaphoresSignalNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExternalSemaphoresSignalNodeSetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresSignalNodeSetParams
+    hipGraphExternalSemaphoresSignalNodeSetParams.restype = hipError_t
+    hipGraphExternalSemaphoresSignalNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExternalSemaphoresWaitNodeSetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresWaitNodeSetParams
+    hipGraphExternalSemaphoresWaitNodeSetParams.restype = hipError_t
+    hipGraphExternalSemaphoresWaitNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExternalSemaphoresSignalNodeGetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresSignalNodeGetParams
+    hipGraphExternalSemaphoresSignalNodeGetParams.restype = hipError_t
+    hipGraphExternalSemaphoresSignalNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExternalSemaphoresWaitNodeGetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresWaitNodeGetParams
+    hipGraphExternalSemaphoresWaitNodeGetParams.restype = hipError_t
+    hipGraphExternalSemaphoresWaitNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExecExternalSemaphoresSignalNodeSetParams = _libraries['FIXME_STUB'].hipGraphExecExternalSemaphoresSignalNodeSetParams
+    hipGraphExecExternalSemaphoresSignalNodeSetParams.restype = hipError_t
+    hipGraphExecExternalSemaphoresSignalNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipGraphExecExternalSemaphoresWaitNodeSetParams = _libraries['FIXME_STUB'].hipGraphExecExternalSemaphoresWaitNodeSetParams
+    hipGraphExecExternalSemaphoresWaitNodeSetParams.restype = hipError_t
+    hipGraphExecExternalSemaphoresWaitNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
+except AttributeError:
+    pass
+try:
+    hipMemAddressFree = _libraries['libamdhip64.so'].hipMemAddressFree
+    hipMemAddressFree.restype = hipError_t
+    hipMemAddressFree.argtypes = [ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemAddressReserve = _libraries['libamdhip64.so'].hipMemAddressReserve
+    hipMemAddressReserve.restype = hipError_t
+    hipMemAddressReserve.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, size_t, ctypes.POINTER(None), ctypes.c_uint64]
+except AttributeError:
+    pass
+try:
+    hipMemCreate = _libraries['libamdhip64.so'].hipMemCreate
+    hipMemCreate.restype = hipError_t
+    hipMemCreate.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemGenericAllocationHandle)), size_t, ctypes.POINTER(struct_hipMemAllocationProp), ctypes.c_uint64]
+except AttributeError:
+    pass
+try:
+    hipMemExportToShareableHandle = _libraries['libamdhip64.so'].hipMemExportToShareableHandle
+    hipMemExportToShareableHandle.restype = hipError_t
+    hipMemExportToShareableHandle.argtypes = [ctypes.POINTER(None), hipMemGenericAllocationHandle_t, hipMemAllocationHandleType, ctypes.c_uint64]
+except AttributeError:
+    pass
+try:
+    hipMemGetAccess = _libraries['libamdhip64.so'].hipMemGetAccess
+    hipMemGetAccess.restype = hipError_t
+    hipMemGetAccess.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_hipMemLocation), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemGetAllocationGranularity = _libraries['libamdhip64.so'].hipMemGetAllocationGranularity
+    hipMemGetAllocationGranularity.restype = hipError_t
+    hipMemGetAllocationGranularity.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(struct_hipMemAllocationProp), hipMemAllocationGranularity_flags]
+except AttributeError:
+    pass
+try:
+    hipMemGetAllocationPropertiesFromHandle = _libraries['libamdhip64.so'].hipMemGetAllocationPropertiesFromHandle
+    hipMemGetAllocationPropertiesFromHandle.restype = hipError_t
+    hipMemGetAllocationPropertiesFromHandle.argtypes = [ctypes.POINTER(struct_hipMemAllocationProp), hipMemGenericAllocationHandle_t]
+except AttributeError:
+    pass
+try:
+    hipMemImportFromShareableHandle = _libraries['libamdhip64.so'].hipMemImportFromShareableHandle
+    hipMemImportFromShareableHandle.restype = hipError_t
+    hipMemImportFromShareableHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemGenericAllocationHandle)), ctypes.POINTER(None), hipMemAllocationHandleType]
+except AttributeError:
+    pass
+try:
+    hipMemMap = _libraries['libamdhip64.so'].hipMemMap
+    hipMemMap.restype = hipError_t
+    hipMemMap.argtypes = [ctypes.POINTER(None), size_t, size_t, hipMemGenericAllocationHandle_t, ctypes.c_uint64]
+except AttributeError:
+    pass
+try:
+    hipMemMapArrayAsync = _libraries['libamdhip64.so'].hipMemMapArrayAsync
+    hipMemMapArrayAsync.restype = hipError_t
+    hipMemMapArrayAsync.argtypes = [ctypes.POINTER(struct_hipArrayMapInfo), ctypes.c_uint32, hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipMemRelease = _libraries['libamdhip64.so'].hipMemRelease
+    hipMemRelease.restype = hipError_t
+    hipMemRelease.argtypes = [hipMemGenericAllocationHandle_t]
+except AttributeError:
+    pass
+try:
+    hipMemRetainAllocationHandle = _libraries['libamdhip64.so'].hipMemRetainAllocationHandle
+    hipMemRetainAllocationHandle.restype = hipError_t
+    hipMemRetainAllocationHandle.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_ihipMemGenericAllocationHandle)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hipMemSetAccess = _libraries['libamdhip64.so'].hipMemSetAccess
+    hipMemSetAccess.restype = hipError_t
+    hipMemSetAccess.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hipMemAccessDesc), size_t]
+except AttributeError:
+    pass
+try:
+    hipMemUnmap = _libraries['libamdhip64.so'].hipMemUnmap
+    hipMemUnmap.restype = hipError_t
+    hipMemUnmap.argtypes = [ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
 GLuint = ctypes.c_uint32
 GLenum = ctypes.c_uint32
-hipGLGetDevices = _libraries['libamdhip64.so'].hipGLGetDevices
-hipGLGetDevices.restype = hipError_t
-hipGLGetDevices.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_int32), ctypes.c_uint32, hipGLDeviceList]
-hipGraphicsGLRegisterBuffer = _libraries['libamdhip64.so'].hipGraphicsGLRegisterBuffer
-hipGraphicsGLRegisterBuffer.restype = hipError_t
-hipGraphicsGLRegisterBuffer.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), GLuint, ctypes.c_uint32]
-hipGraphicsGLRegisterImage = _libraries['libamdhip64.so'].hipGraphicsGLRegisterImage
-hipGraphicsGLRegisterImage.restype = hipError_t
-hipGraphicsGLRegisterImage.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), GLuint, GLenum, ctypes.c_uint32]
-hipGraphicsMapResources = _libraries['libamdhip64.so'].hipGraphicsMapResources
-hipGraphicsMapResources.restype = hipError_t
-hipGraphicsMapResources.argtypes = [ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), hipStream_t]
-hipGraphicsSubResourceGetMappedArray = _libraries['libamdhip64.so'].hipGraphicsSubResourceGetMappedArray
-hipGraphicsSubResourceGetMappedArray.restype = hipError_t
-hipGraphicsSubResourceGetMappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), hipGraphicsResource_t, ctypes.c_uint32, ctypes.c_uint32]
-hipGraphicsResourceGetMappedPointer = _libraries['libamdhip64.so'].hipGraphicsResourceGetMappedPointer
-hipGraphicsResourceGetMappedPointer.restype = hipError_t
-hipGraphicsResourceGetMappedPointer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), hipGraphicsResource_t]
-hipGraphicsUnmapResources = _libraries['libamdhip64.so'].hipGraphicsUnmapResources
-hipGraphicsUnmapResources.restype = hipError_t
-hipGraphicsUnmapResources.argtypes = [ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), hipStream_t]
-hipGraphicsUnregisterResource = _libraries['libamdhip64.so'].hipGraphicsUnregisterResource
-hipGraphicsUnregisterResource.restype = hipError_t
-hipGraphicsUnregisterResource.argtypes = [hipGraphicsResource_t]
+try:
+    hipGLGetDevices = _libraries['libamdhip64.so'].hipGLGetDevices
+    hipGLGetDevices.restype = hipError_t
+    hipGLGetDevices.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_int32), ctypes.c_uint32, hipGLDeviceList]
+except AttributeError:
+    pass
+try:
+    hipGraphicsGLRegisterBuffer = _libraries['libamdhip64.so'].hipGraphicsGLRegisterBuffer
+    hipGraphicsGLRegisterBuffer.restype = hipError_t
+    hipGraphicsGLRegisterBuffer.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), GLuint, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphicsGLRegisterImage = _libraries['libamdhip64.so'].hipGraphicsGLRegisterImage
+    hipGraphicsGLRegisterImage.restype = hipError_t
+    hipGraphicsGLRegisterImage.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), GLuint, GLenum, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphicsMapResources = _libraries['libamdhip64.so'].hipGraphicsMapResources
+    hipGraphicsMapResources.restype = hipError_t
+    hipGraphicsMapResources.argtypes = [ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipGraphicsSubResourceGetMappedArray = _libraries['libamdhip64.so'].hipGraphicsSubResourceGetMappedArray
+    hipGraphicsSubResourceGetMappedArray.restype = hipError_t
+    hipGraphicsSubResourceGetMappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipArray)), hipGraphicsResource_t, ctypes.c_uint32, ctypes.c_uint32]
+except AttributeError:
+    pass
+try:
+    hipGraphicsResourceGetMappedPointer = _libraries['libamdhip64.so'].hipGraphicsResourceGetMappedPointer
+    hipGraphicsResourceGetMappedPointer.restype = hipError_t
+    hipGraphicsResourceGetMappedPointer.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), hipGraphicsResource_t]
+except AttributeError:
+    pass
+try:
+    hipGraphicsUnmapResources = _libraries['libamdhip64.so'].hipGraphicsUnmapResources
+    hipGraphicsUnmapResources.restype = hipError_t
+    hipGraphicsUnmapResources.argtypes = [ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), hipStream_t]
+except AttributeError:
+    pass
+try:
+    hipGraphicsUnregisterResource = _libraries['libamdhip64.so'].hipGraphicsUnregisterResource
+    hipGraphicsUnregisterResource.restype = hipError_t
+    hipGraphicsUnregisterResource.argtypes = [hipGraphicsResource_t]
+except AttributeError:
+    pass
 class struct___hip_surface(Structure):
     pass
 
-hipCreateSurfaceObject = _libraries['libamdhip64.so'].hipCreateSurfaceObject
-hipCreateSurfaceObject.restype = hipError_t
-hipCreateSurfaceObject.argtypes = [ctypes.POINTER(ctypes.POINTER(struct___hip_surface)), ctypes.POINTER(struct_hipResourceDesc)]
+try:
+    hipCreateSurfaceObject = _libraries['libamdhip64.so'].hipCreateSurfaceObject
+    hipCreateSurfaceObject.restype = hipError_t
+    hipCreateSurfaceObject.argtypes = [ctypes.POINTER(ctypes.POINTER(struct___hip_surface)), ctypes.POINTER(struct_hipResourceDesc)]
+except AttributeError:
+    pass
 hipSurfaceObject_t = ctypes.POINTER(struct___hip_surface)
-hipDestroySurfaceObject = _libraries['libamdhip64.so'].hipDestroySurfaceObject
-hipDestroySurfaceObject.restype = hipError_t
-hipDestroySurfaceObject.argtypes = [hipSurfaceObject_t]
+try:
+    hipDestroySurfaceObject = _libraries['libamdhip64.so'].hipDestroySurfaceObject
+    hipDestroySurfaceObject.restype = hipError_t
+    hipDestroySurfaceObject.argtypes = [hipSurfaceObject_t]
+except AttributeError:
+    pass
 __all__ = \
     ['GLenum', 'GLuint', 'HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
     'HIPRTC_ERROR_COMPILATION', 'HIPRTC_ERROR_INTERNAL_ERROR',
