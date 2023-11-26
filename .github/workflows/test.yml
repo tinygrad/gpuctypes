@@ -18,15 +18,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-      - name: Install ctypeslib
-        run: |
-          git clone git@github.com:geohot/ctypeslib.git
-          cd ctypeslib
-          pip install .
+      - name: Make apt fast
+        run: echo 'Acquire::http::Pipeline-Depth "5";' | sudo tee -a /etc/apt/apt.conf.d/99parallel
       - name: Install HIP
         if: ${{ matrix.task == 'hip' }}
         run: |
@@ -39,7 +32,6 @@ jobs:
       - name: Install CUDA
         if: ${{ matrix.task == 'cuda' }}
         run: |
-          echo 'Acquire::http::Pipeline-Depth "5";' | sudo tee -a /etc/apt/apt.conf.d/99parallel
           sudo apt update -y
           sudo apt install -y --no-install-recommends git g++ cmake ninja-build llvm-15-dev zlib1g-dev libglew-dev \
             flex bison libfl-dev libboost-thread-dev libboost-filesystem-dev nvidia-cuda-toolkit-gcc
@@ -52,10 +44,26 @@ jobs:
             intel-oneapi-runtime-openmp=2023.2.1-16 intel-oneapi-runtime-compilers-common=2023.2.1-16 intel-oneapi-runtime-compilers=2023.2.1-16 \
             intel-oneapi-runtime-dpcpp-sycl-opencl-cpu=2023.2.1-16 intel-oneapi-runtime-tbb-common=2021.10.0-49541 \
             intel-oneapi-runtime-tbb=2021.10.0-49541 intel-oneapi-runtime-opencl=2023.2.1-16
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Install ctypeslib
+        run: |
+          sudo apt-get install -y --no-install-recommends clang
+          pip install clang==14.0.6
+          git clone https://github.com/geohot/ctypeslib.git
+          cd ctypeslib
+          pip install .
+          clang2py -V
       - name: Generate headers
         run: ./generate_${{ matrix.task }}.sh
       - name: Install gpuctypes
         run: pip install .
-      - name: Test gpuctypes
+      - name: Test gpuctypes import
         run: python3 -c "import gpuctypes.${{ matrix.task }}"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Generated ${{ matrix.task }} Header
+          path: gpuopencl/${{ matrix.task }}.py
 
