@@ -1,12 +1,14 @@
 from typing import List
-import unittest, os, ctypes
+import unittest, os, ctypes, platform
+
+CI = os.getenv("CI", "") != ""
+OSX = platform.system() == "Darwin"
 
 def expectedFailureIf(condition):
   def wrapper(func):
     if condition: return unittest.expectedFailure(func)
     else: return func
   return wrapper
-CI = os.getenv("CI", "") != ""
 
 # helpers for RTC
 

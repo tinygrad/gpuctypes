@@ -14,7 +14,7 @@ def cl_compile(context, device_array, prog):
   status = ctypes.c_int32()
   program = cl.clCreateProgramWithSource(context, num_programs, to_char_p_p([prog]), sizes, ctypes.byref(status))
   assert program is not None
-  status = cl.clCompileProgram(program, len(device_array), device_array, None, 0, None, None, ctypes.cast(None, cl.clCompileProgram.argtypes[7]), None)
+  status = cl.clBuildProgram(program, len(device_array), device_array, None, ctypes.cast(None, cl.clBuildProgram.argtypes[4]), None)
   if status != 0:
     cl.clGetProgramBuildInfo(program, device_array[0], cl.CL_PROGRAM_BUILD_LOG, 0, None, ctypes.byref(log_size := ctypes.c_size_t()))
     cl.clGetProgramBuildInfo(program, device_array[0], cl.CL_PROGRAM_BUILD_LOG, log_size.value, mstr := ctypes.create_string_buffer(log_size.value), None)
@@ -59,6 +59,15 @@ class TestOpenCL(unittest.TestCase):
       A[i] = B[i] + C[i];
     }""")
 
+    binary_sizes = (ctypes.c_size_t * len(self.device_array))()
+    cl.clGetProgramInfo(program, cl.CL_PROGRAM_BINARY_SIZES, ctypes.sizeof(binary_sizes), ctypes.byref(binary_sizes), None)
+
+    binaries = [ctypes.create_string_buffer(binary_sizes[i]) for i in range(len(self.device_array))]
+    binary_pointers = (ctypes.c_char_p * len(self.device_array))(*map(ctypes.addressof, binaries))
+    cl.clGetProgramInfo(program, cl.CL_PROGRAM_BINARIES, ctypes.sizeof(binary_pointers), ctypes.byref(binary_pointers), None)
+
+    assert binary_sizes[0] > 0
+    assert len(binary_pointers[0]) > 0
 
 if __name__ == '__main__':
   unittest.main()
