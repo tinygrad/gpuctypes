@@ -5,7 +5,7 @@
 # POINTER_SIZE is: 8
 # LONGDOUBLE_SIZE is: 16
 #
-import ctypes
+import ctypes, ctypes.util
 
 
 class AsDictMixin:
@@ -144,11 +144,8 @@ def char_pointer_cast(string, encoding='utf-8'):
 
 
 _libraries = {}
-_libraries['libcuda.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libcuda.so')
-try:
-    _libraries['libnvrtc.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libnvrtc.so')
-except OSError:
-    _libraries['libnvrtc.so'] = ctypes.CDLL('/usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so')
+_libraries['libcuda.so'] = ctypes.CDLL(ctypes.util.find_library('cuda'))
+_libraries['libnvrtc.so'] = ctypes.CDLL(ctypes.util.find_library('nvrtc'))
 
 
 cuuint32_t = ctypes.c_uint32
@@ -401,13 +398,28 @@ CUstreamBatchMemOpType__enumvalues = CUstreamBatchMemOpType_enum__enumvalues
 class union_CUstreamBatchMemOpParams_union(Union):
     pass
 
-class struct_CUstreamMemOpFlushRemoteWritesParams_st(Structure):
+class struct_CUstreamMemOpWaitValueParams_st(Structure):
     pass
 
-struct_CUstreamMemOpFlushRemoteWritesParams_st._pack_ = 1 # source:False
-struct_CUstreamMemOpFlushRemoteWritesParams_st._fields_ = [
+class union_CUstreamMemOpWaitValueParams_st_0(Union):
+    pass
+
+union_CUstreamMemOpWaitValueParams_st_0._pack_ = 1 # source:False
+union_CUstreamMemOpWaitValueParams_st_0._fields_ = [
+    ('value', ctypes.c_uint32),
+    ('value64', ctypes.c_uint64),
+]
+
+struct_CUstreamMemOpWaitValueParams_st._pack_ = 1 # source:False
+struct_CUstreamMemOpWaitValueParams_st._anonymous_ = ('_0',)
+struct_CUstreamMemOpWaitValueParams_st._fields_ = [
     ('operation', CUstreamBatchMemOpType),
+    ('PADDING_0', ctypes.c_ubyte * 4),
+    ('address', ctypes.c_uint64),
+    ('_0', union_CUstreamMemOpWaitValueParams_st_0),
     ('flags', ctypes.c_uint32),
+    ('PADDING_1', ctypes.c_ubyte * 4),
+    ('alias', ctypes.c_uint64),
 ]
 
 class struct_CUstreamMemOpWriteValueParams_st(Structure):
@@ -434,28 +446,13 @@ struct_CUstreamMemOpWriteValueParams_st._fields_ = [
     ('alias', ctypes.c_uint64),
 ]
 
-class struct_CUstreamMemOpWaitValueParams_st(Structure):
+class struct_CUstreamMemOpFlushRemoteWritesParams_st(Structure):
     pass
 
-class union_CUstreamMemOpWaitValueParams_st_0(Union):
-    pass
-
-union_CUstreamMemOpWaitValueParams_st_0._pack_ = 1 # source:False
-union_CUstreamMemOpWaitValueParams_st_0._fields_ = [
-    ('value', ctypes.c_uint32),
-    ('value64', ctypes.c_uint64),
-]
-
-struct_CUstreamMemOpWaitValueParams_st._pack_ = 1 # source:False
-struct_CUstreamMemOpWaitValueParams_st._anonymous_ = ('_0',)
-struct_CUstreamMemOpWaitValueParams_st._fields_ = [
+struct_CUstreamMemOpFlushRemoteWritesParams_st._pack_ = 1 # source:False
+struct_CUstreamMemOpFlushRemoteWritesParams_st._fields_ = [
     ('operation', CUstreamBatchMemOpType),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-    ('address', ctypes.c_uint64),
-    ('_0', union_CUstreamMemOpWaitValueParams_st_0),
     ('flags', ctypes.c_uint32),
-    ('PADDING_1', ctypes.c_ubyte * 4),
-    ('alias', ctypes.c_uint64),
 ]
 
 union_CUstreamBatchMemOpParams_union._pack_ = 1 # source:False
@@ -1884,6 +1881,22 @@ class struct_CUDA_RESOURCE_DESC_st(Structure):
 class union_CUDA_RESOURCE_DESC_st_res(Union):
     pass
 
+class struct_CUDA_RESOURCE_DESC_st_0_array(Structure):
+    pass
+
+struct_CUDA_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
+struct_CUDA_RESOURCE_DESC_st_0_array._fields_ = [
+    ('hArray', ctypes.POINTER(struct_CUarray_st)),
+]
+
+class struct_CUDA_RESOURCE_DESC_st_0_mipmap(Structure):
+    pass
+
+struct_CUDA_RESOURCE_DESC_st_0_mipmap._pack_ = 1 # source:False
+struct_CUDA_RESOURCE_DESC_st_0_mipmap._fields_ = [
+    ('hMipmappedArray', ctypes.POINTER(struct_CUmipmappedArray_st)),
+]
+
 class struct_CUDA_RESOURCE_DESC_st_0_linear(Structure):
     pass
 
@@ -1914,22 +1927,6 @@ class struct_CUDA_RESOURCE_DESC_st_0_reserved(Structure):
 struct_CUDA_RESOURCE_DESC_st_0_reserved._pack_ = 1 # source:False
 struct_CUDA_RESOURCE_DESC_st_0_reserved._fields_ = [
     ('reserved', ctypes.c_int32 * 32),
-]
-
-class struct_CUDA_RESOURCE_DESC_st_0_mipmap(Structure):
-    pass
-
-struct_CUDA_RESOURCE_DESC_st_0_mipmap._pack_ = 1 # source:False
-struct_CUDA_RESOURCE_DESC_st_0_mipmap._fields_ = [
-    ('hMipmappedArray', ctypes.POINTER(struct_CUmipmappedArray_st)),
-]
-
-class struct_CUDA_RESOURCE_DESC_st_0_array(Structure):
-    pass
-
-struct_CUDA_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
-struct_CUDA_RESOURCE_DESC_st_0_array._fields_ = [
-    ('hArray', ctypes.POINTER(struct_CUarray_st)),
 ]
 
 union_CUDA_RESOURCE_DESC_st_res._pack_ = 1 # source:False
@@ -2267,6 +2264,14 @@ class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st(Structure):
 class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_params(Structure):
     pass
 
+class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence(Structure):
+    pass
+
+struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence._pack_ = 1 # source:False
+struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence._fields_ = [
+    ('value', ctypes.c_uint64),
+]
+
 class union_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_nvSciSync(Union):
     pass
 
@@ -2274,14 +2279,6 @@ union_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_nvSciSync._pack_ = 1 # source:F
 union_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_nvSciSync._fields_ = [
     ('fence', ctypes.POINTER(None)),
     ('reserved', ctypes.c_uint64),
-]
-
-class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence(Structure):
-    pass
-
-struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence._pack_ = 1 # source:False
-struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence._fields_ = [
-    ('value', ctypes.c_uint64),
 ]
 
 class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex(Structure):
@@ -2324,6 +2321,15 @@ struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_fence._fields_ = [
     ('value', ctypes.c_uint64),
 ]
 
+class union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync(Union):
+    pass
+
+union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync._pack_ = 1 # source:False
+union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync._fields_ = [
+    ('fence', ctypes.POINTER(None)),
+    ('reserved', ctypes.c_uint64),
+]
+
 class struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex(Structure):
     pass
 
@@ -2332,15 +2338,6 @@ struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex._fields_ = [
     ('key', ctypes.c_uint64),
     ('timeoutMs', ctypes.c_uint32),
     ('PADDING_0', ctypes.c_ubyte * 4),
-]
-
-class union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync(Union):
-    pass
-
-union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync._pack_ = 1 # source:False
-union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync._fields_ = [
-    ('fence', ctypes.POINTER(None)),
-    ('reserved', ctypes.c_uint64),
 ]
 
 struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_params._pack_ = 1 # source:False
@@ -2504,17 +2501,6 @@ union_CUarrayMapInfo_st_resource._fields_ = [
 class union_CUarrayMapInfo_st_subresource(Union):
     pass
 
-class struct_CUarrayMapInfo_st_1_miptail(Structure):
-    pass
-
-struct_CUarrayMapInfo_st_1_miptail._pack_ = 1 # source:False
-struct_CUarrayMapInfo_st_1_miptail._fields_ = [
-    ('layer', ctypes.c_uint32),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-    ('offset', ctypes.c_uint64),
-    ('size', ctypes.c_uint64),
-]
-
 class struct_CUarrayMapInfo_st_1_sparseLevel(Structure):
     pass
 
@@ -2528,6 +2514,17 @@ struct_CUarrayMapInfo_st_1_sparseLevel._fields_ = [
     ('extentWidth', ctypes.c_uint32),
     ('extentHeight', ctypes.c_uint32),
     ('extentDepth', ctypes.c_uint32),
+]
+
+class struct_CUarrayMapInfo_st_1_miptail(Structure):
+    pass
+
+struct_CUarrayMapInfo_st_1_miptail._pack_ = 1 # source:False
+struct_CUarrayMapInfo_st_1_miptail._fields_ = [
+    ('layer', ctypes.c_uint32),
+    ('PADDING_0', ctypes.c_ubyte * 4),
+    ('offset', ctypes.c_uint64),
+    ('size', ctypes.c_uint64),
 ]
 
 union_CUarrayMapInfo_st_subresource._pack_ = 1 # source:False
