@@ -609,9 +609,9 @@ CL_KHRONOS_VENDOR_ID_CODEPLAY = 0x10004 # macro
 CL_VERSION_MAJOR_BITS = (10) # macro
 CL_VERSION_MINOR_BITS = (10) # macro
 CL_VERSION_PATCH_BITS = (12) # macro
-CL_VERSION_MAJOR_MASK = ((1<<(10)) # macro
-CL_VERSION_MINOR_MASK = ((1<<(10)) # macro
-CL_VERSION_PATCH_MASK = ((1<<(12)) # macro
+# CL_VERSION_MAJOR_MASK = ((1<<(10)) # macro
+# CL_VERSION_MINOR_MASK = ((1<<(10)) # macro
+# CL_VERSION_PATCH_MASK = ((1<<(12)) # macro
 # def CL_VERSION_MAJOR(version):  # macro
 #    return ((version)>>((10)+(12)))  
 # def CL_VERSION_MINOR(version):  # macro
@@ -771,346 +771,685 @@ struct__cl_name_version._fields_ = [
 cl_name_version = struct__cl_name_version
 cl_int = ctypes.c_int32
 cl_uint = ctypes.c_uint32
-clGetPlatformIDs = _libraries['libOpenCL.so'].clGetPlatformIDs
-clGetPlatformIDs.restype = cl_int
-clGetPlatformIDs.argtypes = [cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_platform_id)), ctypes.POINTER(ctypes.c_uint32)]
+try:
+    clGetPlatformIDs = _libraries['libOpenCL.so'].clGetPlatformIDs
+    clGetPlatformIDs.restype = cl_int
+    clGetPlatformIDs.argtypes = [cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_platform_id)), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 size_t = ctypes.c_uint64
-clGetPlatformInfo = _libraries['libOpenCL.so'].clGetPlatformInfo
-clGetPlatformInfo.restype = cl_int
-clGetPlatformInfo.argtypes = [cl_platform_id, cl_platform_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetDeviceIDs = _libraries['libOpenCL.so'].clGetDeviceIDs
-clGetDeviceIDs.restype = cl_int
-clGetDeviceIDs.argtypes = [cl_platform_id, cl_device_type, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_uint32)]
-clGetDeviceInfo = _libraries['libOpenCL.so'].clGetDeviceInfo
-clGetDeviceInfo.restype = cl_int
-clGetDeviceInfo.argtypes = [cl_device_id, cl_device_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clCreateSubDevices = _libraries['libOpenCL.so'].clCreateSubDevices
-clCreateSubDevices.restype = cl_int
-clCreateSubDevices.argtypes = [cl_device_id, ctypes.POINTER(ctypes.c_int64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_uint32)]
-clRetainDevice = _libraries['libOpenCL.so'].clRetainDevice
-clRetainDevice.restype = cl_int
-clRetainDevice.argtypes = [cl_device_id]
-clReleaseDevice = _libraries['libOpenCL.so'].clReleaseDevice
-clReleaseDevice.restype = cl_int
-clReleaseDevice.argtypes = [cl_device_id]
-clSetDefaultDeviceCommandQueue = _libraries['libOpenCL.so'].clSetDefaultDeviceCommandQueue
-clSetDefaultDeviceCommandQueue.restype = cl_int
-clSetDefaultDeviceCommandQueue.argtypes = [cl_context, cl_device_id, cl_command_queue]
-clGetDeviceAndHostTimer = _libraries['libOpenCL.so'].clGetDeviceAndHostTimer
-clGetDeviceAndHostTimer.restype = cl_int
-clGetDeviceAndHostTimer.argtypes = [cl_device_id, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64)]
-clGetHostTimer = _libraries['libOpenCL.so'].clGetHostTimer
-clGetHostTimer.restype = cl_int
-clGetHostTimer.argtypes = [cl_device_id, ctypes.POINTER(ctypes.c_uint64)]
-clCreateContext = _libraries['libOpenCL.so'].clCreateContext
-clCreateContext.restype = cl_context
-clCreateContext.argtypes = [ctypes.POINTER(ctypes.c_int64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None), ctypes.c_uint64, ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clCreateContextFromType = _libraries['libOpenCL.so'].clCreateContextFromType
-clCreateContextFromType.restype = cl_context
-clCreateContextFromType.argtypes = [ctypes.POINTER(ctypes.c_int64), cl_device_type, ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None), ctypes.c_uint64, ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clRetainContext = _libraries['libOpenCL.so'].clRetainContext
-clRetainContext.restype = cl_int
-clRetainContext.argtypes = [cl_context]
-clReleaseContext = _libraries['libOpenCL.so'].clReleaseContext
-clReleaseContext.restype = cl_int
-clReleaseContext.argtypes = [cl_context]
-clGetContextInfo = _libraries['libOpenCL.so'].clGetContextInfo
-clGetContextInfo.restype = cl_int
-clGetContextInfo.argtypes = [cl_context, cl_context_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clSetContextDestructorCallback = _libraries['libOpenCL.so'].clSetContextDestructorCallback
-clSetContextDestructorCallback.restype = cl_int
-clSetContextDestructorCallback.argtypes = [cl_context, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_context), ctypes.POINTER(None)), ctypes.POINTER(None)]
-clCreateCommandQueueWithProperties = _libraries['libOpenCL.so'].clCreateCommandQueueWithProperties
-clCreateCommandQueueWithProperties.restype = cl_command_queue
-clCreateCommandQueueWithProperties.argtypes = [cl_context, cl_device_id, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_int32)]
-clRetainCommandQueue = _libraries['libOpenCL.so'].clRetainCommandQueue
-clRetainCommandQueue.restype = cl_int
-clRetainCommandQueue.argtypes = [cl_command_queue]
-clReleaseCommandQueue = _libraries['libOpenCL.so'].clReleaseCommandQueue
-clReleaseCommandQueue.restype = cl_int
-clReleaseCommandQueue.argtypes = [cl_command_queue]
-clGetCommandQueueInfo = _libraries['libOpenCL.so'].clGetCommandQueueInfo
-clGetCommandQueueInfo.restype = cl_int
-clGetCommandQueueInfo.argtypes = [cl_command_queue, cl_command_queue_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clCreateBuffer = _libraries['libOpenCL.so'].clCreateBuffer
-clCreateBuffer.restype = cl_mem
-clCreateBuffer.argtypes = [cl_context, cl_mem_flags, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clCreateSubBuffer = _libraries['libOpenCL.so'].clCreateSubBuffer
-clCreateSubBuffer.restype = cl_mem
-clCreateSubBuffer.argtypes = [cl_mem, cl_mem_flags, cl_buffer_create_type, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clCreateImage = _libraries['libOpenCL.so'].clCreateImage
-clCreateImage.restype = cl_mem
-clCreateImage.argtypes = [cl_context, cl_mem_flags, ctypes.POINTER(struct__cl_image_format), ctypes.POINTER(struct__cl_image_desc), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clCreatePipe = _libraries['libOpenCL.so'].clCreatePipe
-clCreatePipe.restype = cl_mem
-clCreatePipe.argtypes = [cl_context, cl_mem_flags, cl_uint, cl_uint, ctypes.POINTER(ctypes.c_int64), ctypes.POINTER(ctypes.c_int32)]
-clCreateBufferWithProperties = _libraries['libOpenCL.so'].clCreateBufferWithProperties
-clCreateBufferWithProperties.restype = cl_mem
-clCreateBufferWithProperties.argtypes = [cl_context, ctypes.POINTER(ctypes.c_uint64), cl_mem_flags, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clCreateImageWithProperties = _libraries['libOpenCL.so'].clCreateImageWithProperties
-clCreateImageWithProperties.restype = cl_mem
-clCreateImageWithProperties.argtypes = [cl_context, ctypes.POINTER(ctypes.c_uint64), cl_mem_flags, ctypes.POINTER(struct__cl_image_format), ctypes.POINTER(struct__cl_image_desc), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clRetainMemObject = _libraries['libOpenCL.so'].clRetainMemObject
-clRetainMemObject.restype = cl_int
-clRetainMemObject.argtypes = [cl_mem]
-clReleaseMemObject = _libraries['libOpenCL.so'].clReleaseMemObject
-clReleaseMemObject.restype = cl_int
-clReleaseMemObject.argtypes = [cl_mem]
-clGetSupportedImageFormats = _libraries['libOpenCL.so'].clGetSupportedImageFormats
-clGetSupportedImageFormats.restype = cl_int
-clGetSupportedImageFormats.argtypes = [cl_context, cl_mem_flags, cl_mem_object_type, cl_uint, ctypes.POINTER(struct__cl_image_format), ctypes.POINTER(ctypes.c_uint32)]
-clGetMemObjectInfo = _libraries['libOpenCL.so'].clGetMemObjectInfo
-clGetMemObjectInfo.restype = cl_int
-clGetMemObjectInfo.argtypes = [cl_mem, cl_mem_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetImageInfo = _libraries['libOpenCL.so'].clGetImageInfo
-clGetImageInfo.restype = cl_int
-clGetImageInfo.argtypes = [cl_mem, cl_image_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetPipeInfo = _libraries['libOpenCL.so'].clGetPipeInfo
-clGetPipeInfo.restype = cl_int
-clGetPipeInfo.argtypes = [cl_mem, cl_pipe_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clSetMemObjectDestructorCallback = _libraries['libOpenCL.so'].clSetMemObjectDestructorCallback
-clSetMemObjectDestructorCallback.restype = cl_int
-clSetMemObjectDestructorCallback.argtypes = [cl_mem, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_mem), ctypes.POINTER(None)), ctypes.POINTER(None)]
-clSVMAlloc = _libraries['libOpenCL.so'].clSVMAlloc
-clSVMAlloc.restype = ctypes.POINTER(None)
-clSVMAlloc.argtypes = [cl_context, cl_svm_mem_flags, size_t, cl_uint]
-clSVMFree = _libraries['libOpenCL.so'].clSVMFree
-clSVMFree.restype = None
-clSVMFree.argtypes = [cl_context, ctypes.POINTER(None)]
-clCreateSamplerWithProperties = _libraries['libOpenCL.so'].clCreateSamplerWithProperties
-clCreateSamplerWithProperties.restype = cl_sampler
-clCreateSamplerWithProperties.argtypes = [cl_context, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_int32)]
-clRetainSampler = _libraries['libOpenCL.so'].clRetainSampler
-clRetainSampler.restype = cl_int
-clRetainSampler.argtypes = [cl_sampler]
-clReleaseSampler = _libraries['libOpenCL.so'].clReleaseSampler
-clReleaseSampler.restype = cl_int
-clReleaseSampler.argtypes = [cl_sampler]
-clGetSamplerInfo = _libraries['libOpenCL.so'].clGetSamplerInfo
-clGetSamplerInfo.restype = cl_int
-clGetSamplerInfo.argtypes = [cl_sampler, cl_sampler_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clCreateProgramWithSource = _libraries['libOpenCL.so'].clCreateProgramWithSource
-clCreateProgramWithSource.restype = cl_program
-clCreateProgramWithSource.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_int32)]
-clCreateProgramWithBinary = _libraries['libOpenCL.so'].clCreateProgramWithBinary
-clCreateProgramWithBinary.restype = cl_program
-clCreateProgramWithBinary.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(ctypes.c_ubyte)), ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
-clCreateProgramWithBuiltInKernels = _libraries['libOpenCL.so'].clCreateProgramWithBuiltInKernels
-clCreateProgramWithBuiltInKernels.restype = cl_program
-clCreateProgramWithBuiltInKernels.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_int32)]
-clCreateProgramWithIL = _libraries['libOpenCL.so'].clCreateProgramWithIL
-clCreateProgramWithIL.restype = cl_program
-clCreateProgramWithIL.argtypes = [cl_context, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_int32)]
-clRetainProgram = _libraries['libOpenCL.so'].clRetainProgram
-clRetainProgram.restype = cl_int
-clRetainProgram.argtypes = [cl_program]
-clReleaseProgram = _libraries['libOpenCL.so'].clReleaseProgram
-clReleaseProgram.restype = cl_int
-clReleaseProgram.argtypes = [cl_program]
-clBuildProgram = _libraries['libOpenCL.so'].clBuildProgram
-clBuildProgram.restype = cl_int
-clBuildProgram.argtypes = [cl_program, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None)]
-clCompileProgram = _libraries['libOpenCL.so'].clCompileProgram
-clCompileProgram.restype = cl_int
-clCompileProgram.argtypes = [cl_program, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_program)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None)]
-clLinkProgram = _libraries['libOpenCL.so'].clLinkProgram
-clLinkProgram.restype = cl_program
-clLinkProgram.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_program)), ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clSetProgramReleaseCallback = _libraries['libOpenCL.so'].clSetProgramReleaseCallback
-clSetProgramReleaseCallback.restype = cl_int
-clSetProgramReleaseCallback.argtypes = [cl_program, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None)]
-clSetProgramSpecializationConstant = _libraries['libOpenCL.so'].clSetProgramSpecializationConstant
-clSetProgramSpecializationConstant.restype = cl_int
-clSetProgramSpecializationConstant.argtypes = [cl_program, cl_uint, size_t, ctypes.POINTER(None)]
-clUnloadPlatformCompiler = _libraries['libOpenCL.so'].clUnloadPlatformCompiler
-clUnloadPlatformCompiler.restype = cl_int
-clUnloadPlatformCompiler.argtypes = [cl_platform_id]
-clGetProgramInfo = _libraries['libOpenCL.so'].clGetProgramInfo
-clGetProgramInfo.restype = cl_int
-clGetProgramInfo.argtypes = [cl_program, cl_program_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetProgramBuildInfo = _libraries['libOpenCL.so'].clGetProgramBuildInfo
-clGetProgramBuildInfo.restype = cl_int
-clGetProgramBuildInfo.argtypes = [cl_program, cl_device_id, cl_program_build_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clCreateKernel = _libraries['libOpenCL.so'].clCreateKernel
-clCreateKernel.restype = cl_kernel
-clCreateKernel.argtypes = [cl_program, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_int32)]
-clCreateKernelsInProgram = _libraries['libOpenCL.so'].clCreateKernelsInProgram
-clCreateKernelsInProgram.restype = cl_int
-clCreateKernelsInProgram.argtypes = [cl_program, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_kernel)), ctypes.POINTER(ctypes.c_uint32)]
-clCloneKernel = _libraries['libOpenCL.so'].clCloneKernel
-clCloneKernel.restype = cl_kernel
-clCloneKernel.argtypes = [cl_kernel, ctypes.POINTER(ctypes.c_int32)]
-clRetainKernel = _libraries['libOpenCL.so'].clRetainKernel
-clRetainKernel.restype = cl_int
-clRetainKernel.argtypes = [cl_kernel]
-clReleaseKernel = _libraries['libOpenCL.so'].clReleaseKernel
-clReleaseKernel.restype = cl_int
-clReleaseKernel.argtypes = [cl_kernel]
-clSetKernelArg = _libraries['libOpenCL.so'].clSetKernelArg
-clSetKernelArg.restype = cl_int
-clSetKernelArg.argtypes = [cl_kernel, cl_uint, size_t, ctypes.POINTER(None)]
-clSetKernelArgSVMPointer = _libraries['libOpenCL.so'].clSetKernelArgSVMPointer
-clSetKernelArgSVMPointer.restype = cl_int
-clSetKernelArgSVMPointer.argtypes = [cl_kernel, cl_uint, ctypes.POINTER(None)]
-clSetKernelExecInfo = _libraries['libOpenCL.so'].clSetKernelExecInfo
-clSetKernelExecInfo.restype = cl_int
-clSetKernelExecInfo.argtypes = [cl_kernel, cl_kernel_exec_info, size_t, ctypes.POINTER(None)]
-clGetKernelInfo = _libraries['libOpenCL.so'].clGetKernelInfo
-clGetKernelInfo.restype = cl_int
-clGetKernelInfo.argtypes = [cl_kernel, cl_kernel_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetKernelArgInfo = _libraries['libOpenCL.so'].clGetKernelArgInfo
-clGetKernelArgInfo.restype = cl_int
-clGetKernelArgInfo.argtypes = [cl_kernel, cl_uint, cl_kernel_arg_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetKernelWorkGroupInfo = _libraries['libOpenCL.so'].clGetKernelWorkGroupInfo
-clGetKernelWorkGroupInfo.restype = cl_int
-clGetKernelWorkGroupInfo.argtypes = [cl_kernel, cl_device_id, cl_kernel_work_group_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clGetKernelSubGroupInfo = _libraries['libOpenCL.so'].clGetKernelSubGroupInfo
-clGetKernelSubGroupInfo.restype = cl_int
-clGetKernelSubGroupInfo.argtypes = [cl_kernel, cl_device_id, cl_kernel_sub_group_info, size_t, ctypes.POINTER(None), size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clWaitForEvents = _libraries['libOpenCL.so'].clWaitForEvents
-clWaitForEvents.restype = cl_int
-clWaitForEvents.argtypes = [cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clGetEventInfo = _libraries['libOpenCL.so'].clGetEventInfo
-clGetEventInfo.restype = cl_int
-clGetEventInfo.argtypes = [cl_event, cl_event_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clCreateUserEvent = _libraries['libOpenCL.so'].clCreateUserEvent
-clCreateUserEvent.restype = cl_event
-clCreateUserEvent.argtypes = [cl_context, ctypes.POINTER(ctypes.c_int32)]
-clRetainEvent = _libraries['libOpenCL.so'].clRetainEvent
-clRetainEvent.restype = cl_int
-clRetainEvent.argtypes = [cl_event]
-clReleaseEvent = _libraries['libOpenCL.so'].clReleaseEvent
-clReleaseEvent.restype = cl_int
-clReleaseEvent.argtypes = [cl_event]
-clSetUserEventStatus = _libraries['libOpenCL.so'].clSetUserEventStatus
-clSetUserEventStatus.restype = cl_int
-clSetUserEventStatus.argtypes = [cl_event, cl_int]
-clSetEventCallback = _libraries['libOpenCL.so'].clSetEventCallback
-clSetEventCallback.restype = cl_int
-clSetEventCallback.argtypes = [cl_event, cl_int, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_event), ctypes.c_int32, ctypes.POINTER(None)), ctypes.POINTER(None)]
-clGetEventProfilingInfo = _libraries['libOpenCL.so'].clGetEventProfilingInfo
-clGetEventProfilingInfo.restype = cl_int
-clGetEventProfilingInfo.argtypes = [cl_event, cl_profiling_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
-clFlush = _libraries['libOpenCL.so'].clFlush
-clFlush.restype = cl_int
-clFlush.argtypes = [cl_command_queue]
-clFinish = _libraries['libOpenCL.so'].clFinish
-clFinish.restype = cl_int
-clFinish.argtypes = [cl_command_queue]
-clEnqueueReadBuffer = _libraries['libOpenCL.so'].clEnqueueReadBuffer
-clEnqueueReadBuffer.restype = cl_int
-clEnqueueReadBuffer.argtypes = [cl_command_queue, cl_mem, cl_bool, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueReadBufferRect = _libraries['libOpenCL.so'].clEnqueueReadBufferRect
-clEnqueueReadBufferRect.restype = cl_int
-clEnqueueReadBufferRect.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueWriteBuffer = _libraries['libOpenCL.so'].clEnqueueWriteBuffer
-clEnqueueWriteBuffer.restype = cl_int
-clEnqueueWriteBuffer.argtypes = [cl_command_queue, cl_mem, cl_bool, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueWriteBufferRect = _libraries['libOpenCL.so'].clEnqueueWriteBufferRect
-clEnqueueWriteBufferRect.restype = cl_int
-clEnqueueWriteBufferRect.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueFillBuffer = _libraries['libOpenCL.so'].clEnqueueFillBuffer
-clEnqueueFillBuffer.restype = cl_int
-clEnqueueFillBuffer.argtypes = [cl_command_queue, cl_mem, ctypes.POINTER(None), size_t, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueCopyBuffer = _libraries['libOpenCL.so'].clEnqueueCopyBuffer
-clEnqueueCopyBuffer.restype = cl_int
-clEnqueueCopyBuffer.argtypes = [cl_command_queue, cl_mem, cl_mem, size_t, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueCopyBufferRect = _libraries['libOpenCL.so'].clEnqueueCopyBufferRect
-clEnqueueCopyBufferRect.restype = cl_int
-clEnqueueCopyBufferRect.argtypes = [cl_command_queue, cl_mem, cl_mem, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueReadImage = _libraries['libOpenCL.so'].clEnqueueReadImage
-clEnqueueReadImage.restype = cl_int
-clEnqueueReadImage.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueWriteImage = _libraries['libOpenCL.so'].clEnqueueWriteImage
-clEnqueueWriteImage.restype = cl_int
-clEnqueueWriteImage.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueFillImage = _libraries['libOpenCL.so'].clEnqueueFillImage
-clEnqueueFillImage.restype = cl_int
-clEnqueueFillImage.argtypes = [cl_command_queue, cl_mem, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueCopyImage = _libraries['libOpenCL.so'].clEnqueueCopyImage
-clEnqueueCopyImage.restype = cl_int
-clEnqueueCopyImage.argtypes = [cl_command_queue, cl_mem, cl_mem, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueCopyImageToBuffer = _libraries['libOpenCL.so'].clEnqueueCopyImageToBuffer
-clEnqueueCopyImageToBuffer.restype = cl_int
-clEnqueueCopyImageToBuffer.argtypes = [cl_command_queue, cl_mem, cl_mem, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueCopyBufferToImage = _libraries['libOpenCL.so'].clEnqueueCopyBufferToImage
-clEnqueueCopyBufferToImage.restype = cl_int
-clEnqueueCopyBufferToImage.argtypes = [cl_command_queue, cl_mem, cl_mem, size_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueMapBuffer = _libraries['libOpenCL.so'].clEnqueueMapBuffer
-clEnqueueMapBuffer.restype = ctypes.POINTER(None)
-clEnqueueMapBuffer.argtypes = [cl_command_queue, cl_mem, cl_bool, cl_map_flags, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.c_int32)]
-clEnqueueMapImage = _libraries['libOpenCL.so'].clEnqueueMapImage
-clEnqueueMapImage.restype = ctypes.POINTER(None)
-clEnqueueMapImage.argtypes = [cl_command_queue, cl_mem, cl_bool, cl_map_flags, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.c_int32)]
-clEnqueueUnmapMemObject = _libraries['libOpenCL.so'].clEnqueueUnmapMemObject
-clEnqueueUnmapMemObject.restype = cl_int
-clEnqueueUnmapMemObject.argtypes = [cl_command_queue, cl_mem, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueMigrateMemObjects = _libraries['libOpenCL.so'].clEnqueueMigrateMemObjects
-clEnqueueMigrateMemObjects.restype = cl_int
-clEnqueueMigrateMemObjects.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_mem)), cl_mem_migration_flags, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueNDRangeKernel = _libraries['libOpenCL.so'].clEnqueueNDRangeKernel
-clEnqueueNDRangeKernel.restype = cl_int
-clEnqueueNDRangeKernel.argtypes = [cl_command_queue, cl_kernel, cl_uint, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueNativeKernel = _libraries['libOpenCL.so'].clEnqueueNativeKernel
-clEnqueueNativeKernel.restype = cl_int
-clEnqueueNativeKernel.argtypes = [cl_command_queue, ctypes.CFUNCTYPE(None, ctypes.POINTER(None)), ctypes.POINTER(None), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_mem)), ctypes.POINTER(ctypes.POINTER(None)), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueMarkerWithWaitList = _libraries['libOpenCL.so'].clEnqueueMarkerWithWaitList
-clEnqueueMarkerWithWaitList.restype = cl_int
-clEnqueueMarkerWithWaitList.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueBarrierWithWaitList = _libraries['libOpenCL.so'].clEnqueueBarrierWithWaitList
-clEnqueueBarrierWithWaitList.restype = cl_int
-clEnqueueBarrierWithWaitList.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueSVMFree = _libraries['libOpenCL.so'].clEnqueueSVMFree
-clEnqueueSVMFree.restype = cl_int
-clEnqueueSVMFree.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(None) * 0, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_command_queue), ctypes.c_uint32, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(None)), ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueSVMMemcpy = _libraries['libOpenCL.so'].clEnqueueSVMMemcpy
-clEnqueueSVMMemcpy.restype = cl_int
-clEnqueueSVMMemcpy.argtypes = [cl_command_queue, cl_bool, ctypes.POINTER(None), ctypes.POINTER(None), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueSVMMemFill = _libraries['libOpenCL.so'].clEnqueueSVMMemFill
-clEnqueueSVMMemFill.restype = cl_int
-clEnqueueSVMMemFill.argtypes = [cl_command_queue, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueSVMMap = _libraries['libOpenCL.so'].clEnqueueSVMMap
-clEnqueueSVMMap.restype = cl_int
-clEnqueueSVMMap.argtypes = [cl_command_queue, cl_bool, cl_map_flags, ctypes.POINTER(None), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueSVMUnmap = _libraries['libOpenCL.so'].clEnqueueSVMUnmap
-clEnqueueSVMUnmap.restype = cl_int
-clEnqueueSVMUnmap.argtypes = [cl_command_queue, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueSVMMigrateMem = _libraries['libOpenCL.so'].clEnqueueSVMMigrateMem
-clEnqueueSVMMigrateMem.restype = cl_int
-clEnqueueSVMMigrateMem.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), cl_mem_migration_flags, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clGetExtensionFunctionAddressForPlatform = _libraries['libOpenCL.so'].clGetExtensionFunctionAddressForPlatform
-clGetExtensionFunctionAddressForPlatform.restype = ctypes.POINTER(None)
-clGetExtensionFunctionAddressForPlatform.argtypes = [cl_platform_id, ctypes.POINTER(ctypes.c_char)]
-clCreateImage2D = _libraries['libOpenCL.so'].clCreateImage2D
-clCreateImage2D.restype = cl_mem
-clCreateImage2D.argtypes = [cl_context, cl_mem_flags, ctypes.POINTER(struct__cl_image_format), size_t, size_t, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clCreateImage3D = _libraries['libOpenCL.so'].clCreateImage3D
-clCreateImage3D.restype = cl_mem
-clCreateImage3D.argtypes = [cl_context, cl_mem_flags, ctypes.POINTER(struct__cl_image_format), size_t, size_t, size_t, size_t, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
-clEnqueueMarker = _libraries['libOpenCL.so'].clEnqueueMarker
-clEnqueueMarker.restype = cl_int
-clEnqueueMarker.argtypes = [cl_command_queue, ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueWaitForEvents = _libraries['libOpenCL.so'].clEnqueueWaitForEvents
-clEnqueueWaitForEvents.restype = cl_int
-clEnqueueWaitForEvents.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
-clEnqueueBarrier = _libraries['libOpenCL.so'].clEnqueueBarrier
-clEnqueueBarrier.restype = cl_int
-clEnqueueBarrier.argtypes = [cl_command_queue]
-clUnloadCompiler = _libraries['libOpenCL.so'].clUnloadCompiler
-clUnloadCompiler.restype = cl_int
-clUnloadCompiler.argtypes = []
-clGetExtensionFunctionAddress = _libraries['libOpenCL.so'].clGetExtensionFunctionAddress
-clGetExtensionFunctionAddress.restype = ctypes.POINTER(None)
-clGetExtensionFunctionAddress.argtypes = [ctypes.POINTER(ctypes.c_char)]
-clCreateCommandQueue = _libraries['libOpenCL.so'].clCreateCommandQueue
-clCreateCommandQueue.restype = cl_command_queue
-clCreateCommandQueue.argtypes = [cl_context, cl_device_id, cl_command_queue_properties, ctypes.POINTER(ctypes.c_int32)]
-clCreateSampler = _libraries['libOpenCL.so'].clCreateSampler
-clCreateSampler.restype = cl_sampler
-clCreateSampler.argtypes = [cl_context, cl_bool, cl_addressing_mode, cl_filter_mode, ctypes.POINTER(ctypes.c_int32)]
-clEnqueueTask = _libraries['libOpenCL.so'].clEnqueueTask
-clEnqueueTask.restype = cl_int
-clEnqueueTask.argtypes = [cl_command_queue, cl_kernel, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+try:
+    clGetPlatformInfo = _libraries['libOpenCL.so'].clGetPlatformInfo
+    clGetPlatformInfo.restype = cl_int
+    clGetPlatformInfo.argtypes = [cl_platform_id, cl_platform_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetDeviceIDs = _libraries['libOpenCL.so'].clGetDeviceIDs
+    clGetDeviceIDs.restype = cl_int
+    clGetDeviceIDs.argtypes = [cl_platform_id, cl_device_type, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    clGetDeviceInfo = _libraries['libOpenCL.so'].clGetDeviceInfo
+    clGetDeviceInfo.restype = cl_int
+    clGetDeviceInfo.argtypes = [cl_device_id, cl_device_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clCreateSubDevices = _libraries['libOpenCL.so'].clCreateSubDevices
+    clCreateSubDevices.restype = cl_int
+    clCreateSubDevices.argtypes = [cl_device_id, ctypes.POINTER(ctypes.c_int64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    clRetainDevice = _libraries['libOpenCL.so'].clRetainDevice
+    clRetainDevice.restype = cl_int
+    clRetainDevice.argtypes = [cl_device_id]
+except AttributeError:
+    pass
+try:
+    clReleaseDevice = _libraries['libOpenCL.so'].clReleaseDevice
+    clReleaseDevice.restype = cl_int
+    clReleaseDevice.argtypes = [cl_device_id]
+except AttributeError:
+    pass
+try:
+    clSetDefaultDeviceCommandQueue = _libraries['libOpenCL.so'].clSetDefaultDeviceCommandQueue
+    clSetDefaultDeviceCommandQueue.restype = cl_int
+    clSetDefaultDeviceCommandQueue.argtypes = [cl_context, cl_device_id, cl_command_queue]
+except AttributeError:
+    pass
+try:
+    clGetDeviceAndHostTimer = _libraries['libOpenCL.so'].clGetDeviceAndHostTimer
+    clGetDeviceAndHostTimer.restype = cl_int
+    clGetDeviceAndHostTimer.argtypes = [cl_device_id, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetHostTimer = _libraries['libOpenCL.so'].clGetHostTimer
+    clGetHostTimer.restype = cl_int
+    clGetHostTimer.argtypes = [cl_device_id, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clCreateContext = _libraries['libOpenCL.so'].clCreateContext
+    clCreateContext.restype = cl_context
+    clCreateContext.argtypes = [ctypes.POINTER(ctypes.c_int64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None), ctypes.c_uint64, ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateContextFromType = _libraries['libOpenCL.so'].clCreateContextFromType
+    clCreateContextFromType.restype = cl_context
+    clCreateContextFromType.argtypes = [ctypes.POINTER(ctypes.c_int64), cl_device_type, ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None), ctypes.c_uint64, ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainContext = _libraries['libOpenCL.so'].clRetainContext
+    clRetainContext.restype = cl_int
+    clRetainContext.argtypes = [cl_context]
+except AttributeError:
+    pass
+try:
+    clReleaseContext = _libraries['libOpenCL.so'].clReleaseContext
+    clReleaseContext.restype = cl_int
+    clReleaseContext.argtypes = [cl_context]
+except AttributeError:
+    pass
+try:
+    clGetContextInfo = _libraries['libOpenCL.so'].clGetContextInfo
+    clGetContextInfo.restype = cl_int
+    clGetContextInfo.argtypes = [cl_context, cl_context_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clSetContextDestructorCallback = _libraries['libOpenCL.so'].clSetContextDestructorCallback
+    clSetContextDestructorCallback.restype = cl_int
+    clSetContextDestructorCallback.argtypes = [cl_context, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_context), ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clCreateCommandQueueWithProperties = _libraries['libOpenCL.so'].clCreateCommandQueueWithProperties
+    clCreateCommandQueueWithProperties.restype = cl_command_queue
+    clCreateCommandQueueWithProperties.argtypes = [cl_context, cl_device_id, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainCommandQueue = _libraries['libOpenCL.so'].clRetainCommandQueue
+    clRetainCommandQueue.restype = cl_int
+    clRetainCommandQueue.argtypes = [cl_command_queue]
+except AttributeError:
+    pass
+try:
+    clReleaseCommandQueue = _libraries['libOpenCL.so'].clReleaseCommandQueue
+    clReleaseCommandQueue.restype = cl_int
+    clReleaseCommandQueue.argtypes = [cl_command_queue]
+except AttributeError:
+    pass
+try:
+    clGetCommandQueueInfo = _libraries['libOpenCL.so'].clGetCommandQueueInfo
+    clGetCommandQueueInfo.restype = cl_int
+    clGetCommandQueueInfo.argtypes = [cl_command_queue, cl_command_queue_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clCreateBuffer = _libraries['libOpenCL.so'].clCreateBuffer
+    clCreateBuffer.restype = cl_mem
+    clCreateBuffer.argtypes = [cl_context, cl_mem_flags, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateSubBuffer = _libraries['libOpenCL.so'].clCreateSubBuffer
+    clCreateSubBuffer.restype = cl_mem
+    clCreateSubBuffer.argtypes = [cl_mem, cl_mem_flags, cl_buffer_create_type, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateImage = _libraries['libOpenCL.so'].clCreateImage
+    clCreateImage.restype = cl_mem
+    clCreateImage.argtypes = [cl_context, cl_mem_flags, ctypes.POINTER(struct__cl_image_format), ctypes.POINTER(struct__cl_image_desc), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreatePipe = _libraries['libOpenCL.so'].clCreatePipe
+    clCreatePipe.restype = cl_mem
+    clCreatePipe.argtypes = [cl_context, cl_mem_flags, cl_uint, cl_uint, ctypes.POINTER(ctypes.c_int64), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateBufferWithProperties = _libraries['libOpenCL.so'].clCreateBufferWithProperties
+    clCreateBufferWithProperties.restype = cl_mem
+    clCreateBufferWithProperties.argtypes = [cl_context, ctypes.POINTER(ctypes.c_uint64), cl_mem_flags, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateImageWithProperties = _libraries['libOpenCL.so'].clCreateImageWithProperties
+    clCreateImageWithProperties.restype = cl_mem
+    clCreateImageWithProperties.argtypes = [cl_context, ctypes.POINTER(ctypes.c_uint64), cl_mem_flags, ctypes.POINTER(struct__cl_image_format), ctypes.POINTER(struct__cl_image_desc), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainMemObject = _libraries['libOpenCL.so'].clRetainMemObject
+    clRetainMemObject.restype = cl_int
+    clRetainMemObject.argtypes = [cl_mem]
+except AttributeError:
+    pass
+try:
+    clReleaseMemObject = _libraries['libOpenCL.so'].clReleaseMemObject
+    clReleaseMemObject.restype = cl_int
+    clReleaseMemObject.argtypes = [cl_mem]
+except AttributeError:
+    pass
+try:
+    clGetSupportedImageFormats = _libraries['libOpenCL.so'].clGetSupportedImageFormats
+    clGetSupportedImageFormats.restype = cl_int
+    clGetSupportedImageFormats.argtypes = [cl_context, cl_mem_flags, cl_mem_object_type, cl_uint, ctypes.POINTER(struct__cl_image_format), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    clGetMemObjectInfo = _libraries['libOpenCL.so'].clGetMemObjectInfo
+    clGetMemObjectInfo.restype = cl_int
+    clGetMemObjectInfo.argtypes = [cl_mem, cl_mem_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetImageInfo = _libraries['libOpenCL.so'].clGetImageInfo
+    clGetImageInfo.restype = cl_int
+    clGetImageInfo.argtypes = [cl_mem, cl_image_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetPipeInfo = _libraries['libOpenCL.so'].clGetPipeInfo
+    clGetPipeInfo.restype = cl_int
+    clGetPipeInfo.argtypes = [cl_mem, cl_pipe_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clSetMemObjectDestructorCallback = _libraries['libOpenCL.so'].clSetMemObjectDestructorCallback
+    clSetMemObjectDestructorCallback.restype = cl_int
+    clSetMemObjectDestructorCallback.argtypes = [cl_mem, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_mem), ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clSVMAlloc = _libraries['libOpenCL.so'].clSVMAlloc
+    clSVMAlloc.restype = ctypes.POINTER(None)
+    clSVMAlloc.argtypes = [cl_context, cl_svm_mem_flags, size_t, cl_uint]
+except AttributeError:
+    pass
+try:
+    clSVMFree = _libraries['libOpenCL.so'].clSVMFree
+    clSVMFree.restype = None
+    clSVMFree.argtypes = [cl_context, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clCreateSamplerWithProperties = _libraries['libOpenCL.so'].clCreateSamplerWithProperties
+    clCreateSamplerWithProperties.restype = cl_sampler
+    clCreateSamplerWithProperties.argtypes = [cl_context, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainSampler = _libraries['libOpenCL.so'].clRetainSampler
+    clRetainSampler.restype = cl_int
+    clRetainSampler.argtypes = [cl_sampler]
+except AttributeError:
+    pass
+try:
+    clReleaseSampler = _libraries['libOpenCL.so'].clReleaseSampler
+    clReleaseSampler.restype = cl_int
+    clReleaseSampler.argtypes = [cl_sampler]
+except AttributeError:
+    pass
+try:
+    clGetSamplerInfo = _libraries['libOpenCL.so'].clGetSamplerInfo
+    clGetSamplerInfo.restype = cl_int
+    clGetSamplerInfo.argtypes = [cl_sampler, cl_sampler_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clCreateProgramWithSource = _libraries['libOpenCL.so'].clCreateProgramWithSource
+    clCreateProgramWithSource.restype = cl_program
+    clCreateProgramWithSource.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateProgramWithBinary = _libraries['libOpenCL.so'].clCreateProgramWithBinary
+    clCreateProgramWithBinary.restype = cl_program
+    clCreateProgramWithBinary.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(ctypes.c_ubyte)), ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateProgramWithBuiltInKernels = _libraries['libOpenCL.so'].clCreateProgramWithBuiltInKernels
+    clCreateProgramWithBuiltInKernels.restype = cl_program
+    clCreateProgramWithBuiltInKernels.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateProgramWithIL = _libraries['libOpenCL.so'].clCreateProgramWithIL
+    clCreateProgramWithIL.restype = cl_program
+    clCreateProgramWithIL.argtypes = [cl_context, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainProgram = _libraries['libOpenCL.so'].clRetainProgram
+    clRetainProgram.restype = cl_int
+    clRetainProgram.argtypes = [cl_program]
+except AttributeError:
+    pass
+try:
+    clReleaseProgram = _libraries['libOpenCL.so'].clReleaseProgram
+    clReleaseProgram.restype = cl_int
+    clReleaseProgram.argtypes = [cl_program]
+except AttributeError:
+    pass
+try:
+    clBuildProgram = _libraries['libOpenCL.so'].clBuildProgram
+    clBuildProgram.restype = cl_int
+    clBuildProgram.argtypes = [cl_program, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clCompileProgram = _libraries['libOpenCL.so'].clCompileProgram
+    clCompileProgram.restype = cl_int
+    clCompileProgram.argtypes = [cl_program, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_program)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clLinkProgram = _libraries['libOpenCL.so'].clLinkProgram
+    clLinkProgram.restype = cl_program
+    clLinkProgram.argtypes = [cl_context, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_device_id)), ctypes.POINTER(ctypes.c_char), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_program)), ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clSetProgramReleaseCallback = _libraries['libOpenCL.so'].clSetProgramReleaseCallback
+    clSetProgramReleaseCallback.restype = cl_int
+    clSetProgramReleaseCallback.argtypes = [cl_program, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_program), ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clSetProgramSpecializationConstant = _libraries['libOpenCL.so'].clSetProgramSpecializationConstant
+    clSetProgramSpecializationConstant.restype = cl_int
+    clSetProgramSpecializationConstant.argtypes = [cl_program, cl_uint, size_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clUnloadPlatformCompiler = _libraries['libOpenCL.so'].clUnloadPlatformCompiler
+    clUnloadPlatformCompiler.restype = cl_int
+    clUnloadPlatformCompiler.argtypes = [cl_platform_id]
+except AttributeError:
+    pass
+try:
+    clGetProgramInfo = _libraries['libOpenCL.so'].clGetProgramInfo
+    clGetProgramInfo.restype = cl_int
+    clGetProgramInfo.argtypes = [cl_program, cl_program_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetProgramBuildInfo = _libraries['libOpenCL.so'].clGetProgramBuildInfo
+    clGetProgramBuildInfo.restype = cl_int
+    clGetProgramBuildInfo.argtypes = [cl_program, cl_device_id, cl_program_build_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clCreateKernel = _libraries['libOpenCL.so'].clCreateKernel
+    clCreateKernel.restype = cl_kernel
+    clCreateKernel.argtypes = [cl_program, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateKernelsInProgram = _libraries['libOpenCL.so'].clCreateKernelsInProgram
+    clCreateKernelsInProgram.restype = cl_int
+    clCreateKernelsInProgram.argtypes = [cl_program, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_kernel)), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    clCloneKernel = _libraries['libOpenCL.so'].clCloneKernel
+    clCloneKernel.restype = cl_kernel
+    clCloneKernel.argtypes = [cl_kernel, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainKernel = _libraries['libOpenCL.so'].clRetainKernel
+    clRetainKernel.restype = cl_int
+    clRetainKernel.argtypes = [cl_kernel]
+except AttributeError:
+    pass
+try:
+    clReleaseKernel = _libraries['libOpenCL.so'].clReleaseKernel
+    clReleaseKernel.restype = cl_int
+    clReleaseKernel.argtypes = [cl_kernel]
+except AttributeError:
+    pass
+try:
+    clSetKernelArg = _libraries['libOpenCL.so'].clSetKernelArg
+    clSetKernelArg.restype = cl_int
+    clSetKernelArg.argtypes = [cl_kernel, cl_uint, size_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clSetKernelArgSVMPointer = _libraries['libOpenCL.so'].clSetKernelArgSVMPointer
+    clSetKernelArgSVMPointer.restype = cl_int
+    clSetKernelArgSVMPointer.argtypes = [cl_kernel, cl_uint, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clSetKernelExecInfo = _libraries['libOpenCL.so'].clSetKernelExecInfo
+    clSetKernelExecInfo.restype = cl_int
+    clSetKernelExecInfo.argtypes = [cl_kernel, cl_kernel_exec_info, size_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clGetKernelInfo = _libraries['libOpenCL.so'].clGetKernelInfo
+    clGetKernelInfo.restype = cl_int
+    clGetKernelInfo.argtypes = [cl_kernel, cl_kernel_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetKernelArgInfo = _libraries['libOpenCL.so'].clGetKernelArgInfo
+    clGetKernelArgInfo.restype = cl_int
+    clGetKernelArgInfo.argtypes = [cl_kernel, cl_uint, cl_kernel_arg_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetKernelWorkGroupInfo = _libraries['libOpenCL.so'].clGetKernelWorkGroupInfo
+    clGetKernelWorkGroupInfo.restype = cl_int
+    clGetKernelWorkGroupInfo.argtypes = [cl_kernel, cl_device_id, cl_kernel_work_group_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clGetKernelSubGroupInfo = _libraries['libOpenCL.so'].clGetKernelSubGroupInfo
+    clGetKernelSubGroupInfo.restype = cl_int
+    clGetKernelSubGroupInfo.argtypes = [cl_kernel, cl_device_id, cl_kernel_sub_group_info, size_t, ctypes.POINTER(None), size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clWaitForEvents = _libraries['libOpenCL.so'].clWaitForEvents
+    clWaitForEvents.restype = cl_int
+    clWaitForEvents.argtypes = [cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clGetEventInfo = _libraries['libOpenCL.so'].clGetEventInfo
+    clGetEventInfo.restype = cl_int
+    clGetEventInfo.argtypes = [cl_event, cl_event_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clCreateUserEvent = _libraries['libOpenCL.so'].clCreateUserEvent
+    clCreateUserEvent.restype = cl_event
+    clCreateUserEvent.argtypes = [cl_context, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clRetainEvent = _libraries['libOpenCL.so'].clRetainEvent
+    clRetainEvent.restype = cl_int
+    clRetainEvent.argtypes = [cl_event]
+except AttributeError:
+    pass
+try:
+    clReleaseEvent = _libraries['libOpenCL.so'].clReleaseEvent
+    clReleaseEvent.restype = cl_int
+    clReleaseEvent.argtypes = [cl_event]
+except AttributeError:
+    pass
+try:
+    clSetUserEventStatus = _libraries['libOpenCL.so'].clSetUserEventStatus
+    clSetUserEventStatus.restype = cl_int
+    clSetUserEventStatus.argtypes = [cl_event, cl_int]
+except AttributeError:
+    pass
+try:
+    clSetEventCallback = _libraries['libOpenCL.so'].clSetEventCallback
+    clSetEventCallback.restype = cl_int
+    clSetEventCallback.argtypes = [cl_event, cl_int, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_event), ctypes.c_int32, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    clGetEventProfilingInfo = _libraries['libOpenCL.so'].clGetEventProfilingInfo
+    clGetEventProfilingInfo.restype = cl_int
+    clGetEventProfilingInfo.argtypes = [cl_event, cl_profiling_info, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    clFlush = _libraries['libOpenCL.so'].clFlush
+    clFlush.restype = cl_int
+    clFlush.argtypes = [cl_command_queue]
+except AttributeError:
+    pass
+try:
+    clFinish = _libraries['libOpenCL.so'].clFinish
+    clFinish.restype = cl_int
+    clFinish.argtypes = [cl_command_queue]
+except AttributeError:
+    pass
+try:
+    clEnqueueReadBuffer = _libraries['libOpenCL.so'].clEnqueueReadBuffer
+    clEnqueueReadBuffer.restype = cl_int
+    clEnqueueReadBuffer.argtypes = [cl_command_queue, cl_mem, cl_bool, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueReadBufferRect = _libraries['libOpenCL.so'].clEnqueueReadBufferRect
+    clEnqueueReadBufferRect.restype = cl_int
+    clEnqueueReadBufferRect.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueWriteBuffer = _libraries['libOpenCL.so'].clEnqueueWriteBuffer
+    clEnqueueWriteBuffer.restype = cl_int
+    clEnqueueWriteBuffer.argtypes = [cl_command_queue, cl_mem, cl_bool, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueWriteBufferRect = _libraries['libOpenCL.so'].clEnqueueWriteBufferRect
+    clEnqueueWriteBufferRect.restype = cl_int
+    clEnqueueWriteBufferRect.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueFillBuffer = _libraries['libOpenCL.so'].clEnqueueFillBuffer
+    clEnqueueFillBuffer.restype = cl_int
+    clEnqueueFillBuffer.argtypes = [cl_command_queue, cl_mem, ctypes.POINTER(None), size_t, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueCopyBuffer = _libraries['libOpenCL.so'].clEnqueueCopyBuffer
+    clEnqueueCopyBuffer.restype = cl_int
+    clEnqueueCopyBuffer.argtypes = [cl_command_queue, cl_mem, cl_mem, size_t, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueCopyBufferRect = _libraries['libOpenCL.so'].clEnqueueCopyBufferRect
+    clEnqueueCopyBufferRect.restype = cl_int
+    clEnqueueCopyBufferRect.argtypes = [cl_command_queue, cl_mem, cl_mem, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueReadImage = _libraries['libOpenCL.so'].clEnqueueReadImage
+    clEnqueueReadImage.restype = cl_int
+    clEnqueueReadImage.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueWriteImage = _libraries['libOpenCL.so'].clEnqueueWriteImage
+    clEnqueueWriteImage.restype = cl_int
+    clEnqueueWriteImage.argtypes = [cl_command_queue, cl_mem, cl_bool, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, size_t, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueFillImage = _libraries['libOpenCL.so'].clEnqueueFillImage
+    clEnqueueFillImage.restype = cl_int
+    clEnqueueFillImage.argtypes = [cl_command_queue, cl_mem, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueCopyImage = _libraries['libOpenCL.so'].clEnqueueCopyImage
+    clEnqueueCopyImage.restype = cl_int
+    clEnqueueCopyImage.argtypes = [cl_command_queue, cl_mem, cl_mem, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueCopyImageToBuffer = _libraries['libOpenCL.so'].clEnqueueCopyImageToBuffer
+    clEnqueueCopyImageToBuffer.restype = cl_int
+    clEnqueueCopyImageToBuffer.argtypes = [cl_command_queue, cl_mem, cl_mem, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueCopyBufferToImage = _libraries['libOpenCL.so'].clEnqueueCopyBufferToImage
+    clEnqueueCopyBufferToImage.restype = cl_int
+    clEnqueueCopyBufferToImage.argtypes = [cl_command_queue, cl_mem, cl_mem, size_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueMapBuffer = _libraries['libOpenCL.so'].clEnqueueMapBuffer
+    clEnqueueMapBuffer.restype = ctypes.POINTER(None)
+    clEnqueueMapBuffer.argtypes = [cl_command_queue, cl_mem, cl_bool, cl_map_flags, size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clEnqueueMapImage = _libraries['libOpenCL.so'].clEnqueueMapImage
+    clEnqueueMapImage.restype = ctypes.POINTER(None)
+    clEnqueueMapImage.argtypes = [cl_command_queue, cl_mem, cl_bool, cl_map_flags, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clEnqueueUnmapMemObject = _libraries['libOpenCL.so'].clEnqueueUnmapMemObject
+    clEnqueueUnmapMemObject.restype = cl_int
+    clEnqueueUnmapMemObject.argtypes = [cl_command_queue, cl_mem, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueMigrateMemObjects = _libraries['libOpenCL.so'].clEnqueueMigrateMemObjects
+    clEnqueueMigrateMemObjects.restype = cl_int
+    clEnqueueMigrateMemObjects.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_mem)), cl_mem_migration_flags, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueNDRangeKernel = _libraries['libOpenCL.so'].clEnqueueNDRangeKernel
+    clEnqueueNDRangeKernel.restype = cl_int
+    clEnqueueNDRangeKernel.argtypes = [cl_command_queue, cl_kernel, cl_uint, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueNativeKernel = _libraries['libOpenCL.so'].clEnqueueNativeKernel
+    clEnqueueNativeKernel.restype = cl_int
+    clEnqueueNativeKernel.argtypes = [cl_command_queue, ctypes.CFUNCTYPE(None, ctypes.POINTER(None)), ctypes.POINTER(None), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_mem)), ctypes.POINTER(ctypes.POINTER(None)), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueMarkerWithWaitList = _libraries['libOpenCL.so'].clEnqueueMarkerWithWaitList
+    clEnqueueMarkerWithWaitList.restype = cl_int
+    clEnqueueMarkerWithWaitList.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueBarrierWithWaitList = _libraries['libOpenCL.so'].clEnqueueBarrierWithWaitList
+    clEnqueueBarrierWithWaitList.restype = cl_int
+    clEnqueueBarrierWithWaitList.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueSVMFree = _libraries['libOpenCL.so'].clEnqueueSVMFree
+    clEnqueueSVMFree.restype = cl_int
+    clEnqueueSVMFree.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(None) * 0, ctypes.CFUNCTYPE(None, ctypes.POINTER(struct__cl_command_queue), ctypes.c_uint32, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(None)), ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueSVMMemcpy = _libraries['libOpenCL.so'].clEnqueueSVMMemcpy
+    clEnqueueSVMMemcpy.restype = cl_int
+    clEnqueueSVMMemcpy.argtypes = [cl_command_queue, cl_bool, ctypes.POINTER(None), ctypes.POINTER(None), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueSVMMemFill = _libraries['libOpenCL.so'].clEnqueueSVMMemFill
+    clEnqueueSVMMemFill.restype = cl_int
+    clEnqueueSVMMemFill.argtypes = [cl_command_queue, ctypes.POINTER(None), ctypes.POINTER(None), size_t, size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueSVMMap = _libraries['libOpenCL.so'].clEnqueueSVMMap
+    clEnqueueSVMMap.restype = cl_int
+    clEnqueueSVMMap.argtypes = [cl_command_queue, cl_bool, cl_map_flags, ctypes.POINTER(None), size_t, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueSVMUnmap = _libraries['libOpenCL.so'].clEnqueueSVMUnmap
+    clEnqueueSVMUnmap.restype = cl_int
+    clEnqueueSVMUnmap.argtypes = [cl_command_queue, ctypes.POINTER(None), cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueSVMMigrateMem = _libraries['libOpenCL.so'].clEnqueueSVMMigrateMem
+    clEnqueueSVMMigrateMem.restype = cl_int
+    clEnqueueSVMMigrateMem.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), cl_mem_migration_flags, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clGetExtensionFunctionAddressForPlatform = _libraries['libOpenCL.so'].clGetExtensionFunctionAddressForPlatform
+    clGetExtensionFunctionAddressForPlatform.restype = ctypes.POINTER(None)
+    clGetExtensionFunctionAddressForPlatform.argtypes = [cl_platform_id, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    clCreateImage2D = _libraries['libOpenCL.so'].clCreateImage2D
+    clCreateImage2D.restype = cl_mem
+    clCreateImage2D.argtypes = [cl_context, cl_mem_flags, ctypes.POINTER(struct__cl_image_format), size_t, size_t, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateImage3D = _libraries['libOpenCL.so'].clCreateImage3D
+    clCreateImage3D.restype = cl_mem
+    clCreateImage3D.argtypes = [cl_context, cl_mem_flags, ctypes.POINTER(struct__cl_image_format), size_t, size_t, size_t, size_t, size_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clEnqueueMarker = _libraries['libOpenCL.so'].clEnqueueMarker
+    clEnqueueMarker.restype = cl_int
+    clEnqueueMarker.argtypes = [cl_command_queue, ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueWaitForEvents = _libraries['libOpenCL.so'].clEnqueueWaitForEvents
+    clEnqueueWaitForEvents.restype = cl_int
+    clEnqueueWaitForEvents.argtypes = [cl_command_queue, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
+try:
+    clEnqueueBarrier = _libraries['libOpenCL.so'].clEnqueueBarrier
+    clEnqueueBarrier.restype = cl_int
+    clEnqueueBarrier.argtypes = [cl_command_queue]
+except AttributeError:
+    pass
+try:
+    clUnloadCompiler = _libraries['libOpenCL.so'].clUnloadCompiler
+    clUnloadCompiler.restype = cl_int
+    clUnloadCompiler.argtypes = []
+except AttributeError:
+    pass
+try:
+    clGetExtensionFunctionAddress = _libraries['libOpenCL.so'].clGetExtensionFunctionAddress
+    clGetExtensionFunctionAddress.restype = ctypes.POINTER(None)
+    clGetExtensionFunctionAddress.argtypes = [ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    clCreateCommandQueue = _libraries['libOpenCL.so'].clCreateCommandQueue
+    clCreateCommandQueue.restype = cl_command_queue
+    clCreateCommandQueue.argtypes = [cl_context, cl_device_id, cl_command_queue_properties, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clCreateSampler = _libraries['libOpenCL.so'].clCreateSampler
+    clCreateSampler.restype = cl_sampler
+    clCreateSampler.argtypes = [cl_context, cl_bool, cl_addressing_mode, cl_filter_mode, ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+try:
+    clEnqueueTask = _libraries['libOpenCL.so'].clEnqueueTask
+    clEnqueueTask.restype = cl_int
+    clEnqueueTask.argtypes = [cl_command_queue, cl_kernel, cl_uint, ctypes.POINTER(ctypes.POINTER(struct__cl_event)), ctypes.POINTER(ctypes.POINTER(struct__cl_event))]
+except AttributeError:
+    pass
 __all__ = \
     ['CL_A', 'CL_ABGR', 'CL_ADDRESS_CLAMP',
     'CL_ADDRESS_CLAMP_TO_EDGE', 'CL_ADDRESS_MIRRORED_REPEAT',

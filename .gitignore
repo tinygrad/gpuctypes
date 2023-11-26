@@ -2,3 +2,4 @@ build
 dist
 gpuctypes.egg-info
 __pycache__
+.*.swp
