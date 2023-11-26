@@ -4,8 +4,7 @@ import gpuctypes.hip as hip
 from ctypes_helpers import to_char_p_p
 
 def check(status):
-  #{ctypes.string_at(hip.hipGetErrorString(hip.hipGetLastError()))}
-  if status != 0: raise RuntimeError(f"HIP Error {status}")
+  if status != 0: raise RuntimeError(f"HIP Error {status}, {ctypes.string_at(hip.hipGetErrorString(status))}")
 
 def get_hip_bytes(arg, get_sz, get_str) -> bytes:
   sz = ctypes.c_size_t()
@@ -33,6 +32,7 @@ class TestHIP(unittest.TestCase):
     check(hip.hiprtcCreateProgram(ctypes.pointer(prog), prg.encode(), "<null>".encode(), 0, None, None))
     status = hip.hiprtcCompileProgram(prog, 0, None)
     assert status != 0
+    print(f"compile fail returned {status}")
     log = get_hip_bytes(prog, hip.hiprtcGetProgramLogSize, hip.hiprtcGetProgramLog).decode()
     assert len(log) > 10
     print(log)
