@@ -1334,17 +1334,6 @@ class struct_HIP_RESOURCE_DESC_st(Structure):
 class union_HIP_RESOURCE_DESC_st_res(Union):
     pass
 
-class struct_HIP_RESOURCE_DESC_st_0_linear(Structure):
-    pass
-
-struct_HIP_RESOURCE_DESC_st_0_linear._pack_ = 1 # source:False
-struct_HIP_RESOURCE_DESC_st_0_linear._fields_ = [
-    ('devPtr', ctypes.POINTER(None)),
-    ('format', hipArray_Format),
-    ('numChannels', ctypes.c_uint32),
-    ('sizeInBytes', ctypes.c_uint64),
-]
-
 class struct_HIP_RESOURCE_DESC_st_0_pitch2D(Structure):
     pass
 
@@ -1380,6 +1369,17 @@ class struct_HIP_RESOURCE_DESC_st_0_array(Structure):
 struct_HIP_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
 struct_HIP_RESOURCE_DESC_st_0_array._fields_ = [
     ('hArray', ctypes.POINTER(struct_hipArray)),
+]
+
+class struct_HIP_RESOURCE_DESC_st_0_linear(Structure):
+    pass
+
+struct_HIP_RESOURCE_DESC_st_0_linear._pack_ = 1 # source:False
+struct_HIP_RESOURCE_DESC_st_0_linear._fields_ = [
+    ('devPtr', ctypes.POINTER(None)),
+    ('format', hipArray_Format),
+    ('numChannels', ctypes.c_uint32),
+    ('sizeInBytes', ctypes.c_uint64),
 ]
 
 union_HIP_RESOURCE_DESC_st_res._pack_ = 1 # source:False
@@ -2575,6 +2575,17 @@ union_hipArrayMapInfo_resource._fields_ = [
 class union_hipArrayMapInfo_subresource(Union):
     pass
 
+class struct_hipArrayMapInfo_1_miptail(Structure):
+    pass
+
+struct_hipArrayMapInfo_1_miptail._pack_ = 1 # source:False
+struct_hipArrayMapInfo_1_miptail._fields_ = [
+    ('layer', ctypes.c_uint32),
+    ('PADDING_0', ctypes.c_ubyte * 4),
+    ('offset', ctypes.c_uint64),
+    ('size', ctypes.c_uint64),
+]
+
 class struct_hipArrayMapInfo_1_sparseLevel(Structure):
     pass
 
@@ -2588,17 +2599,6 @@ struct_hipArrayMapInfo_1_sparseLevel._fields_ = [
     ('extentWidth', ctypes.c_uint32),
     ('extentHeight', ctypes.c_uint32),
     ('extentDepth', ctypes.c_uint32),
-]
-
-class struct_hipArrayMapInfo_1_miptail(Structure):
-    pass
-
-struct_hipArrayMapInfo_1_miptail._pack_ = 1 # source:False
-struct_hipArrayMapInfo_1_miptail._fields_ = [
-    ('layer', ctypes.c_uint32),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-    ('offset', ctypes.c_uint64),
-    ('size', ctypes.c_uint64),
 ]
 
 union_hipArrayMapInfo_subresource._pack_ = 1 # source:False
@@ -3248,15 +3248,6 @@ class struct___hip_texture(Structure):
     pass
 
 
-# values for enumeration 'hipTextureFilterMode'
-hipTextureFilterMode__enumvalues = {
-    0: 'hipFilterModePoint',
-    1: 'hipFilterModeLinear',
-}
-hipFilterModePoint = 0
-hipFilterModeLinear = 1
-hipTextureFilterMode = ctypes.c_uint32 # enum
-
 # values for enumeration 'hipTextureAddressMode'
 hipTextureAddressMode__enumvalues = {
     0: 'hipAddressModeWrap',
@@ -3278,6 +3269,15 @@ hipTextureReadMode__enumvalues = {
 hipReadModeElementType = 0
 hipReadModeNormalizedFloat = 1
 hipTextureReadMode = ctypes.c_uint32 # enum
+
+# values for enumeration 'hipTextureFilterMode'
+hipTextureFilterMode__enumvalues = {
+    0: 'hipFilterModePoint',
+    1: 'hipFilterModeLinear',
+}
+hipFilterModePoint = 0
+hipFilterModeLinear = 1
+hipTextureFilterMode = ctypes.c_uint32 # enum
 struct_textureReference._pack_ = 1 # source:False
 struct_textureReference._fields_ = [
     ('normalized', ctypes.c_int32),

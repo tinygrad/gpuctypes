@@ -398,6 +398,30 @@ CUstreamBatchMemOpType__enumvalues = CUstreamBatchMemOpType_enum__enumvalues
 class union_CUstreamBatchMemOpParams_union(Union):
     pass
 
+class struct_CUstreamMemOpWaitValueParams_st(Structure):
+    pass
+
+class union_CUstreamMemOpWaitValueParams_st_0(Union):
+    pass
+
+union_CUstreamMemOpWaitValueParams_st_0._pack_ = 1 # source:False
+union_CUstreamMemOpWaitValueParams_st_0._fields_ = [
+    ('value', ctypes.c_uint32),
+    ('value64', ctypes.c_uint64),
+]
+
+struct_CUstreamMemOpWaitValueParams_st._pack_ = 1 # source:False
+struct_CUstreamMemOpWaitValueParams_st._anonymous_ = ('_0',)
+struct_CUstreamMemOpWaitValueParams_st._fields_ = [
+    ('operation', CUstreamBatchMemOpType),
+    ('PADDING_0', ctypes.c_ubyte * 4),
+    ('address', ctypes.c_uint64),
+    ('_0', union_CUstreamMemOpWaitValueParams_st_0),
+    ('flags', ctypes.c_uint32),
+    ('PADDING_1', ctypes.c_ubyte * 4),
+    ('alias', ctypes.c_uint64),
+]
+
 class struct_CUstreamMemOpFlushRemoteWritesParams_st(Structure):
     pass
 
@@ -426,30 +450,6 @@ struct_CUstreamMemOpWriteValueParams_st._fields_ = [
     ('PADDING_0', ctypes.c_ubyte * 4),
     ('address', ctypes.c_uint64),
     ('_0', union_CUstreamMemOpWriteValueParams_st_0),
-    ('flags', ctypes.c_uint32),
-    ('PADDING_1', ctypes.c_ubyte * 4),
-    ('alias', ctypes.c_uint64),
-]
-
-class struct_CUstreamMemOpWaitValueParams_st(Structure):
-    pass
-
-class union_CUstreamMemOpWaitValueParams_st_0(Union):
-    pass
-
-union_CUstreamMemOpWaitValueParams_st_0._pack_ = 1 # source:False
-union_CUstreamMemOpWaitValueParams_st_0._fields_ = [
-    ('value', ctypes.c_uint32),
-    ('value64', ctypes.c_uint64),
-]
-
-struct_CUstreamMemOpWaitValueParams_st._pack_ = 1 # source:False
-struct_CUstreamMemOpWaitValueParams_st._anonymous_ = ('_0',)
-struct_CUstreamMemOpWaitValueParams_st._fields_ = [
-    ('operation', CUstreamBatchMemOpType),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-    ('address', ctypes.c_uint64),
-    ('_0', union_CUstreamMemOpWaitValueParams_st_0),
     ('flags', ctypes.c_uint32),
     ('PADDING_1', ctypes.c_ubyte * 4),
     ('alias', ctypes.c_uint64),
@@ -2264,6 +2264,14 @@ class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st(Structure):
 class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_params(Structure):
     pass
 
+class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex(Structure):
+    pass
+
+struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex._pack_ = 1 # source:False
+struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex._fields_ = [
+    ('key', ctypes.c_uint64),
+]
+
 class union_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_nvSciSync(Union):
     pass
 
@@ -2279,14 +2287,6 @@ class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence(Structure):
 struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence._pack_ = 1 # source:False
 struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_fence._fields_ = [
     ('value', ctypes.c_uint64),
-]
-
-class struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex(Structure):
-    pass
-
-struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex._pack_ = 1 # source:False
-struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_0_keyedMutex._fields_ = [
-    ('key', ctypes.c_uint64),
 ]
 
 struct_CUDA_EXTERNAL_SEMAPHORE_SIGNAL_PARAMS_st_params._pack_ = 1 # source:False
@@ -2313,16 +2313,6 @@ class struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st(Structure):
 class struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_params(Structure):
     pass
 
-class struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex(Structure):
-    pass
-
-struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex._pack_ = 1 # source:False
-struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex._fields_ = [
-    ('key', ctypes.c_uint64),
-    ('timeoutMs', ctypes.c_uint32),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-]
-
 class union_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_nvSciSync(Union):
     pass
 
@@ -2338,6 +2328,16 @@ class struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_fence(Structure):
 struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_fence._pack_ = 1 # source:False
 struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_fence._fields_ = [
     ('value', ctypes.c_uint64),
+]
+
+class struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex(Structure):
+    pass
+
+struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex._pack_ = 1 # source:False
+struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_0_keyedMutex._fields_ = [
+    ('key', ctypes.c_uint64),
+    ('timeoutMs', ctypes.c_uint32),
+    ('PADDING_0', ctypes.c_ubyte * 4),
 ]
 
 struct_CUDA_EXTERNAL_SEMAPHORE_WAIT_PARAMS_st_params._pack_ = 1 # source:False
