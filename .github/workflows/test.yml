@@ -74,10 +74,11 @@ jobs:
           cd ctypeslib
           pip install .
           clang2py -V
-      - name: Generate headers
+      - name: Generate headers and confirm they match
         run: |
-          rm gpuctypes/${{ matrix.task }}.py
+          mv gpuctypes/${{ matrix.task }}.py gpuctypes/${{ matrix.task }}.py.bak
           ./generate_${{ matrix.task }}.sh
+          diff gpuctypes/${{ matrix.task }}.py.bak gpuctypes/${{ matrix.task }}.py
       - name: Install gpuctypes
         run: pip install .
       - name: Test gpuctypes import
