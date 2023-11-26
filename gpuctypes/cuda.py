@@ -592,6 +592,10 @@ CUfilter_mode_enum = ctypes.c_uint32 # enum
 CUfilter_mode = CUfilter_mode_enum
 CUfilter_mode__enumvalues = CUfilter_mode_enum__enumvalues
 
+
+BROKEN
+
+
 # values for enumeration 'CUdevice_attribute_enum'
 CUdevice_attribute_enum__enumvalues = {
     1: 'CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK',
