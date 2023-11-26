@@ -6,6 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  mactest:
+    name: Mac OpenCL Test
+    runs-on: macos-13
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Install gpuctypes
+        run: pip install .
+      - name: Run OpenCL test
+        run: python3 test/test_opencl.py -v
+
   buildhip:
     strategy:
       fail-fast: false
