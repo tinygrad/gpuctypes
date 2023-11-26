@@ -66,6 +66,8 @@ jobs:
         run: pip install .
       - name: Test gpuctypes import
         run: python3 -c "import gpuctypes.${{ matrix.task }} as ${{ matrix.task }}"
+      - name: Run device specific test
+        run: python3 test/test_${{ matrix.task }}.py
       - uses: actions/upload-artifact@v3
         with:
           name: Generated ${{ matrix.task }} Header
