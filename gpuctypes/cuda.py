@@ -145,7 +145,10 @@ def char_pointer_cast(string, encoding='utf-8'):
 
 _libraries = {}
 _libraries['libcuda.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libcuda.so')
-_libraries['libnvrtc.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libnvrtc.so')
+try:
+    _libraries['libnvrtc.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libnvrtc.so')
+except OSError:
+    _libraries['libnvrtc.so'] = ctypes.CDLL('/usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so')
 
 
 cuuint32_t = ctypes.c_uint32
