@@ -14,12 +14,12 @@ def expectedFailureIf(condition):
 CI = os.getenv("CI", "") != ""
 
 def get_bytes(arg, get_sz, get_str, check) -> bytes:
-  check(get_sz(arg, ctypes.byref((sz := ctypes.c_size_t()))))
-  check(get_str(arg, (mstr := ctypes.create_string_buffer(sz.value))))
+  check(get_sz(arg, ctypes.byref(sz := ctypes.c_size_t())))
+  check(get_str(arg, mstr := ctypes.create_string_buffer(sz.value)))
   return ctypes.string_at(mstr, size=sz.value)
 
-def compile(prg, options, f, check):
-  check(f.create(ctypes.pointer((prog := f.new())), prg.encode(), "<null>".encode(), 0, None, None))
+def cuda_compile(prg, options, f, check):
+  check(f.create(ctypes.pointer(prog := f.new()), prg.encode(), "<null>".encode(), 0, None, None))
   status = f.compile(prog, len(options), to_char_p_p(options))
   if status != 0: raise RuntimeError(f"compile failed: {get_bytes(prog, f.getLogSize, f.getLog, check)}")
   return get_bytes(prog, f.getCodeSize, f.getCode, check)

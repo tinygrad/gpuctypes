@@ -1,7 +1,7 @@
 import unittest
 import ctypes
 import gpuctypes.hip as hip
-from helpers import CI, expectedFailureIf, compile
+from helpers import CI, expectedFailureIf, cuda_compile
 
 def check(status):
   if status != 0: raise RuntimeError(f"HIP Error {status}, {ctypes.string_at(hip.hipGetErrorString(status)).decode()}")
@@ -23,10 +23,10 @@ class TestHIP(unittest.TestCase):
 
   def test_compile_fail(self):
     with self.assertRaises(RuntimeError):
-      compile("void test() { {", ["--offload-arch=gfx1100"], HIPCompile, check)
+      cuda_compile("void test() { {", ["--offload-arch=gfx1100"], HIPCompile, check)
 
   def test_compile(self):
-    prg = compile("int test() { return 42; }", ["--offload-arch=gfx1100"], HIPCompile, check)
+    prg = cuda_compile("int test() { return 42; }", ["--offload-arch=gfx1100"], HIPCompile, check)
     assert len(prg) > 10
 
 class TestHIPDevice(unittest.TestCase):
@@ -36,6 +36,12 @@ class TestHIPDevice(unittest.TestCase):
     check(hip.hipMalloc(ctypes.byref(ptr), 100))
     assert ptr.value != 0
     check(hip.hipFree(ptr))
+
+  @expectedFailureIf(CI)
+  def test_device_count(self):
+    check(hip.hipGetDeviceCount(ctypes.byref(count := ctypes.c_int())))
+    print(f"got {count.value} devices")
+    assert count.value > 0
 
   @expectedFailureIf(CI)
   def test_get_device_properties(self) -> hip.hipDeviceProp_t:

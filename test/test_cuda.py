@@ -1,7 +1,7 @@
 import ctypes
 import unittest
 import gpuctypes.cuda as cuda
-from helpers import CI, compile
+from helpers import CI, cuda_compile
 
 def check(status):
   if status != 0:
@@ -26,10 +26,10 @@ class TestCUDA(unittest.TestCase):
 
   def test_compile_fail(self):
     with self.assertRaises(RuntimeError):
-      compile("__device__ void test() { {", ["--gpu-architecture=sm_35"], CUDACompile, check)
+      cuda_compile("__device__ void test() { {", ["--gpu-architecture=sm_35"], CUDACompile, check)
 
   def test_compile(self):
-    prg = compile("__device__ int test() { return 42; }", ["--gpu-architecture=sm_35"], CUDACompile, check)
+    prg = cuda_compile("__device__ int test() { return 42; }", ["--gpu-architecture=sm_35"], CUDACompile, check)
     assert len(prg) > 10
 
 @unittest.skipIf(CI, "cuda doesn't work in CI")
@@ -44,14 +44,12 @@ class TestCUDADevice(unittest.TestCase):
 
   # NOTE: this requires cuInit, so it doesn't run in CI
   def test_device_count(self):
-    count = ctypes.c_int()
-    check(cuda.cuDeviceGetCount(ctypes.byref(count)))
+    check(cuda.cuDeviceGetCount(ctypes.byref(count := ctypes.c_int())))
     print(f"got {count.value} devices")
     assert count.value > 0
 
   def test_malloc(self):
-    ptr = ctypes.c_ulong()
-    check(cuda.cuMemAlloc_v2(ctypes.byref(ptr), 16))
+    check(cuda.cuMemAlloc_v2(ctypes.byref(ptr := ctypes.c_ulong()), 16))
     assert ptr.value != 0
     print(ptr.value)
 
