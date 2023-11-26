@@ -5,7 +5,7 @@
 # POINTER_SIZE is: 8
 # LONGDOUBLE_SIZE is: 16
 #
-import ctypes, ctypes.util
+import ctypes
 
 
 class AsDictMixin:
@@ -117,7 +117,7 @@ class Union(ctypes.Union, AsDictMixin):
 
 
 _libraries = {}
-_libraries['libhiprtc.so'] = ctypes.CDLL(ctypes.util.find_library('hiprtc'))
+_libraries['libhiprtc.so'] = ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')
 def string_cast(char_pointer, encoding='utf-8', errors='strict'):
     value = ctypes.cast(char_pointer, ctypes.c_char_p).value
     if value is not None and encoding is not None:
@@ -155,7 +155,7 @@ class FunctionFactoryStub:
 # You can either re-run clan2py with -l /path/to/library.so
 # Or manually fix this by comment the ctypes.CDLL loading
 _libraries['FIXME_STUB'] = FunctionFactoryStub() #  ctypes.CDLL('FIXME_STUB')
-_libraries['libamdhip64.so'] = ctypes.CDLL(ctypes.util.find_library('amdhip64'))
+_libraries['libamdhip64.so'] = ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')
 
 
 
