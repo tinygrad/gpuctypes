@@ -117,8 +117,10 @@ class Union(ctypes.Union, AsDictMixin):
 
 
 _libraries = {}
-#_libraries['libOpenCL.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libOpenCL.so')
-_libraries['libOpenCL.so'] = ctypes.CDLL('/System/Library/Frameworks/OpenCL.framework/Versions/A/OpenCL')
+try:
+    _libraries['libOpenCL.so'] = ctypes.CDLL('/usr/lib/x86_64-linux-gnu/libOpenCL.so')
+except OSError:
+    _libraries['libOpenCL.so'] = ctypes.CDLL('/System/Library/Frameworks/OpenCL.framework/Versions/A/OpenCL')
 c_int128 = ctypes.c_ubyte*16
 c_uint128 = c_int128
 void = None
