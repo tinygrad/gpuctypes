@@ -14,6 +14,13 @@ def to_char_p_p(options: List[str]) -> c_char_p_p:
   c_options[:] = [ctypes.create_string_buffer(o.encode("utf-8")) for o in options]
   return c_options
 
+def get_hip_bytes(arg, get_sz, get_str) -> bytes:
+  sz = ctypes.c_size_t()
+  check(get_sz(arg, ctypes.byref(sz)))
+  mstr = ctypes.create_string_buffer(sz.value)
+  check(get_str(arg, mstr))
+  return ctypes.string_at(mstr, size=sz.value)
+
 class TestHIP(unittest.TestCase):
   def test_malloc(self):
     ptr = ctypes.c_void_p()
@@ -27,29 +34,24 @@ class TestHIP(unittest.TestCase):
     print(device_properties.gcnArchName)
     return device_properties
 
+  def test_compile_fail(self):
+    prg = "void test() { {"
+    prog = hip.hiprtcProgram()
+    check(hip.hiprtcCreateProgram(ctypes.pointer(prog), prg.encode(), "<null>".encode(), 0, None, None))
+    status = hip.hiprtcCompileProgram(prog, 0, None)
+    assert status != 0
+    log = get_hip_bytes(prog, hip.hiprtcGetProgramLogSize, hip.hiprtcGetProgramLog).decode()
+    assert len(log) > 10
+    print(log)
+
   def test_compile(self):
-    hip.hipSetDevice(0)
     prg = "void test() { }"
     prog = hip.hiprtcProgram()
     check(hip.hiprtcCreateProgram(ctypes.pointer(prog), prg.encode(), "<null>".encode(), 0, None, None))
-    # NOTE: this is segfaulting with options
-    #options = [f'--offload-arch={self.test_get_device_properties().gcnArchName}']
-    options = []
-    status = hip.hiprtcCompileProgram(prog, len(options), to_char_p_p(options))
-    if status != 0:
-      log_size = ctypes.c_size_t()
-      check(hip.hiprtcGetProgramLogSize(prog, ctypes.byref(log_size)))
-      logstr = ctypes.create_string_buffer(log_size.value)
-      check(hip.hiprtcGetProgramLog(prog, logstr))
-      print(ctypes.string_at(logstr))
-    code_size = ctypes.c_size_t()
-    check(hip.hiprtcGetCodeSize(prog, ctypes.byref(code_size)))
-    assert code_size.value > 10
-    #c_options = (ctypes.POINTER(ctypes.c_char) * 2)()
-    #c_options[0] = ctypes.create_string_buffer(f'--offload-arch={self.test_get_device_properties().gcnArchName}'.encode())
-    #c_options[1] = None
-    #hip.hiprtcCompileProgram(prog, 1, ctypes.cast(c_options, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))))
-  #return hip.hiprtcGetCode(prog)
+    options = [f'--offload-arch={self.test_get_device_properties().gcnArchName.decode()}']
+    check(hip.hiprtcCompileProgram(prog, len(options), to_char_p_p(options)))
+    code = get_hip_bytes(prog, hip.hiprtcGetCodeSize, hip.hiprtcGetCode)
+    assert len(code) > 10
 
 if __name__ == '__main__':
   unittest.main()

@@ -4,7 +4,7 @@ from pathlib import Path
 
 description = (Path(__file__).resolve().parent / "README.md").read_text()
 setup(name='gpuctypes',
-      version='0.1.1',
+      version='0.1.2',
       description='ctypes wrappers for HIP, CUDA, and OpenCL',
       author='George Hotz',
       long_description=description,
