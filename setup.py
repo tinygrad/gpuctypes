@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
 from setuptools import setup
+from pathlib import Path
 
-description = """Do you wish that there were simple wrappers for GPU libraries in Python?
-
-Like not pyopencl, pycuda, and <HIP library someday?> here, but just raw access to the APIs?
-
-That's what gpuctypes does! While high level libraries have their place, the world needs more low level libraries.
-
-Like gpuctypes. Welcome home.
-"""
-
+description = (Path(__file__).resolve().parent / "README").read_text()
 setup(name='gpuctypes',
-      version='0.1.0',
+      version='0.1.1',
       description='ctypes wrappers for HIP, CUDA, and OpenCL',
       author='George Hotz',
       long_description=description,
