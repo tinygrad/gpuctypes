@@ -2,7 +2,7 @@
 from setuptools import setup
 from pathlib import Path
 
-description = (Path(__file__).resolve().parent / "README").read_text()
+description = (Path(__file__).resolve().parent / "README.md").read_text()
 setup(name='gpuctypes',
       version='0.1.1',
       description='ctypes wrappers for HIP, CUDA, and OpenCL',
