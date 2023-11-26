@@ -1326,6 +1326,22 @@ class struct_hipResourceDesc(Structure):
 class union_hipResourceDesc_res(Union):
     pass
 
+class struct_hipResourceDesc_0_array(Structure):
+    pass
+
+struct_hipResourceDesc_0_array._pack_ = 1 # source:False
+struct_hipResourceDesc_0_array._fields_ = [
+    ('array', ctypes.POINTER(struct_hipArray)),
+]
+
+class struct_hipResourceDesc_0_mipmap(Structure):
+    pass
+
+struct_hipResourceDesc_0_mipmap._pack_ = 1 # source:False
+struct_hipResourceDesc_0_mipmap._fields_ = [
+    ('mipmap', ctypes.POINTER(struct_hipMipmappedArray)),
+]
+
 class struct_hipResourceDesc_0_linear(Structure):
     pass
 
@@ -1350,22 +1366,6 @@ struct_hipResourceDesc_0_pitch2D._fields_ = [
     ('pitchInBytes', ctypes.c_uint64),
 ]
 
-class struct_hipResourceDesc_0_mipmap(Structure):
-    pass
-
-struct_hipResourceDesc_0_mipmap._pack_ = 1 # source:False
-struct_hipResourceDesc_0_mipmap._fields_ = [
-    ('mipmap', ctypes.POINTER(struct_hipMipmappedArray)),
-]
-
-class struct_hipResourceDesc_0_array(Structure):
-    pass
-
-struct_hipResourceDesc_0_array._pack_ = 1 # source:False
-struct_hipResourceDesc_0_array._fields_ = [
-    ('array', ctypes.POINTER(struct_hipArray)),
-]
-
 union_hipResourceDesc_res._pack_ = 1 # source:False
 union_hipResourceDesc_res._fields_ = [
     ('array', struct_hipResourceDesc_0_array),
@@ -1388,6 +1388,33 @@ class struct_HIP_RESOURCE_DESC_st(Structure):
 class union_HIP_RESOURCE_DESC_st_res(Union):
     pass
 
+class struct_HIP_RESOURCE_DESC_st_0_array(Structure):
+    pass
+
+struct_HIP_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
+struct_HIP_RESOURCE_DESC_st_0_array._fields_ = [
+    ('hArray', ctypes.POINTER(struct_hipArray)),
+]
+
+class struct_HIP_RESOURCE_DESC_st_0_mipmap(Structure):
+    pass
+
+struct_HIP_RESOURCE_DESC_st_0_mipmap._pack_ = 1 # source:False
+struct_HIP_RESOURCE_DESC_st_0_mipmap._fields_ = [
+    ('hMipmappedArray', ctypes.POINTER(struct_hipMipmappedArray)),
+]
+
+class struct_HIP_RESOURCE_DESC_st_0_linear(Structure):
+    pass
+
+struct_HIP_RESOURCE_DESC_st_0_linear._pack_ = 1 # source:False
+struct_HIP_RESOURCE_DESC_st_0_linear._fields_ = [
+    ('devPtr', ctypes.POINTER(None)),
+    ('format', hipArray_Format),
+    ('numChannels', ctypes.c_uint32),
+    ('sizeInBytes', ctypes.c_uint64),
+]
+
 class struct_HIP_RESOURCE_DESC_st_0_pitch2D(Structure):
     pass
 
@@ -1407,33 +1434,6 @@ class struct_HIP_RESOURCE_DESC_st_0_reserved(Structure):
 struct_HIP_RESOURCE_DESC_st_0_reserved._pack_ = 1 # source:False
 struct_HIP_RESOURCE_DESC_st_0_reserved._fields_ = [
     ('reserved', ctypes.c_int32 * 32),
-]
-
-class struct_HIP_RESOURCE_DESC_st_0_mipmap(Structure):
-    pass
-
-struct_HIP_RESOURCE_DESC_st_0_mipmap._pack_ = 1 # source:False
-struct_HIP_RESOURCE_DESC_st_0_mipmap._fields_ = [
-    ('hMipmappedArray', ctypes.POINTER(struct_hipMipmappedArray)),
-]
-
-class struct_HIP_RESOURCE_DESC_st_0_array(Structure):
-    pass
-
-struct_HIP_RESOURCE_DESC_st_0_array._pack_ = 1 # source:False
-struct_HIP_RESOURCE_DESC_st_0_array._fields_ = [
-    ('hArray', ctypes.POINTER(struct_hipArray)),
-]
-
-class struct_HIP_RESOURCE_DESC_st_0_linear(Structure):
-    pass
-
-struct_HIP_RESOURCE_DESC_st_0_linear._pack_ = 1 # source:False
-struct_HIP_RESOURCE_DESC_st_0_linear._fields_ = [
-    ('devPtr', ctypes.POINTER(None)),
-    ('format', hipArray_Format),
-    ('numChannels', ctypes.c_uint32),
-    ('sizeInBytes', ctypes.c_uint64),
 ]
 
 union_HIP_RESOURCE_DESC_st_res._pack_ = 1 # source:False
@@ -2152,20 +2152,20 @@ class struct_hipExternalSemaphoreSignalParams_st(Structure):
 class struct_hipExternalSemaphoreSignalParams_st_params(Structure):
     pass
 
-class struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex(Structure):
-    pass
-
-struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex._pack_ = 1 # source:False
-struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex._fields_ = [
-    ('key', ctypes.c_uint64),
-]
-
 class struct_hipExternalSemaphoreSignalParams_st_0_fence(Structure):
     pass
 
 struct_hipExternalSemaphoreSignalParams_st_0_fence._pack_ = 1 # source:False
 struct_hipExternalSemaphoreSignalParams_st_0_fence._fields_ = [
     ('value', ctypes.c_uint64),
+]
+
+class struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex(Structure):
+    pass
+
+struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex._pack_ = 1 # source:False
+struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex._fields_ = [
+    ('key', ctypes.c_uint64),
 ]
 
 struct_hipExternalSemaphoreSignalParams_st_params._pack_ = 1 # source:False
@@ -2190,6 +2190,14 @@ class struct_hipExternalSemaphoreWaitParams_st(Structure):
 class struct_hipExternalSemaphoreWaitParams_st_params(Structure):
     pass
 
+class struct_hipExternalSemaphoreWaitParams_st_0_fence(Structure):
+    pass
+
+struct_hipExternalSemaphoreWaitParams_st_0_fence._pack_ = 1 # source:False
+struct_hipExternalSemaphoreWaitParams_st_0_fence._fields_ = [
+    ('value', ctypes.c_uint64),
+]
+
 class struct_hipExternalSemaphoreWaitParams_st_0_keyedMutex(Structure):
     pass
 
@@ -2198,14 +2206,6 @@ struct_hipExternalSemaphoreWaitParams_st_0_keyedMutex._fields_ = [
     ('key', ctypes.c_uint64),
     ('timeoutMs', ctypes.c_uint32),
     ('PADDING_0', ctypes.c_ubyte * 4),
-]
-
-class struct_hipExternalSemaphoreWaitParams_st_0_fence(Structure):
-    pass
-
-struct_hipExternalSemaphoreWaitParams_st_0_fence._pack_ = 1 # source:False
-struct_hipExternalSemaphoreWaitParams_st_0_fence._fields_ = [
-    ('value', ctypes.c_uint64),
 ]
 
 struct_hipExternalSemaphoreWaitParams_st_params._pack_ = 1 # source:False
@@ -2620,14 +2620,6 @@ hipArraySparseSubresourceType = ctypes.c_uint32 # enum
 class struct_hipArrayMapInfo(Structure):
     pass
 
-class union_hipArrayMapInfo_memHandle(Union):
-    pass
-
-union_hipArrayMapInfo_memHandle._pack_ = 1 # source:False
-union_hipArrayMapInfo_memHandle._fields_ = [
-    ('memHandle', ctypes.POINTER(struct_ihipMemGenericAllocationHandle)),
-]
-
 class union_hipArrayMapInfo_resource(Union):
     pass
 
@@ -2640,17 +2632,6 @@ union_hipArrayMapInfo_resource._fields_ = [
 
 class union_hipArrayMapInfo_subresource(Union):
     pass
-
-class struct_hipArrayMapInfo_1_miptail(Structure):
-    pass
-
-struct_hipArrayMapInfo_1_miptail._pack_ = 1 # source:False
-struct_hipArrayMapInfo_1_miptail._fields_ = [
-    ('layer', ctypes.c_uint32),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-    ('offset', ctypes.c_uint64),
-    ('size', ctypes.c_uint64),
-]
 
 class struct_hipArrayMapInfo_1_sparseLevel(Structure):
     pass
@@ -2667,11 +2648,30 @@ struct_hipArrayMapInfo_1_sparseLevel._fields_ = [
     ('extentDepth', ctypes.c_uint32),
 ]
 
+class struct_hipArrayMapInfo_1_miptail(Structure):
+    pass
+
+struct_hipArrayMapInfo_1_miptail._pack_ = 1 # source:False
+struct_hipArrayMapInfo_1_miptail._fields_ = [
+    ('layer', ctypes.c_uint32),
+    ('PADDING_0', ctypes.c_ubyte * 4),
+    ('offset', ctypes.c_uint64),
+    ('size', ctypes.c_uint64),
+]
+
 union_hipArrayMapInfo_subresource._pack_ = 1 # source:False
 union_hipArrayMapInfo_subresource._fields_ = [
     ('sparseLevel', struct_hipArrayMapInfo_1_sparseLevel),
     ('miptail', struct_hipArrayMapInfo_1_miptail),
     ('PADDING_0', ctypes.c_ubyte * 8),
+]
+
+class union_hipArrayMapInfo_memHandle(Union):
+    pass
+
+union_hipArrayMapInfo_memHandle._pack_ = 1 # source:False
+union_hipArrayMapInfo_memHandle._fields_ = [
+    ('memHandle', ctypes.POINTER(struct_ihipMemGenericAllocationHandle)),
 ]
 
 struct_hipArrayMapInfo._pack_ = 1 # source:False
@@ -3926,19 +3926,6 @@ class struct___hip_texture(Structure):
     pass
 
 
-# values for enumeration 'hipTextureAddressMode'
-hipTextureAddressMode__enumvalues = {
-    0: 'hipAddressModeWrap',
-    1: 'hipAddressModeClamp',
-    2: 'hipAddressModeMirror',
-    3: 'hipAddressModeBorder',
-}
-hipAddressModeWrap = 0
-hipAddressModeClamp = 1
-hipAddressModeMirror = 2
-hipAddressModeBorder = 3
-hipTextureAddressMode = ctypes.c_uint32 # enum
-
 # values for enumeration 'hipTextureReadMode'
 hipTextureReadMode__enumvalues = {
     0: 'hipReadModeElementType',
@@ -3956,6 +3943,19 @@ hipTextureFilterMode__enumvalues = {
 hipFilterModePoint = 0
 hipFilterModeLinear = 1
 hipTextureFilterMode = ctypes.c_uint32 # enum
+
+# values for enumeration 'hipTextureAddressMode'
+hipTextureAddressMode__enumvalues = {
+    0: 'hipAddressModeWrap',
+    1: 'hipAddressModeClamp',
+    2: 'hipAddressModeMirror',
+    3: 'hipAddressModeBorder',
+}
+hipAddressModeWrap = 0
+hipAddressModeClamp = 1
+hipAddressModeMirror = 2
+hipAddressModeBorder = 3
+hipTextureAddressMode = ctypes.c_uint32 # enum
 struct_textureReference._pack_ = 1 # source:False
 struct_textureReference._fields_ = [
     ('normalized', ctypes.c_int32),
