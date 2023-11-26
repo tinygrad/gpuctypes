@@ -1,20 +1,19 @@
 import unittest
 import ctypes
 import gpuctypes.hip as hip
-from helpers import to_char_p_p, CI, expectedFailureIf, get_bytes
+from helpers import CI, expectedFailureIf, compile
 
 def check(status):
   if status != 0: raise RuntimeError(f"HIP Error {status}, {ctypes.string_at(hip.hipGetErrorString(status)).decode()}")
 
-def _test_compile(prg):
-  prog = hip.hiprtcProgram()
-  check(hip.hiprtcCreateProgram(ctypes.pointer(prog), prg.encode(), "<null>".encode(), 0, None, None))
-  options = ["--offload-arch=gfx1100"]
-  status = hip.hiprtcCompileProgram(prog, len(options), to_char_p_p(options))
-  if status != 0:
-    log = get_bytes(prog, hip.hiprtcGetProgramLogSize, hip.hiprtcGetProgramLog, check)
-    raise RuntimeError(f"HIP compile failed: {log}")
-  return get_bytes(prog, hip.hiprtcGetCodeSize, hip.hiprtcGetCode, check)
+class HIPCompile:
+  new = hip.hiprtcProgram
+  create = hip.hiprtcCreateProgram
+  compile = hip.hiprtcCompileProgram
+  getLogSize = hip.hiprtcGetProgramLogSize
+  getLog = hip.hiprtcGetProgramLog
+  getCodeSize = hip.hiprtcGetCodeSize
+  getCode = hip.hiprtcGetCode
 
 class TestHIP(unittest.TestCase):
   def test_has_methods(self):
@@ -24,10 +23,10 @@ class TestHIP(unittest.TestCase):
 
   def test_compile_fail(self):
     with self.assertRaises(RuntimeError):
-      _test_compile("void test() { {")
+      compile("void test() { {", ["--offload-arch=gfx1100"], HIPCompile, check)
 
   def test_compile(self):
-    prg = _test_compile("int test() { return 42; }")
+    prg = compile("int test() { return 42; }", ["--offload-arch=gfx1100"], HIPCompile, check)
     assert len(prg) > 10
 
 class TestHIPDevice(unittest.TestCase):

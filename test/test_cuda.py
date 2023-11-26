@@ -1,7 +1,7 @@
 import ctypes
 import unittest
 import gpuctypes.cuda as cuda
-from helpers import to_char_p_p, CI, get_bytes
+from helpers import CI, compile
 
 def check(status):
   if status != 0:
@@ -9,15 +9,14 @@ def check(status):
     check(cuda.cuGetErrorString(status, ctypes.byref(error)))
     raise RuntimeError(f"CUDA Error {status}, {ctypes.string_at(error).decode()}")
 
-def _test_compile(prg):
-  prog = cuda.nvrtcProgram()
-  check(cuda.nvrtcCreateProgram(ctypes.pointer(prog), prg.encode(), "<null>".encode(), 0, None, None))
-  options = ["--gpu-architecture=sm_35"]
-  status = cuda.nvrtcCompileProgram(prog, len(options), to_char_p_p(options))
-  if status != 0:
-    log = get_bytes(prog, cuda.nvrtcGetProgramLogSize, cuda.nvrtcGetProgramLog, check)
-    raise RuntimeError(f"CUDA compile failed: {log}")
-  return get_bytes(prog, cuda.nvrtcGetCUBINSize, cuda.nvrtcGetCUBIN, check)
+class CUDACompile:
+  new = cuda.nvrtcProgram
+  create = cuda.nvrtcCreateProgram
+  compile = cuda.nvrtcCompileProgram
+  getLogSize = cuda.nvrtcGetProgramLogSize
+  getLog = cuda.nvrtcGetProgramLog
+  getCodeSize = cuda.nvrtcGetCUBINSize
+  getCode = cuda.nvrtcGetCUBIN
 
 class TestCUDA(unittest.TestCase):
   def test_has_methods(self):
@@ -27,10 +26,10 @@ class TestCUDA(unittest.TestCase):
 
   def test_compile_fail(self):
     with self.assertRaises(RuntimeError):
-      _test_compile("__device__ void test() { {")
+      compile("__device__ void test() { {", ["--gpu-architecture=sm_35"], CUDACompile, check)
 
   def test_compile(self):
-    prg = _test_compile("__device__ int test() { return 42; }")
+    prg = compile("__device__ int test() { return 42; }", ["--gpu-architecture=sm_35"], CUDACompile, check)
     assert len(prg) > 10
 
 @unittest.skipIf(CI, "cuda doesn't work in CI")
