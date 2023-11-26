@@ -69,5 +69,33 @@ class TestOpenCL(unittest.TestCase):
     assert binary_sizes[0] > 0
     assert len(binary_pointers[0]) > 0
 
+  def test_run_program(self):
+    program = cl_compile(self.context, self.device_array, """
+    __kernel void vector_add(__global int *A, __global const int *B, __global const int *C) {
+      int i = get_global_id(0);
+      A[i] = B[i] + C[i];
+    }""")
+    status = ctypes.c_int32()
+    kernel = cl.clCreateKernel(program, b"vector_add", ctypes.byref(status))
+    check(status.value)
+    assert kernel is not None
+
+    A = (ctypes.c_int32 * 5)()
+    B = (ctypes.c_int32 * 5)(1, 2, 3, 4, 5)
+    C = (ctypes.c_int32 * 5)(5, 4, 3, 2, 1)
+
+    bufA = cl.clCreateBuffer(self.context, cl.CL_MEM_WRITE_ONLY, ctypes.sizeof(A), None, ctypes.byref(status))
+    bufB = cl.clCreateBuffer(self.context, cl.CL_MEM_READ_ONLY | cl.CL_MEM_COPY_HOST_PTR, ctypes.sizeof(B), ctypes.byref(B), ctypes.byref(status))
+    bufC = cl.clCreateBuffer(self.context, cl.CL_MEM_READ_ONLY | cl.CL_MEM_COPY_HOST_PTR, ctypes.sizeof(C), ctypes.byref(C), ctypes.byref(status))
+    cl.clSetKernelArg(kernel, 0, ctypes.sizeof(bufA), ctypes.byref(bufA))
+    cl.clSetKernelArg(kernel, 1, ctypes.sizeof(bufB), ctypes.byref(bufB))
+    cl.clSetKernelArg(kernel, 2, ctypes.sizeof(bufC), ctypes.byref(bufC))
+
+    global_size = ctypes.c_size_t(5)
+    cl.clEnqueueNDRangeKernel(self.queue, kernel, 1, None, ctypes.byref(global_size), None, 0, None, None)
+    cl.clFinish(self.queue)
+    cl.clEnqueueReadBuffer(self.queue, bufA, cl.CL_TRUE, 0, ctypes.sizeof(A), ctypes.byref(A), 0, None, None)
+    self.assertEqual(list(A), [6, 6, 6, 6, 6])
+
 if __name__ == '__main__':
   unittest.main()
