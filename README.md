@@ -18,8 +18,12 @@ import gpuctypes.cuda as cuda
 import gpuctypes.opencl as opencl
 ```
 
+### How it works
+
+gpuctypes uses [ctypeslib](https://github.com/trolldbois/ctypeslib) to autogenerate Python files from the headers of the respective libraries.
+
 ### Current versions
 
 * ROCm 5.7.1
 * CUDA 11.5
-* OpenCL whatever is in Ubuntu 22.04
+* OpenCL (whatever is in Ubuntu 22.04)
