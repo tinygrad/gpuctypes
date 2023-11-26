@@ -65,7 +65,7 @@ jobs:
       - name: Install gpuctypes
         run: pip install .
       - name: Test gpuctypes import
-        run: python3 -c "import gpuctypes.${{ matrix.task }}"
+        run: python3 -c "import gpuctypes.${{ matrix.task }} as ${{ matrix.task }}"
       - uses: actions/upload-artifact@v3
         with:
           name: Generated ${{ matrix.task }} Header
