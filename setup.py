@@ -11,5 +11,5 @@ setup(name='gpuctypes',
       long_description_content_type='text/markdown',
       license='MIT',
       packages = ['gpuctypes'],
-      python_requires='>=3.8',
+      python_requires='>=3.7', 
       include_package_data=True)
