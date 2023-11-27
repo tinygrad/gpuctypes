@@ -5,8 +5,35 @@
 # POINTER_SIZE is: 8
 # LONGDOUBLE_SIZE is: 16
 #
-import ctypes
 
+import ctypes, sys, os
+
+
+def get_hip(): 
+    try:
+        if 'linux' in sys.platform:
+            return ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')
+        elif 'win' in sys.platform:
+            return ctypes.cdll.LoadLibrary('amdhip64')
+        else:
+            raise RuntimeError('Only windows and linux are supported')
+    except Exception as err:
+        raise Exception('Error: {0}'.format(err))
+
+
+def get_hiprtc():
+    try:
+        if 'linux' in sys.platform:
+            return ctypes.CDLL(os.path.join('/opt/rocm/lib/libhiprtc.so'))
+        elif 'win' in sys.platform:
+            hip_path = os.getenv('HIP_PATH', None)
+            if not hip_path:
+                raise RuntimeError('HIP_PATH is not set')
+            return ctypes.CDLL(os.path.join(hip_path, 'bin', 'hiprtc0505.dll'))
+        else:
+            raise RuntimeError('Only windows and linux are supported')
+    except Exception as err:
+        raise Exception('Error: {0}'.format(err))
 
 class AsDictMixin:
     @classmethod
@@ -117,7 +144,7 @@ class Union(ctypes.Union, AsDictMixin):
 
 
 _libraries = {}
-_libraries['libhiprtc.so'] = ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')
+_libraries['libhiprtc.so'] = get_hiprtc()
 def string_cast(char_pointer, encoding='utf-8', errors='strict'):
     value = ctypes.cast(char_pointer, ctypes.c_char_p).value
     if value is not None and encoding is not None:
@@ -155,7 +182,7 @@ class FunctionFactoryStub:
 # You can either re-run clan2py with -l /path/to/library.so
 # Or manually fix this by comment the ctypes.CDLL loading
 _libraries['FIXME_STUB'] = FunctionFactoryStub() #  ctypes.CDLL('FIXME_STUB')
-_libraries['libamdhip64.so'] = ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')
+_libraries['libamdhip64.so'] = get_hip()
 
 
 
