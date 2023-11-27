@@ -1,7 +1,7 @@
 import ctypes
 import unittest
 import gpuctypes.cuda as cuda
-from helpers import CI, compile
+from helpers import CI, cuda_compile
 
 def check(status):
   if status != 0:
@@ -26,10 +26,10 @@ class TestCUDA(unittest.TestCase):
 
   def test_compile_fail(self):
     with self.assertRaises(RuntimeError):
-      compile("__device__ void test() { {", ["--gpu-architecture=sm_60"], CUDACompile, check)
+      cuda_compile("__device__ void test() { {", ["--gpu-architecture=sm_60"], CUDACompile, check)
 
   def test_compile(self):
-    prg = compile("__device__ int test() { return 42; }", ["--gpu-architecture=sm_60"], CUDACompile, check)
+    prg = cuda_compile("__device__ int test() { return 42; }", ["--gpu-architecture=sm_60"], CUDACompile, check)
     assert len(prg) > 10
 
 @unittest.skipIf(CI, "cuda doesn't work in CI")

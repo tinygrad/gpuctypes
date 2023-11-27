@@ -22,8 +22,8 @@ def to_char_p_p(options: List[str]):
   c_options[:] = [ctypes.cast(ctypes.create_string_buffer(o.encode("utf-8")), ctypes.POINTER(ctypes.c_char)) for o in options]
   return c_options
 
-def compile(prg, options, f, check, filename="<null>".encode()):
-  check(f.create(ctypes.pointer(prog := f.new()), prg.encode(), filename, 0, None, None))
+def cuda_compile(prg, options, f, check, filename="<null>"):
+  check(f.create(ctypes.pointer(prog := f.new()), prg.encode(), filename.encode() if filename else None, 0, None, None))
   status = f.compile(prog, len(options), to_char_p_p(options))
   if status != 0: raise RuntimeError(f"compile failed: {get_bytes(prog, f.getLogSize, f.getLog, check)}")
   return get_bytes(prog, f.getCodeSize, f.getCode, check)
