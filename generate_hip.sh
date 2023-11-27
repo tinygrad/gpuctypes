@@ -1,7 +1,11 @@
 #!/bin/bash -e
 
 out_file=gpuctypes/hip.py
-clang2py /opt/rocm/include/hip/hiprtc.h /opt/rocm/include/hip/hip_runtime_api.h /opt/rocm/include/hip/driver_types.h --clang-args="-D__HIP_PLATFORM_AMD__ -I/opt/rocm/include" -o $out_file -l /opt/rocm/lib/libhiprtc.so -l /opt/rocm/lib/libamdhip64.so
+if command -v clang2py &> /dev/null; then
+    clang2py /opt/rocm/include/hip/hiprtc.h /opt/rocm/include/hip/hip_runtime_api.h /opt/rocm/include/hip/driver_types.h --clang-args="-D__HIP_PLATFORM_AMD__ -I/opt/rocm/include" -o $out_file -l /opt/rocm/lib/libhiprtc.so -l /opt/rocm/lib/libamdhip64.so
+else
+    echo "error: clang2py was not found..."
+fi
 
 # grep FIXME_STUB $out_file || true
 # hot patches
@@ -44,8 +48,11 @@ for key in "${!patches[@]}"; do
     sed -i "s@${key}@${patches[${key}]}@g" $out_file    
 done
 
-sed -i '10r /dev/stdin' $out_file <<< "$get_hiprtc_code" 
-sed -i '10r /dev/stdin' $out_file <<< "$get_hip_code" 
+# get the import line
+import_line=$(grep -n "import ctypes" $out_file | cut -d ":" -f 1)
+import_line=$(($import_line + 1))
+sed -i "${import_line}r /dev/stdin" "$out_file" <<< "$get_hiprtc_code" 
+sed -i "${import_line}r /dev/stdin" "$out_file" <<< "$get_hip_code" 
 # sed -i "s\import ctypes\import ctypes, ctypes.util\g" gpuctypes/hip.py
 #sed -i "s\ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')\ctypes.CDLL(ctypes.util.find_library('hiprtc'))\g" gpuctypes/hip.py
 #sed -i "s\ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')\ctypes.CDLL(ctypes.util.find_library('amdhip64'))\g" gpuctypes/hip.py
