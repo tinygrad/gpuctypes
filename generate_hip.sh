@@ -41,7 +41,6 @@ patches=(
     ["ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')"]="get_hip()"
 )
 for key in "${!patches[@]}"; do
-    delimiter="@"
     sed -i "s@${key}@${patches[${key}]}@g" $out_file    
 done
 
