@@ -36,7 +36,7 @@ def get_hip():
 
 declare -A patches
 patches=(
-    # ["import ctypes"]="import ctypes, sys, os"
+    ["import ctypes"]="import ctypes, sys, os"
     ["ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')"]="get_hiprtc()"
     ["ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')"]="get_hip()"
 )
@@ -50,4 +50,4 @@ sed -i '10r /dev/stdin' $out_file <<< "$get_hip_code"
 # sed -i "s\import ctypes\import ctypes, ctypes.util\g" gpuctypes/hip.py
 #sed -i "s\ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')\ctypes.CDLL(ctypes.util.find_library('hiprtc'))\g" gpuctypes/hip.py
 #sed -i "s\ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')\ctypes.CDLL(ctypes.util.find_library('amdhip64'))\g" gpuctypes/hip.py
-# python3 -c "import gpuctypes.hip"
+python3 -c "import gpuctypes.hip"
