@@ -8,7 +8,6 @@
 import ctypes, sys, os
 
 
-
 def get_hip(): 
     try:
         if 'linux' in sys.platform:
@@ -34,6 +33,7 @@ def get_hiprtc():
             raise RuntimeError('Only windows and linux are supported')
     except Exception as err:
         raise Exception('Error: {0}'.format(err))
+
 
 class AsDictMixin:
     @classmethod

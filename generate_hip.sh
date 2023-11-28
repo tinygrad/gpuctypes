@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-out_file=gpuctypes/hip.py
+out_file="gpuctypes/hip.py"
 if command -v clang2py &> /dev/null; then
     clang2py /opt/rocm/include/hip/hiprtc.h /opt/rocm/include/hip/hip_runtime_api.h /opt/rocm/include/hip/driver_types.h --clang-args="-D__HIP_PLATFORM_AMD__ -I/opt/rocm/include" -o $out_file -l /opt/rocm/lib/libhiprtc.so -l /opt/rocm/lib/libamdhip64.so
 else
