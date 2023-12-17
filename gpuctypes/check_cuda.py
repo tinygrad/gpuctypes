@@ -20,3 +20,5 @@ def is_cuda_available():
   else:
     raise ImportError("libcuda.so  or libnvrtc.so is not available. Please check your CUDA installation!")
 
+is_cuda_available()
+

@@ -1,5 +1,3 @@
-from gpuctypes.check_cuda import is_cuda_available
-is_cuda_available()
 # -*- coding: utf-8 -*-
 #
 # TARGET arch is: []
@@ -7,7 +5,7 @@ is_cuda_available()
 # POINTER_SIZE is: 8
 # LONGDOUBLE_SIZE is: 16
 #
-import ctypes, ctypes.util
+import ctypes, ctypes.util, gpuctypes.check_cuda
 
 class AsDictMixin:
     @classmethod
