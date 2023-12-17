@@ -6,7 +6,8 @@
 # LONGDOUBLE_SIZE is: 16
 #
 import ctypes, ctypes.util
-
+from gpuctypes.check_cuda import is_cuda_available
+is_cuda_available()
 
 class AsDictMixin:
     @classmethod
