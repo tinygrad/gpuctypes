@@ -7,6 +7,7 @@
 #
 import ctypes, ctypes.util, gpuctypes.check_cuda
 
+
 class AsDictMixin:
     @classmethod
     def as_dict(cls, self):
