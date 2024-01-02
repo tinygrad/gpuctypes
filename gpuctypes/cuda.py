@@ -5,7 +5,7 @@
 # POINTER_SIZE is: 8
 # LONGDOUBLE_SIZE is: 16
 #
-import ctypes, ctypes.util
+import ctypes, ctypes.util, gpuctypes.check_cuda
 
 
 class AsDictMixin:
