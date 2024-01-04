@@ -26,7 +26,7 @@ class TestHIP(unittest.TestCase):
       cuda_compile("void test() { {", ["--offload-arch=gfx1100"], HIPCompile, check)
 
   def test_compile(self):
-    prg = cuda_compile("int test() { return 42; }", ["--offload-arch=gfx1100"], HIPCompile, check)
+    prg = cuda_compile("int test() { return 42; }", ["--offload-arch=gfx1100"], HIPCompile, check, filename=None)
     assert len(prg) > 10
 
 class TestHIPDevice(unittest.TestCase):
@@ -48,7 +48,6 @@ class TestHIPDevice(unittest.TestCase):
     device_properties = hip.hipDeviceProp_t()
     check(hip.hipGetDeviceProperties(device_properties, 0))
     print(device_properties.gcnArchName)
-    return device_properties
 
 if __name__ == '__main__':
   unittest.main()
