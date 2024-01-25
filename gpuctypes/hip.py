@@ -8,6 +8,35 @@
 import ctypes
 
 
+def string_cast(char_pointer, encoding='utf-8', errors='strict'):
+    value = ctypes.cast(char_pointer, ctypes.c_char_p).value
+    if value is not None and encoding is not None:
+        value = value.decode(encoding, errors=errors)
+    return value
+
+
+def char_pointer_cast(string, encoding='utf-8'):
+    if encoding is not None:
+        try:
+            string = string.encode(encoding)
+        except AttributeError:
+            # In Python3, bytes has no encode attribute
+            pass
+    string = ctypes.c_char_p(string)
+    return ctypes.cast(string, ctypes.POINTER(ctypes.c_char))
+
+
+
+_libraries = {}
+_libraries['libamd_comgr.so'] = ctypes.CDLL('/opt/rocm/lib/libamd_comgr.so')
+c_int128 = ctypes.c_ubyte*16
+c_uint128 = c_int128
+void = None
+if ctypes.sizeof(ctypes.c_longdouble) == 16:
+    c_long_double_t = ctypes.c_longdouble
+else:
+    c_long_double_t = ctypes.c_ubyte*16
+
 class AsDictMixin:
     @classmethod
     def as_dict(cls, self):
@@ -116,35 +145,6 @@ class Union(ctypes.Union, AsDictMixin):
 
 
 
-_libraries = {}
-_libraries['libhiprtc.so'] = ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')
-def string_cast(char_pointer, encoding='utf-8', errors='strict'):
-    value = ctypes.cast(char_pointer, ctypes.c_char_p).value
-    if value is not None and encoding is not None:
-        value = value.decode(encoding, errors=errors)
-    return value
-
-
-def char_pointer_cast(string, encoding='utf-8'):
-    if encoding is not None:
-        try:
-            string = string.encode(encoding)
-        except AttributeError:
-            # In Python3, bytes has no encode attribute
-            pass
-    string = ctypes.c_char_p(string)
-    return ctypes.cast(string, ctypes.POINTER(ctypes.c_char))
-
-
-
-c_int128 = ctypes.c_ubyte*16
-c_uint128 = c_int128
-void = None
-if ctypes.sizeof(ctypes.c_longdouble) == 16:
-    c_long_double_t = ctypes.c_longdouble
-else:
-    c_long_double_t = ctypes.c_ubyte*16
-
 class FunctionFactoryStub:
     def __getattr__(self, _):
       return ctypes.CFUNCTYPE(lambda y:y)
@@ -156,242 +156,616 @@ class FunctionFactoryStub:
 # Or manually fix this by comment the ctypes.CDLL loading
 _libraries['FIXME_STUB'] = FunctionFactoryStub() #  ctypes.CDLL('FIXME_STUB')
 _libraries['libamdhip64.so'] = ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')
+_libraries['libhiprtc.so'] = ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')
 
 
 
-# values for enumeration 'hiprtcResult'
-hiprtcResult__enumvalues = {
-    0: 'HIPRTC_SUCCESS',
-    1: 'HIPRTC_ERROR_OUT_OF_MEMORY',
-    2: 'HIPRTC_ERROR_PROGRAM_CREATION_FAILURE',
-    3: 'HIPRTC_ERROR_INVALID_INPUT',
-    4: 'HIPRTC_ERROR_INVALID_PROGRAM',
-    5: 'HIPRTC_ERROR_INVALID_OPTION',
-    6: 'HIPRTC_ERROR_COMPILATION',
-    7: 'HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
-    8: 'HIPRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION',
-    9: 'HIPRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION',
-    10: 'HIPRTC_ERROR_NAME_EXPRESSION_NOT_VALID',
-    11: 'HIPRTC_ERROR_INTERNAL_ERROR',
-    100: 'HIPRTC_ERROR_LINKING',
+# values for enumeration 'amd_comgr_status_s'
+amd_comgr_status_s__enumvalues = {
+    0: 'AMD_COMGR_STATUS_SUCCESS',
+    1: 'AMD_COMGR_STATUS_ERROR',
+    2: 'AMD_COMGR_STATUS_ERROR_INVALID_ARGUMENT',
+    3: 'AMD_COMGR_STATUS_ERROR_OUT_OF_RESOURCES',
 }
-HIPRTC_SUCCESS = 0
-HIPRTC_ERROR_OUT_OF_MEMORY = 1
-HIPRTC_ERROR_PROGRAM_CREATION_FAILURE = 2
-HIPRTC_ERROR_INVALID_INPUT = 3
-HIPRTC_ERROR_INVALID_PROGRAM = 4
-HIPRTC_ERROR_INVALID_OPTION = 5
-HIPRTC_ERROR_COMPILATION = 6
-HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE = 7
-HIPRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION = 8
-HIPRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION = 9
-HIPRTC_ERROR_NAME_EXPRESSION_NOT_VALID = 10
-HIPRTC_ERROR_INTERNAL_ERROR = 11
-HIPRTC_ERROR_LINKING = 100
-hiprtcResult = ctypes.c_uint32 # enum
+AMD_COMGR_STATUS_SUCCESS = 0
+AMD_COMGR_STATUS_ERROR = 1
+AMD_COMGR_STATUS_ERROR_INVALID_ARGUMENT = 2
+AMD_COMGR_STATUS_ERROR_OUT_OF_RESOURCES = 3
+amd_comgr_status_s = ctypes.c_uint32 # enum
+amd_comgr_status_t = amd_comgr_status_s
+amd_comgr_status_t__enumvalues = amd_comgr_status_s__enumvalues
 
-# values for enumeration 'hiprtcJIT_option'
-hiprtcJIT_option__enumvalues = {
-    0: 'HIPRTC_JIT_MAX_REGISTERS',
-    1: 'HIPRTC_JIT_THREADS_PER_BLOCK',
-    2: 'HIPRTC_JIT_WALL_TIME',
-    3: 'HIPRTC_JIT_INFO_LOG_BUFFER',
-    4: 'HIPRTC_JIT_INFO_LOG_BUFFER_SIZE_BYTES',
-    5: 'HIPRTC_JIT_ERROR_LOG_BUFFER',
-    6: 'HIPRTC_JIT_ERROR_LOG_BUFFER_SIZE_BYTES',
-    7: 'HIPRTC_JIT_OPTIMIZATION_LEVEL',
-    8: 'HIPRTC_JIT_TARGET_FROM_HIPCONTEXT',
-    9: 'HIPRTC_JIT_TARGET',
-    10: 'HIPRTC_JIT_FALLBACK_STRATEGY',
-    11: 'HIPRTC_JIT_GENERATE_DEBUG_INFO',
-    12: 'HIPRTC_JIT_LOG_VERBOSE',
-    13: 'HIPRTC_JIT_GENERATE_LINE_INFO',
-    14: 'HIPRTC_JIT_CACHE_MODE',
-    15: 'HIPRTC_JIT_NEW_SM3X_OPT',
-    16: 'HIPRTC_JIT_FAST_COMPILE',
-    17: 'HIPRTC_JIT_GLOBAL_SYMBOL_NAMES',
-    18: 'HIPRTC_JIT_GLOBAL_SYMBOL_ADDRESS',
-    19: 'HIPRTC_JIT_GLOBAL_SYMBOL_COUNT',
-    20: 'HIPRTC_JIT_LTO',
-    21: 'HIPRTC_JIT_FTZ',
-    22: 'HIPRTC_JIT_PREC_DIV',
-    23: 'HIPRTC_JIT_PREC_SQRT',
-    24: 'HIPRTC_JIT_FMA',
-    25: 'HIPRTC_JIT_NUM_OPTIONS',
-    10000: 'HIPRTC_JIT_IR_TO_ISA_OPT_EXT',
-    10001: 'HIPRTC_JIT_IR_TO_ISA_OPT_COUNT_EXT',
+# values for enumeration 'amd_comgr_language_s'
+amd_comgr_language_s__enumvalues = {
+    0: 'AMD_COMGR_LANGUAGE_NONE',
+    1: 'AMD_COMGR_LANGUAGE_OPENCL_1_2',
+    2: 'AMD_COMGR_LANGUAGE_OPENCL_2_0',
+    3: 'AMD_COMGR_LANGUAGE_HC',
+    4: 'AMD_COMGR_LANGUAGE_HIP',
+    4: 'AMD_COMGR_LANGUAGE_LAST',
 }
-HIPRTC_JIT_MAX_REGISTERS = 0
-HIPRTC_JIT_THREADS_PER_BLOCK = 1
-HIPRTC_JIT_WALL_TIME = 2
-HIPRTC_JIT_INFO_LOG_BUFFER = 3
-HIPRTC_JIT_INFO_LOG_BUFFER_SIZE_BYTES = 4
-HIPRTC_JIT_ERROR_LOG_BUFFER = 5
-HIPRTC_JIT_ERROR_LOG_BUFFER_SIZE_BYTES = 6
-HIPRTC_JIT_OPTIMIZATION_LEVEL = 7
-HIPRTC_JIT_TARGET_FROM_HIPCONTEXT = 8
-HIPRTC_JIT_TARGET = 9
-HIPRTC_JIT_FALLBACK_STRATEGY = 10
-HIPRTC_JIT_GENERATE_DEBUG_INFO = 11
-HIPRTC_JIT_LOG_VERBOSE = 12
-HIPRTC_JIT_GENERATE_LINE_INFO = 13
-HIPRTC_JIT_CACHE_MODE = 14
-HIPRTC_JIT_NEW_SM3X_OPT = 15
-HIPRTC_JIT_FAST_COMPILE = 16
-HIPRTC_JIT_GLOBAL_SYMBOL_NAMES = 17
-HIPRTC_JIT_GLOBAL_SYMBOL_ADDRESS = 18
-HIPRTC_JIT_GLOBAL_SYMBOL_COUNT = 19
-HIPRTC_JIT_LTO = 20
-HIPRTC_JIT_FTZ = 21
-HIPRTC_JIT_PREC_DIV = 22
-HIPRTC_JIT_PREC_SQRT = 23
-HIPRTC_JIT_FMA = 24
-HIPRTC_JIT_NUM_OPTIONS = 25
-HIPRTC_JIT_IR_TO_ISA_OPT_EXT = 10000
-HIPRTC_JIT_IR_TO_ISA_OPT_COUNT_EXT = 10001
-hiprtcJIT_option = ctypes.c_uint32 # enum
+AMD_COMGR_LANGUAGE_NONE = 0
+AMD_COMGR_LANGUAGE_OPENCL_1_2 = 1
+AMD_COMGR_LANGUAGE_OPENCL_2_0 = 2
+AMD_COMGR_LANGUAGE_HC = 3
+AMD_COMGR_LANGUAGE_HIP = 4
+AMD_COMGR_LANGUAGE_LAST = 4
+amd_comgr_language_s = ctypes.c_uint32 # enum
+amd_comgr_language_t = amd_comgr_language_s
+amd_comgr_language_t__enumvalues = amd_comgr_language_s__enumvalues
+try:
+    amd_comgr_status_string = _libraries['libamd_comgr.so'].amd_comgr_status_string
+    amd_comgr_status_string.restype = amd_comgr_status_t
+    amd_comgr_status_string.argtypes = [amd_comgr_status_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_version = _libraries['libamd_comgr.so'].amd_comgr_get_version
+    amd_comgr_get_version.restype = None
+    amd_comgr_get_version.argtypes = [ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
 
-# values for enumeration 'hiprtcJITInputType'
-hiprtcJITInputType__enumvalues = {
-    0: 'HIPRTC_JIT_INPUT_CUBIN',
-    1: 'HIPRTC_JIT_INPUT_PTX',
-    2: 'HIPRTC_JIT_INPUT_FATBINARY',
-    3: 'HIPRTC_JIT_INPUT_OBJECT',
-    4: 'HIPRTC_JIT_INPUT_LIBRARY',
-    5: 'HIPRTC_JIT_INPUT_NVVM',
-    6: 'HIPRTC_JIT_NUM_LEGACY_INPUT_TYPES',
-    100: 'HIPRTC_JIT_INPUT_LLVM_BITCODE',
-    101: 'HIPRTC_JIT_INPUT_LLVM_BUNDLED_BITCODE',
-    102: 'HIPRTC_JIT_INPUT_LLVM_ARCHIVES_OF_BUNDLED_BITCODE',
-    9: 'HIPRTC_JIT_NUM_INPUT_TYPES',
+# values for enumeration 'amd_comgr_data_kind_s'
+amd_comgr_data_kind_s__enumvalues = {
+    0: 'AMD_COMGR_DATA_KIND_UNDEF',
+    1: 'AMD_COMGR_DATA_KIND_SOURCE',
+    2: 'AMD_COMGR_DATA_KIND_INCLUDE',
+    3: 'AMD_COMGR_DATA_KIND_PRECOMPILED_HEADER',
+    4: 'AMD_COMGR_DATA_KIND_DIAGNOSTIC',
+    5: 'AMD_COMGR_DATA_KIND_LOG',
+    6: 'AMD_COMGR_DATA_KIND_BC',
+    7: 'AMD_COMGR_DATA_KIND_RELOCATABLE',
+    8: 'AMD_COMGR_DATA_KIND_EXECUTABLE',
+    9: 'AMD_COMGR_DATA_KIND_BYTES',
+    16: 'AMD_COMGR_DATA_KIND_FATBIN',
+    17: 'AMD_COMGR_DATA_KIND_AR',
+    18: 'AMD_COMGR_DATA_KIND_BC_BUNDLE',
+    19: 'AMD_COMGR_DATA_KIND_AR_BUNDLE',
+    19: 'AMD_COMGR_DATA_KIND_LAST',
 }
-HIPRTC_JIT_INPUT_CUBIN = 0
-HIPRTC_JIT_INPUT_PTX = 1
-HIPRTC_JIT_INPUT_FATBINARY = 2
-HIPRTC_JIT_INPUT_OBJECT = 3
-HIPRTC_JIT_INPUT_LIBRARY = 4
-HIPRTC_JIT_INPUT_NVVM = 5
-HIPRTC_JIT_NUM_LEGACY_INPUT_TYPES = 6
-HIPRTC_JIT_INPUT_LLVM_BITCODE = 100
-HIPRTC_JIT_INPUT_LLVM_BUNDLED_BITCODE = 101
-HIPRTC_JIT_INPUT_LLVM_ARCHIVES_OF_BUNDLED_BITCODE = 102
-HIPRTC_JIT_NUM_INPUT_TYPES = 9
-hiprtcJITInputType = ctypes.c_uint32 # enum
-class struct_ihiprtcLinkState(Structure):
+AMD_COMGR_DATA_KIND_UNDEF = 0
+AMD_COMGR_DATA_KIND_SOURCE = 1
+AMD_COMGR_DATA_KIND_INCLUDE = 2
+AMD_COMGR_DATA_KIND_PRECOMPILED_HEADER = 3
+AMD_COMGR_DATA_KIND_DIAGNOSTIC = 4
+AMD_COMGR_DATA_KIND_LOG = 5
+AMD_COMGR_DATA_KIND_BC = 6
+AMD_COMGR_DATA_KIND_RELOCATABLE = 7
+AMD_COMGR_DATA_KIND_EXECUTABLE = 8
+AMD_COMGR_DATA_KIND_BYTES = 9
+AMD_COMGR_DATA_KIND_FATBIN = 16
+AMD_COMGR_DATA_KIND_AR = 17
+AMD_COMGR_DATA_KIND_BC_BUNDLE = 18
+AMD_COMGR_DATA_KIND_AR_BUNDLE = 19
+AMD_COMGR_DATA_KIND_LAST = 19
+amd_comgr_data_kind_s = ctypes.c_uint32 # enum
+amd_comgr_data_kind_t = amd_comgr_data_kind_s
+amd_comgr_data_kind_t__enumvalues = amd_comgr_data_kind_s__enumvalues
+class struct_amd_comgr_data_s(Structure):
     pass
 
-hiprtcLinkState = ctypes.POINTER(struct_ihiprtcLinkState)
-try:
-    hiprtcGetErrorString = _libraries['libhiprtc.so'].hiprtcGetErrorString
-    hiprtcGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
-    hiprtcGetErrorString.argtypes = [hiprtcResult]
-except AttributeError:
-    pass
-try:
-    hiprtcVersion = _libraries['libhiprtc.so'].hiprtcVersion
-    hiprtcVersion.restype = hiprtcResult
-    hiprtcVersion.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
-except AttributeError:
-    pass
-class struct__hiprtcProgram(Structure):
+struct_amd_comgr_data_s._pack_ = 1 # source:False
+struct_amd_comgr_data_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_data_t = struct_amd_comgr_data_s
+class struct_amd_comgr_data_set_s(Structure):
     pass
 
-hiprtcProgram = ctypes.POINTER(struct__hiprtcProgram)
-try:
-    hiprtcAddNameExpression = _libraries['libhiprtc.so'].hiprtcAddNameExpression
-    hiprtcAddNameExpression.restype = hiprtcResult
-    hiprtcAddNameExpression.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-except AttributeError:
+struct_amd_comgr_data_set_s._pack_ = 1 # source:False
+struct_amd_comgr_data_set_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_data_set_t = struct_amd_comgr_data_set_s
+class struct_amd_comgr_action_info_s(Structure):
     pass
-try:
-    hiprtcCompileProgram = _libraries['libhiprtc.so'].hiprtcCompileProgram
-    hiprtcCompileProgram.restype = hiprtcResult
-    hiprtcCompileProgram.argtypes = [hiprtcProgram, ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-except AttributeError:
+
+struct_amd_comgr_action_info_s._pack_ = 1 # source:False
+struct_amd_comgr_action_info_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_action_info_t = struct_amd_comgr_action_info_s
+class struct_amd_comgr_metadata_node_s(Structure):
     pass
-try:
-    hiprtcCreateProgram = _libraries['libhiprtc.so'].hiprtcCreateProgram
-    hiprtcCreateProgram.restype = hiprtcResult
-    hiprtcCreateProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-except AttributeError:
+
+struct_amd_comgr_metadata_node_s._pack_ = 1 # source:False
+struct_amd_comgr_metadata_node_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_metadata_node_t = struct_amd_comgr_metadata_node_s
+class struct_amd_comgr_symbol_s(Structure):
     pass
-try:
-    hiprtcDestroyProgram = _libraries['libhiprtc.so'].hiprtcDestroyProgram
-    hiprtcDestroyProgram.restype = hiprtcResult
-    hiprtcDestroyProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram))]
-except AttributeError:
+
+struct_amd_comgr_symbol_s._pack_ = 1 # source:False
+struct_amd_comgr_symbol_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_symbol_t = struct_amd_comgr_symbol_s
+class struct_amd_comgr_disassembly_info_s(Structure):
     pass
-try:
-    hiprtcGetLoweredName = _libraries['libhiprtc.so'].hiprtcGetLoweredName
-    hiprtcGetLoweredName.restype = hiprtcResult
-    hiprtcGetLoweredName.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-except AttributeError:
+
+struct_amd_comgr_disassembly_info_s._pack_ = 1 # source:False
+struct_amd_comgr_disassembly_info_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_disassembly_info_t = struct_amd_comgr_disassembly_info_s
+class struct_amd_comgr_symbolizer_info_s(Structure):
     pass
+
+struct_amd_comgr_symbolizer_info_s._pack_ = 1 # source:False
+struct_amd_comgr_symbolizer_info_s._fields_ = [
+    ('handle', ctypes.c_uint64),
+]
+
+amd_comgr_symbolizer_info_t = struct_amd_comgr_symbolizer_info_s
 try:
-    hiprtcGetProgramLog = _libraries['libhiprtc.so'].hiprtcGetProgramLog
-    hiprtcGetProgramLog.restype = hiprtcResult
-    hiprtcGetProgramLog.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-except AttributeError:
-    pass
-try:
-    hiprtcGetProgramLogSize = _libraries['libhiprtc.so'].hiprtcGetProgramLogSize
-    hiprtcGetProgramLogSize.restype = hiprtcResult
-    hiprtcGetProgramLogSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
-except AttributeError:
-    pass
-try:
-    hiprtcGetCode = _libraries['libhiprtc.so'].hiprtcGetCode
-    hiprtcGetCode.restype = hiprtcResult
-    hiprtcGetCode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-except AttributeError:
-    pass
-try:
-    hiprtcGetCodeSize = _libraries['libhiprtc.so'].hiprtcGetCodeSize
-    hiprtcGetCodeSize.restype = hiprtcResult
-    hiprtcGetCodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
-except AttributeError:
-    pass
-try:
-    hiprtcGetBitcode = _libraries['libhiprtc.so'].hiprtcGetBitcode
-    hiprtcGetBitcode.restype = hiprtcResult
-    hiprtcGetBitcode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
-except AttributeError:
-    pass
-try:
-    hiprtcGetBitcodeSize = _libraries['libhiprtc.so'].hiprtcGetBitcodeSize
-    hiprtcGetBitcodeSize.restype = hiprtcResult
-    hiprtcGetBitcodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
-except AttributeError:
-    pass
-try:
-    hiprtcLinkCreate = _libraries['libhiprtc.so'].hiprtcLinkCreate
-    hiprtcLinkCreate.restype = hiprtcResult
-    hiprtcLinkCreate.argtypes = [ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(struct_ihiprtcLinkState))]
-except AttributeError:
-    pass
-try:
-    hiprtcLinkAddFile = _libraries['libhiprtc.so'].hiprtcLinkAddFile
-    hiprtcLinkAddFile.restype = hiprtcResult
-    hiprtcLinkAddFile.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+    amd_comgr_get_isa_count = _libraries['libamd_comgr.so'].amd_comgr_get_isa_count
+    amd_comgr_get_isa_count.restype = amd_comgr_status_t
+    amd_comgr_get_isa_count.argtypes = [ctypes.POINTER(ctypes.c_uint64)]
 except AttributeError:
     pass
 size_t = ctypes.c_uint64
 try:
-    hiprtcLinkAddData = _libraries['libhiprtc.so'].hiprtcLinkAddData
-    hiprtcLinkAddData.restype = hiprtcResult
-    hiprtcLinkAddData.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+    amd_comgr_get_isa_name = _libraries['libamd_comgr.so'].amd_comgr_get_isa_name
+    amd_comgr_get_isa_name.restype = amd_comgr_status_t
+    amd_comgr_get_isa_name.argtypes = [size_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
 except AttributeError:
     pass
 try:
-    hiprtcLinkComplete = _libraries['libhiprtc.so'].hiprtcLinkComplete
-    hiprtcLinkComplete.restype = hiprtcResult
-    hiprtcLinkComplete.argtypes = [hiprtcLinkState, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
+    amd_comgr_get_isa_metadata = _libraries['libamd_comgr.so'].amd_comgr_get_isa_metadata
+    amd_comgr_get_isa_metadata.restype = amd_comgr_status_t
+    amd_comgr_get_isa_metadata.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_amd_comgr_metadata_node_s)]
 except AttributeError:
     pass
 try:
-    hiprtcLinkDestroy = _libraries['libhiprtc.so'].hiprtcLinkDestroy
-    hiprtcLinkDestroy.restype = hiprtcResult
-    hiprtcLinkDestroy.argtypes = [hiprtcLinkState]
+    amd_comgr_create_data = _libraries['libamd_comgr.so'].amd_comgr_create_data
+    amd_comgr_create_data.restype = amd_comgr_status_t
+    amd_comgr_create_data.argtypes = [amd_comgr_data_kind_t, ctypes.POINTER(struct_amd_comgr_data_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_release_data = _libraries['libamd_comgr.so'].amd_comgr_release_data
+    amd_comgr_release_data.restype = amd_comgr_status_t
+    amd_comgr_release_data.argtypes = [amd_comgr_data_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_data_kind = _libraries['libamd_comgr.so'].amd_comgr_get_data_kind
+    amd_comgr_get_data_kind.restype = amd_comgr_status_t
+    amd_comgr_get_data_kind.argtypes = [amd_comgr_data_t, ctypes.POINTER(amd_comgr_data_kind_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_set_data = _libraries['libamd_comgr.so'].amd_comgr_set_data
+    amd_comgr_set_data.restype = amd_comgr_status_t
+    amd_comgr_set_data.argtypes = [amd_comgr_data_t, size_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+uint64_t = ctypes.c_uint64
+try:
+    amd_comgr_set_data_from_file_slice = _libraries['libamd_comgr.so'].amd_comgr_set_data_from_file_slice
+    amd_comgr_set_data_from_file_slice.restype = amd_comgr_status_t
+    amd_comgr_set_data_from_file_slice.argtypes = [amd_comgr_data_t, ctypes.c_int32, uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_set_data_name = _libraries['libamd_comgr.so'].amd_comgr_set_data_name
+    amd_comgr_set_data_name.restype = amd_comgr_status_t
+    amd_comgr_set_data_name.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_data = _libraries['libamd_comgr.so'].amd_comgr_get_data
+    amd_comgr_get_data.restype = amd_comgr_status_t
+    amd_comgr_get_data.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_data_name = _libraries['libamd_comgr.so'].amd_comgr_get_data_name
+    amd_comgr_get_data_name.restype = amd_comgr_status_t
+    amd_comgr_get_data_name.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_data_isa_name = _libraries['libamd_comgr.so'].amd_comgr_get_data_isa_name
+    amd_comgr_get_data_isa_name.restype = amd_comgr_status_t
+    amd_comgr_get_data_isa_name.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_create_symbolizer_info = _libraries['libamd_comgr.so'].amd_comgr_create_symbolizer_info
+    amd_comgr_create_symbolizer_info.restype = amd_comgr_status_t
+    amd_comgr_create_symbolizer_info.argtypes = [amd_comgr_data_t, ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)), ctypes.POINTER(struct_amd_comgr_symbolizer_info_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_destroy_symbolizer_info = _libraries['libamd_comgr.so'].amd_comgr_destroy_symbolizer_info
+    amd_comgr_destroy_symbolizer_info.restype = amd_comgr_status_t
+    amd_comgr_destroy_symbolizer_info.argtypes = [amd_comgr_symbolizer_info_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_symbolize = _libraries['libamd_comgr.so'].amd_comgr_symbolize
+    amd_comgr_symbolize.restype = amd_comgr_status_t
+    amd_comgr_symbolize.argtypes = [amd_comgr_symbolizer_info_t, uint64_t, ctypes.c_bool, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_data_metadata = _libraries['libamd_comgr.so'].amd_comgr_get_data_metadata
+    amd_comgr_get_data_metadata.restype = amd_comgr_status_t
+    amd_comgr_get_data_metadata.argtypes = [amd_comgr_data_t, ctypes.POINTER(struct_amd_comgr_metadata_node_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_destroy_metadata = _libraries['libamd_comgr.so'].amd_comgr_destroy_metadata
+    amd_comgr_destroy_metadata.restype = amd_comgr_status_t
+    amd_comgr_destroy_metadata.argtypes = [amd_comgr_metadata_node_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_create_data_set = _libraries['libamd_comgr.so'].amd_comgr_create_data_set
+    amd_comgr_create_data_set.restype = amd_comgr_status_t
+    amd_comgr_create_data_set.argtypes = [ctypes.POINTER(struct_amd_comgr_data_set_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_destroy_data_set = _libraries['libamd_comgr.so'].amd_comgr_destroy_data_set
+    amd_comgr_destroy_data_set.restype = amd_comgr_status_t
+    amd_comgr_destroy_data_set.argtypes = [amd_comgr_data_set_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_data_set_add = _libraries['libamd_comgr.so'].amd_comgr_data_set_add
+    amd_comgr_data_set_add.restype = amd_comgr_status_t
+    amd_comgr_data_set_add.argtypes = [amd_comgr_data_set_t, amd_comgr_data_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_data_set_remove = _libraries['libamd_comgr.so'].amd_comgr_data_set_remove
+    amd_comgr_data_set_remove.restype = amd_comgr_status_t
+    amd_comgr_data_set_remove.argtypes = [amd_comgr_data_set_t, amd_comgr_data_kind_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_data_count = _libraries['libamd_comgr.so'].amd_comgr_action_data_count
+    amd_comgr_action_data_count.restype = amd_comgr_status_t
+    amd_comgr_action_data_count.argtypes = [amd_comgr_data_set_t, amd_comgr_data_kind_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_data_get_data = _libraries['libamd_comgr.so'].amd_comgr_action_data_get_data
+    amd_comgr_action_data_get_data.restype = amd_comgr_status_t
+    amd_comgr_action_data_get_data.argtypes = [amd_comgr_data_set_t, amd_comgr_data_kind_t, size_t, ctypes.POINTER(struct_amd_comgr_data_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_create_action_info = _libraries['libamd_comgr.so'].amd_comgr_create_action_info
+    amd_comgr_create_action_info.restype = amd_comgr_status_t
+    amd_comgr_create_action_info.argtypes = [ctypes.POINTER(struct_amd_comgr_action_info_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_destroy_action_info = _libraries['libamd_comgr.so'].amd_comgr_destroy_action_info
+    amd_comgr_destroy_action_info.restype = amd_comgr_status_t
+    amd_comgr_destroy_action_info.argtypes = [amd_comgr_action_info_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_set_isa_name = _libraries['libamd_comgr.so'].amd_comgr_action_info_set_isa_name
+    amd_comgr_action_info_set_isa_name.restype = amd_comgr_status_t
+    amd_comgr_action_info_set_isa_name.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_isa_name = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_isa_name
+    amd_comgr_action_info_get_isa_name.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_isa_name.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_set_language = _libraries['libamd_comgr.so'].amd_comgr_action_info_set_language
+    amd_comgr_action_info_set_language.restype = amd_comgr_status_t
+    amd_comgr_action_info_set_language.argtypes = [amd_comgr_action_info_t, amd_comgr_language_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_language = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_language
+    amd_comgr_action_info_get_language.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_language.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(amd_comgr_language_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_set_options = _libraries['libamd_comgr.so'].amd_comgr_action_info_set_options
+    amd_comgr_action_info_set_options.restype = amd_comgr_status_t
+    amd_comgr_action_info_set_options.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_options = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_options
+    amd_comgr_action_info_get_options.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_options.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_set_option_list = _libraries['libamd_comgr.so'].amd_comgr_action_info_set_option_list
+    amd_comgr_action_info_set_option_list.restype = amd_comgr_status_t
+    amd_comgr_action_info_set_option_list.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_char) * 0, size_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_option_list_count = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_option_list_count
+    amd_comgr_action_info_get_option_list_count.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_option_list_count.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_option_list_item = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_option_list_item
+    amd_comgr_action_info_get_option_list_item.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_option_list_item.argtypes = [amd_comgr_action_info_t, size_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_set_working_directory_path = _libraries['libamd_comgr.so'].amd_comgr_action_info_set_working_directory_path
+    amd_comgr_action_info_set_working_directory_path.restype = amd_comgr_status_t
+    amd_comgr_action_info_set_working_directory_path.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_working_directory_path = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_working_directory_path
+    amd_comgr_action_info_get_working_directory_path.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_working_directory_path.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_set_logging = _libraries['libamd_comgr.so'].amd_comgr_action_info_set_logging
+    amd_comgr_action_info_set_logging.restype = amd_comgr_status_t
+    amd_comgr_action_info_set_logging.argtypes = [amd_comgr_action_info_t, ctypes.c_bool]
+except AttributeError:
+    pass
+try:
+    amd_comgr_action_info_get_logging = _libraries['libamd_comgr.so'].amd_comgr_action_info_get_logging
+    amd_comgr_action_info_get_logging.restype = amd_comgr_status_t
+    amd_comgr_action_info_get_logging.argtypes = [amd_comgr_action_info_t, ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
+
+# values for enumeration 'amd_comgr_action_kind_s'
+amd_comgr_action_kind_s__enumvalues = {
+    0: 'AMD_COMGR_ACTION_SOURCE_TO_PREPROCESSOR',
+    1: 'AMD_COMGR_ACTION_ADD_PRECOMPILED_HEADERS',
+    2: 'AMD_COMGR_ACTION_COMPILE_SOURCE_TO_BC',
+    3: 'AMD_COMGR_ACTION_ADD_DEVICE_LIBRARIES',
+    4: 'AMD_COMGR_ACTION_LINK_BC_TO_BC',
+    5: 'AMD_COMGR_ACTION_OPTIMIZE_BC_TO_BC',
+    6: 'AMD_COMGR_ACTION_CODEGEN_BC_TO_RELOCATABLE',
+    7: 'AMD_COMGR_ACTION_CODEGEN_BC_TO_ASSEMBLY',
+    8: 'AMD_COMGR_ACTION_LINK_RELOCATABLE_TO_RELOCATABLE',
+    9: 'AMD_COMGR_ACTION_LINK_RELOCATABLE_TO_EXECUTABLE',
+    10: 'AMD_COMGR_ACTION_ASSEMBLE_SOURCE_TO_RELOCATABLE',
+    11: 'AMD_COMGR_ACTION_DISASSEMBLE_RELOCATABLE_TO_SOURCE',
+    12: 'AMD_COMGR_ACTION_DISASSEMBLE_EXECUTABLE_TO_SOURCE',
+    13: 'AMD_COMGR_ACTION_DISASSEMBLE_BYTES_TO_SOURCE',
+    14: 'AMD_COMGR_ACTION_COMPILE_SOURCE_TO_FATBIN',
+    15: 'AMD_COMGR_ACTION_COMPILE_SOURCE_WITH_DEVICE_LIBS_TO_BC',
+    15: 'AMD_COMGR_ACTION_LAST',
+}
+AMD_COMGR_ACTION_SOURCE_TO_PREPROCESSOR = 0
+AMD_COMGR_ACTION_ADD_PRECOMPILED_HEADERS = 1
+AMD_COMGR_ACTION_COMPILE_SOURCE_TO_BC = 2
+AMD_COMGR_ACTION_ADD_DEVICE_LIBRARIES = 3
+AMD_COMGR_ACTION_LINK_BC_TO_BC = 4
+AMD_COMGR_ACTION_OPTIMIZE_BC_TO_BC = 5
+AMD_COMGR_ACTION_CODEGEN_BC_TO_RELOCATABLE = 6
+AMD_COMGR_ACTION_CODEGEN_BC_TO_ASSEMBLY = 7
+AMD_COMGR_ACTION_LINK_RELOCATABLE_TO_RELOCATABLE = 8
+AMD_COMGR_ACTION_LINK_RELOCATABLE_TO_EXECUTABLE = 9
+AMD_COMGR_ACTION_ASSEMBLE_SOURCE_TO_RELOCATABLE = 10
+AMD_COMGR_ACTION_DISASSEMBLE_RELOCATABLE_TO_SOURCE = 11
+AMD_COMGR_ACTION_DISASSEMBLE_EXECUTABLE_TO_SOURCE = 12
+AMD_COMGR_ACTION_DISASSEMBLE_BYTES_TO_SOURCE = 13
+AMD_COMGR_ACTION_COMPILE_SOURCE_TO_FATBIN = 14
+AMD_COMGR_ACTION_COMPILE_SOURCE_WITH_DEVICE_LIBS_TO_BC = 15
+AMD_COMGR_ACTION_LAST = 15
+amd_comgr_action_kind_s = ctypes.c_uint32 # enum
+amd_comgr_action_kind_t = amd_comgr_action_kind_s
+amd_comgr_action_kind_t__enumvalues = amd_comgr_action_kind_s__enumvalues
+try:
+    amd_comgr_do_action = _libraries['libamd_comgr.so'].amd_comgr_do_action
+    amd_comgr_do_action.restype = amd_comgr_status_t
+    amd_comgr_do_action.argtypes = [amd_comgr_action_kind_t, amd_comgr_action_info_t, amd_comgr_data_set_t, amd_comgr_data_set_t]
+except AttributeError:
+    pass
+
+# values for enumeration 'amd_comgr_metadata_kind_s'
+amd_comgr_metadata_kind_s__enumvalues = {
+    0: 'AMD_COMGR_METADATA_KIND_NULL',
+    1: 'AMD_COMGR_METADATA_KIND_STRING',
+    2: 'AMD_COMGR_METADATA_KIND_MAP',
+    3: 'AMD_COMGR_METADATA_KIND_LIST',
+    3: 'AMD_COMGR_METADATA_KIND_LAST',
+}
+AMD_COMGR_METADATA_KIND_NULL = 0
+AMD_COMGR_METADATA_KIND_STRING = 1
+AMD_COMGR_METADATA_KIND_MAP = 2
+AMD_COMGR_METADATA_KIND_LIST = 3
+AMD_COMGR_METADATA_KIND_LAST = 3
+amd_comgr_metadata_kind_s = ctypes.c_uint32 # enum
+amd_comgr_metadata_kind_t = amd_comgr_metadata_kind_s
+amd_comgr_metadata_kind_t__enumvalues = amd_comgr_metadata_kind_s__enumvalues
+try:
+    amd_comgr_get_metadata_kind = _libraries['libamd_comgr.so'].amd_comgr_get_metadata_kind
+    amd_comgr_get_metadata_kind.restype = amd_comgr_status_t
+    amd_comgr_get_metadata_kind.argtypes = [amd_comgr_metadata_node_t, ctypes.POINTER(amd_comgr_metadata_kind_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_metadata_string = _libraries['libamd_comgr.so'].amd_comgr_get_metadata_string
+    amd_comgr_get_metadata_string.restype = amd_comgr_status_t
+    amd_comgr_get_metadata_string.argtypes = [amd_comgr_metadata_node_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_metadata_map_size = _libraries['libamd_comgr.so'].amd_comgr_get_metadata_map_size
+    amd_comgr_get_metadata_map_size.restype = amd_comgr_status_t
+    amd_comgr_get_metadata_map_size.argtypes = [amd_comgr_metadata_node_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_iterate_map_metadata = _libraries['libamd_comgr.so'].amd_comgr_iterate_map_metadata
+    amd_comgr_iterate_map_metadata.restype = amd_comgr_status_t
+    amd_comgr_iterate_map_metadata.argtypes = [amd_comgr_metadata_node_t, ctypes.CFUNCTYPE(amd_comgr_status_s, struct_amd_comgr_metadata_node_s, struct_amd_comgr_metadata_node_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_metadata_lookup = _libraries['libamd_comgr.so'].amd_comgr_metadata_lookup
+    amd_comgr_metadata_lookup.restype = amd_comgr_status_t
+    amd_comgr_metadata_lookup.argtypes = [amd_comgr_metadata_node_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_amd_comgr_metadata_node_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_metadata_list_size = _libraries['libamd_comgr.so'].amd_comgr_get_metadata_list_size
+    amd_comgr_get_metadata_list_size.restype = amd_comgr_status_t
+    amd_comgr_get_metadata_list_size.argtypes = [amd_comgr_metadata_node_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_index_list_metadata = _libraries['libamd_comgr.so'].amd_comgr_index_list_metadata
+    amd_comgr_index_list_metadata.restype = amd_comgr_status_t
+    amd_comgr_index_list_metadata.argtypes = [amd_comgr_metadata_node_t, size_t, ctypes.POINTER(struct_amd_comgr_metadata_node_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_iterate_symbols = _libraries['libamd_comgr.so'].amd_comgr_iterate_symbols
+    amd_comgr_iterate_symbols.restype = amd_comgr_status_t
+    amd_comgr_iterate_symbols.argtypes = [amd_comgr_data_t, ctypes.CFUNCTYPE(amd_comgr_status_s, struct_amd_comgr_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_symbol_lookup = _libraries['libamd_comgr.so'].amd_comgr_symbol_lookup
+    amd_comgr_symbol_lookup.restype = amd_comgr_status_t
+    amd_comgr_symbol_lookup.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_amd_comgr_symbol_s)]
+except AttributeError:
+    pass
+
+# values for enumeration 'amd_comgr_symbol_type_s'
+amd_comgr_symbol_type_s__enumvalues = {
+    -1: 'AMD_COMGR_SYMBOL_TYPE_UNKNOWN',
+    0: 'AMD_COMGR_SYMBOL_TYPE_NOTYPE',
+    1: 'AMD_COMGR_SYMBOL_TYPE_OBJECT',
+    2: 'AMD_COMGR_SYMBOL_TYPE_FUNC',
+    3: 'AMD_COMGR_SYMBOL_TYPE_SECTION',
+    4: 'AMD_COMGR_SYMBOL_TYPE_FILE',
+    5: 'AMD_COMGR_SYMBOL_TYPE_COMMON',
+    10: 'AMD_COMGR_SYMBOL_TYPE_AMDGPU_HSA_KERNEL',
+}
+AMD_COMGR_SYMBOL_TYPE_UNKNOWN = -1
+AMD_COMGR_SYMBOL_TYPE_NOTYPE = 0
+AMD_COMGR_SYMBOL_TYPE_OBJECT = 1
+AMD_COMGR_SYMBOL_TYPE_FUNC = 2
+AMD_COMGR_SYMBOL_TYPE_SECTION = 3
+AMD_COMGR_SYMBOL_TYPE_FILE = 4
+AMD_COMGR_SYMBOL_TYPE_COMMON = 5
+AMD_COMGR_SYMBOL_TYPE_AMDGPU_HSA_KERNEL = 10
+amd_comgr_symbol_type_s = ctypes.c_int32 # enum
+amd_comgr_symbol_type_t = amd_comgr_symbol_type_s
+amd_comgr_symbol_type_t__enumvalues = amd_comgr_symbol_type_s__enumvalues
+
+# values for enumeration 'amd_comgr_symbol_info_s'
+amd_comgr_symbol_info_s__enumvalues = {
+    0: 'AMD_COMGR_SYMBOL_INFO_NAME_LENGTH',
+    1: 'AMD_COMGR_SYMBOL_INFO_NAME',
+    2: 'AMD_COMGR_SYMBOL_INFO_TYPE',
+    3: 'AMD_COMGR_SYMBOL_INFO_SIZE',
+    4: 'AMD_COMGR_SYMBOL_INFO_IS_UNDEFINED',
+    5: 'AMD_COMGR_SYMBOL_INFO_VALUE',
+    5: 'AMD_COMGR_SYMBOL_INFO_LAST',
+}
+AMD_COMGR_SYMBOL_INFO_NAME_LENGTH = 0
+AMD_COMGR_SYMBOL_INFO_NAME = 1
+AMD_COMGR_SYMBOL_INFO_TYPE = 2
+AMD_COMGR_SYMBOL_INFO_SIZE = 3
+AMD_COMGR_SYMBOL_INFO_IS_UNDEFINED = 4
+AMD_COMGR_SYMBOL_INFO_VALUE = 5
+AMD_COMGR_SYMBOL_INFO_LAST = 5
+amd_comgr_symbol_info_s = ctypes.c_uint32 # enum
+amd_comgr_symbol_info_t = amd_comgr_symbol_info_s
+amd_comgr_symbol_info_t__enumvalues = amd_comgr_symbol_info_s__enumvalues
+try:
+    amd_comgr_symbol_get_info = _libraries['libamd_comgr.so'].amd_comgr_symbol_get_info
+    amd_comgr_symbol_get_info.restype = amd_comgr_status_t
+    amd_comgr_symbol_get_info.argtypes = [amd_comgr_symbol_t, amd_comgr_symbol_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_create_disassembly_info = _libraries['libamd_comgr.so'].amd_comgr_create_disassembly_info
+    amd_comgr_create_disassembly_info.restype = amd_comgr_status_t
+    amd_comgr_create_disassembly_info.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.CFUNCTYPE(ctypes.c_uint64, ctypes.c_uint64, ctypes.POINTER(ctypes.c_char), ctypes.c_uint64, ctypes.POINTER(None)), ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)), ctypes.CFUNCTYPE(None, ctypes.c_uint64, ctypes.POINTER(None)), ctypes.POINTER(struct_amd_comgr_disassembly_info_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_destroy_disassembly_info = _libraries['libamd_comgr.so'].amd_comgr_destroy_disassembly_info
+    amd_comgr_destroy_disassembly_info.restype = amd_comgr_status_t
+    amd_comgr_destroy_disassembly_info.argtypes = [amd_comgr_disassembly_info_t]
+except AttributeError:
+    pass
+try:
+    amd_comgr_disassemble_instruction = _libraries['libamd_comgr.so'].amd_comgr_disassemble_instruction
+    amd_comgr_disassemble_instruction.restype = amd_comgr_status_t
+    amd_comgr_disassemble_instruction.argtypes = [amd_comgr_disassembly_info_t, uint64_t, ctypes.POINTER(None), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_demangle_symbol_name = _libraries['libamd_comgr.so'].amd_comgr_demangle_symbol_name
+    amd_comgr_demangle_symbol_name.restype = amd_comgr_status_t
+    amd_comgr_demangle_symbol_name.argtypes = [amd_comgr_data_t, ctypes.POINTER(struct_amd_comgr_data_s)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_populate_mangled_names = _libraries['libamd_comgr.so'].amd_comgr_populate_mangled_names
+    amd_comgr_populate_mangled_names.restype = amd_comgr_status_t
+    amd_comgr_populate_mangled_names.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_get_mangled_name = _libraries['libamd_comgr.so'].amd_comgr_get_mangled_name
+    amd_comgr_get_mangled_name.restype = amd_comgr_status_t
+    amd_comgr_get_mangled_name.argtypes = [amd_comgr_data_t, size_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_populate_name_expression_map = _libraries['libamd_comgr.so'].amd_comgr_populate_name_expression_map
+    amd_comgr_populate_name_expression_map.restype = amd_comgr_status_t
+    amd_comgr_populate_name_expression_map.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    amd_comgr_map_name_expression_to_symbol_name = _libraries['libamd_comgr.so'].amd_comgr_map_name_expression_to_symbol_name
+    amd_comgr_map_name_expression_to_symbol_name.restype = amd_comgr_status_t
+    amd_comgr_map_name_expression_to_symbol_name.argtypes = [amd_comgr_data_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+class struct_code_object_info_s(Structure):
+    pass
+
+struct_code_object_info_s._pack_ = 1 # source:False
+struct_code_object_info_s._fields_ = [
+    ('isa', ctypes.POINTER(ctypes.c_char)),
+    ('size', ctypes.c_uint64),
+    ('offset', ctypes.c_uint64),
+]
+
+amd_comgr_code_object_info_t = struct_code_object_info_s
+try:
+    amd_comgr_lookup_code_object = _libraries['libamd_comgr.so'].amd_comgr_lookup_code_object
+    amd_comgr_lookup_code_object.restype = amd_comgr_status_t
+    amd_comgr_lookup_code_object.argtypes = [amd_comgr_data_t, ctypes.POINTER(struct_code_object_info_s), size_t]
 except AttributeError:
     pass
 
@@ -3139,7 +3513,6 @@ try:
     hipStreamWaitValue32.argtypes = [hipStream_t, ctypes.POINTER(None), uint32_t, ctypes.c_uint32, uint32_t]
 except AttributeError:
     pass
-uint64_t = ctypes.c_uint64
 try:
     hipStreamWaitValue64 = _libraries['libamdhip64.so'].hipStreamWaitValue64
     hipStreamWaitValue64.restype = hipError_t
@@ -5187,8 +5560,285 @@ try:
     hipHccModuleLaunchKernel.argtypes = [hipFunction_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, size_t, hipStream_t, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(None)), hipEvent_t, hipEvent_t]
 except AttributeError:
     pass
+
+# values for enumeration 'hiprtcResult'
+hiprtcResult__enumvalues = {
+    0: 'HIPRTC_SUCCESS',
+    1: 'HIPRTC_ERROR_OUT_OF_MEMORY',
+    2: 'HIPRTC_ERROR_PROGRAM_CREATION_FAILURE',
+    3: 'HIPRTC_ERROR_INVALID_INPUT',
+    4: 'HIPRTC_ERROR_INVALID_PROGRAM',
+    5: 'HIPRTC_ERROR_INVALID_OPTION',
+    6: 'HIPRTC_ERROR_COMPILATION',
+    7: 'HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
+    8: 'HIPRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION',
+    9: 'HIPRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION',
+    10: 'HIPRTC_ERROR_NAME_EXPRESSION_NOT_VALID',
+    11: 'HIPRTC_ERROR_INTERNAL_ERROR',
+    100: 'HIPRTC_ERROR_LINKING',
+}
+HIPRTC_SUCCESS = 0
+HIPRTC_ERROR_OUT_OF_MEMORY = 1
+HIPRTC_ERROR_PROGRAM_CREATION_FAILURE = 2
+HIPRTC_ERROR_INVALID_INPUT = 3
+HIPRTC_ERROR_INVALID_PROGRAM = 4
+HIPRTC_ERROR_INVALID_OPTION = 5
+HIPRTC_ERROR_COMPILATION = 6
+HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE = 7
+HIPRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION = 8
+HIPRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION = 9
+HIPRTC_ERROR_NAME_EXPRESSION_NOT_VALID = 10
+HIPRTC_ERROR_INTERNAL_ERROR = 11
+HIPRTC_ERROR_LINKING = 100
+hiprtcResult = ctypes.c_uint32 # enum
+
+# values for enumeration 'hiprtcJIT_option'
+hiprtcJIT_option__enumvalues = {
+    0: 'HIPRTC_JIT_MAX_REGISTERS',
+    1: 'HIPRTC_JIT_THREADS_PER_BLOCK',
+    2: 'HIPRTC_JIT_WALL_TIME',
+    3: 'HIPRTC_JIT_INFO_LOG_BUFFER',
+    4: 'HIPRTC_JIT_INFO_LOG_BUFFER_SIZE_BYTES',
+    5: 'HIPRTC_JIT_ERROR_LOG_BUFFER',
+    6: 'HIPRTC_JIT_ERROR_LOG_BUFFER_SIZE_BYTES',
+    7: 'HIPRTC_JIT_OPTIMIZATION_LEVEL',
+    8: 'HIPRTC_JIT_TARGET_FROM_HIPCONTEXT',
+    9: 'HIPRTC_JIT_TARGET',
+    10: 'HIPRTC_JIT_FALLBACK_STRATEGY',
+    11: 'HIPRTC_JIT_GENERATE_DEBUG_INFO',
+    12: 'HIPRTC_JIT_LOG_VERBOSE',
+    13: 'HIPRTC_JIT_GENERATE_LINE_INFO',
+    14: 'HIPRTC_JIT_CACHE_MODE',
+    15: 'HIPRTC_JIT_NEW_SM3X_OPT',
+    16: 'HIPRTC_JIT_FAST_COMPILE',
+    17: 'HIPRTC_JIT_GLOBAL_SYMBOL_NAMES',
+    18: 'HIPRTC_JIT_GLOBAL_SYMBOL_ADDRESS',
+    19: 'HIPRTC_JIT_GLOBAL_SYMBOL_COUNT',
+    20: 'HIPRTC_JIT_LTO',
+    21: 'HIPRTC_JIT_FTZ',
+    22: 'HIPRTC_JIT_PREC_DIV',
+    23: 'HIPRTC_JIT_PREC_SQRT',
+    24: 'HIPRTC_JIT_FMA',
+    25: 'HIPRTC_JIT_NUM_OPTIONS',
+    10000: 'HIPRTC_JIT_IR_TO_ISA_OPT_EXT',
+    10001: 'HIPRTC_JIT_IR_TO_ISA_OPT_COUNT_EXT',
+}
+HIPRTC_JIT_MAX_REGISTERS = 0
+HIPRTC_JIT_THREADS_PER_BLOCK = 1
+HIPRTC_JIT_WALL_TIME = 2
+HIPRTC_JIT_INFO_LOG_BUFFER = 3
+HIPRTC_JIT_INFO_LOG_BUFFER_SIZE_BYTES = 4
+HIPRTC_JIT_ERROR_LOG_BUFFER = 5
+HIPRTC_JIT_ERROR_LOG_BUFFER_SIZE_BYTES = 6
+HIPRTC_JIT_OPTIMIZATION_LEVEL = 7
+HIPRTC_JIT_TARGET_FROM_HIPCONTEXT = 8
+HIPRTC_JIT_TARGET = 9
+HIPRTC_JIT_FALLBACK_STRATEGY = 10
+HIPRTC_JIT_GENERATE_DEBUG_INFO = 11
+HIPRTC_JIT_LOG_VERBOSE = 12
+HIPRTC_JIT_GENERATE_LINE_INFO = 13
+HIPRTC_JIT_CACHE_MODE = 14
+HIPRTC_JIT_NEW_SM3X_OPT = 15
+HIPRTC_JIT_FAST_COMPILE = 16
+HIPRTC_JIT_GLOBAL_SYMBOL_NAMES = 17
+HIPRTC_JIT_GLOBAL_SYMBOL_ADDRESS = 18
+HIPRTC_JIT_GLOBAL_SYMBOL_COUNT = 19
+HIPRTC_JIT_LTO = 20
+HIPRTC_JIT_FTZ = 21
+HIPRTC_JIT_PREC_DIV = 22
+HIPRTC_JIT_PREC_SQRT = 23
+HIPRTC_JIT_FMA = 24
+HIPRTC_JIT_NUM_OPTIONS = 25
+HIPRTC_JIT_IR_TO_ISA_OPT_EXT = 10000
+HIPRTC_JIT_IR_TO_ISA_OPT_COUNT_EXT = 10001
+hiprtcJIT_option = ctypes.c_uint32 # enum
+
+# values for enumeration 'hiprtcJITInputType'
+hiprtcJITInputType__enumvalues = {
+    0: 'HIPRTC_JIT_INPUT_CUBIN',
+    1: 'HIPRTC_JIT_INPUT_PTX',
+    2: 'HIPRTC_JIT_INPUT_FATBINARY',
+    3: 'HIPRTC_JIT_INPUT_OBJECT',
+    4: 'HIPRTC_JIT_INPUT_LIBRARY',
+    5: 'HIPRTC_JIT_INPUT_NVVM',
+    6: 'HIPRTC_JIT_NUM_LEGACY_INPUT_TYPES',
+    100: 'HIPRTC_JIT_INPUT_LLVM_BITCODE',
+    101: 'HIPRTC_JIT_INPUT_LLVM_BUNDLED_BITCODE',
+    102: 'HIPRTC_JIT_INPUT_LLVM_ARCHIVES_OF_BUNDLED_BITCODE',
+    9: 'HIPRTC_JIT_NUM_INPUT_TYPES',
+}
+HIPRTC_JIT_INPUT_CUBIN = 0
+HIPRTC_JIT_INPUT_PTX = 1
+HIPRTC_JIT_INPUT_FATBINARY = 2
+HIPRTC_JIT_INPUT_OBJECT = 3
+HIPRTC_JIT_INPUT_LIBRARY = 4
+HIPRTC_JIT_INPUT_NVVM = 5
+HIPRTC_JIT_NUM_LEGACY_INPUT_TYPES = 6
+HIPRTC_JIT_INPUT_LLVM_BITCODE = 100
+HIPRTC_JIT_INPUT_LLVM_BUNDLED_BITCODE = 101
+HIPRTC_JIT_INPUT_LLVM_ARCHIVES_OF_BUNDLED_BITCODE = 102
+HIPRTC_JIT_NUM_INPUT_TYPES = 9
+hiprtcJITInputType = ctypes.c_uint32 # enum
+class struct_ihiprtcLinkState(Structure):
+    pass
+
+hiprtcLinkState = ctypes.POINTER(struct_ihiprtcLinkState)
+try:
+    hiprtcGetErrorString = _libraries['libhiprtc.so'].hiprtcGetErrorString
+    hiprtcGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
+    hiprtcGetErrorString.argtypes = [hiprtcResult]
+except AttributeError:
+    pass
+try:
+    hiprtcVersion = _libraries['libhiprtc.so'].hiprtcVersion
+    hiprtcVersion.restype = hiprtcResult
+    hiprtcVersion.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
+except AttributeError:
+    pass
+class struct__hiprtcProgram(Structure):
+    pass
+
+hiprtcProgram = ctypes.POINTER(struct__hiprtcProgram)
+try:
+    hiprtcAddNameExpression = _libraries['libhiprtc.so'].hiprtcAddNameExpression
+    hiprtcAddNameExpression.restype = hiprtcResult
+    hiprtcAddNameExpression.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcCompileProgram = _libraries['libhiprtc.so'].hiprtcCompileProgram
+    hiprtcCompileProgram.restype = hiprtcResult
+    hiprtcCompileProgram.argtypes = [hiprtcProgram, ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hiprtcCreateProgram = _libraries['libhiprtc.so'].hiprtcCreateProgram
+    hiprtcCreateProgram.restype = hiprtcResult
+    hiprtcCreateProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hiprtcDestroyProgram = _libraries['libhiprtc.so'].hiprtcDestroyProgram
+    hiprtcDestroyProgram.restype = hiprtcResult
+    hiprtcDestroyProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram))]
+except AttributeError:
+    pass
+try:
+    hiprtcGetLoweredName = _libraries['libhiprtc.so'].hiprtcGetLoweredName
+    hiprtcGetLoweredName.restype = hiprtcResult
+    hiprtcGetLoweredName.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hiprtcGetProgramLog = _libraries['libhiprtc.so'].hiprtcGetProgramLog
+    hiprtcGetProgramLog.restype = hiprtcResult
+    hiprtcGetProgramLog.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetProgramLogSize = _libraries['libhiprtc.so'].hiprtcGetProgramLogSize
+    hiprtcGetProgramLogSize.restype = hiprtcResult
+    hiprtcGetProgramLogSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetCode = _libraries['libhiprtc.so'].hiprtcGetCode
+    hiprtcGetCode.restype = hiprtcResult
+    hiprtcGetCode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetCodeSize = _libraries['libhiprtc.so'].hiprtcGetCodeSize
+    hiprtcGetCodeSize.restype = hiprtcResult
+    hiprtcGetCodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetBitcode = _libraries['libhiprtc.so'].hiprtcGetBitcode
+    hiprtcGetBitcode.restype = hiprtcResult
+    hiprtcGetBitcode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
+try:
+    hiprtcGetBitcodeSize = _libraries['libhiprtc.so'].hiprtcGetBitcodeSize
+    hiprtcGetBitcodeSize.restype = hiprtcResult
+    hiprtcGetBitcodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkCreate = _libraries['libhiprtc.so'].hiprtcLinkCreate
+    hiprtcLinkCreate.restype = hiprtcResult
+    hiprtcLinkCreate.argtypes = [ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(struct_ihiprtcLinkState))]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkAddFile = _libraries['libhiprtc.so'].hiprtcLinkAddFile
+    hiprtcLinkAddFile.restype = hiprtcResult
+    hiprtcLinkAddFile.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkAddData = _libraries['libhiprtc.so'].hiprtcLinkAddData
+    hiprtcLinkAddData.restype = hiprtcResult
+    hiprtcLinkAddData.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkComplete = _libraries['libhiprtc.so'].hiprtcLinkComplete
+    hiprtcLinkComplete.restype = hiprtcResult
+    hiprtcLinkComplete.argtypes = [hiprtcLinkState, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hiprtcLinkDestroy = _libraries['libhiprtc.so'].hiprtcLinkDestroy
+    hiprtcLinkDestroy.restype = hiprtcResult
+    hiprtcLinkDestroy.argtypes = [hiprtcLinkState]
+except AttributeError:
+    pass
 __all__ = \
-    ['HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
+    ['AMD_COMGR_ACTION_ADD_DEVICE_LIBRARIES',
+    'AMD_COMGR_ACTION_ADD_PRECOMPILED_HEADERS',
+    'AMD_COMGR_ACTION_ASSEMBLE_SOURCE_TO_RELOCATABLE',
+    'AMD_COMGR_ACTION_CODEGEN_BC_TO_ASSEMBLY',
+    'AMD_COMGR_ACTION_CODEGEN_BC_TO_RELOCATABLE',
+    'AMD_COMGR_ACTION_COMPILE_SOURCE_TO_BC',
+    'AMD_COMGR_ACTION_COMPILE_SOURCE_TO_FATBIN',
+    'AMD_COMGR_ACTION_COMPILE_SOURCE_WITH_DEVICE_LIBS_TO_BC',
+    'AMD_COMGR_ACTION_DISASSEMBLE_BYTES_TO_SOURCE',
+    'AMD_COMGR_ACTION_DISASSEMBLE_EXECUTABLE_TO_SOURCE',
+    'AMD_COMGR_ACTION_DISASSEMBLE_RELOCATABLE_TO_SOURCE',
+    'AMD_COMGR_ACTION_LAST', 'AMD_COMGR_ACTION_LINK_BC_TO_BC',
+    'AMD_COMGR_ACTION_LINK_RELOCATABLE_TO_EXECUTABLE',
+    'AMD_COMGR_ACTION_LINK_RELOCATABLE_TO_RELOCATABLE',
+    'AMD_COMGR_ACTION_OPTIMIZE_BC_TO_BC',
+    'AMD_COMGR_ACTION_SOURCE_TO_PREPROCESSOR',
+    'AMD_COMGR_DATA_KIND_AR', 'AMD_COMGR_DATA_KIND_AR_BUNDLE',
+    'AMD_COMGR_DATA_KIND_BC', 'AMD_COMGR_DATA_KIND_BC_BUNDLE',
+    'AMD_COMGR_DATA_KIND_BYTES', 'AMD_COMGR_DATA_KIND_DIAGNOSTIC',
+    'AMD_COMGR_DATA_KIND_EXECUTABLE', 'AMD_COMGR_DATA_KIND_FATBIN',
+    'AMD_COMGR_DATA_KIND_INCLUDE', 'AMD_COMGR_DATA_KIND_LAST',
+    'AMD_COMGR_DATA_KIND_LOG',
+    'AMD_COMGR_DATA_KIND_PRECOMPILED_HEADER',
+    'AMD_COMGR_DATA_KIND_RELOCATABLE', 'AMD_COMGR_DATA_KIND_SOURCE',
+    'AMD_COMGR_DATA_KIND_UNDEF', 'AMD_COMGR_LANGUAGE_HC',
+    'AMD_COMGR_LANGUAGE_HIP', 'AMD_COMGR_LANGUAGE_LAST',
+    'AMD_COMGR_LANGUAGE_NONE', 'AMD_COMGR_LANGUAGE_OPENCL_1_2',
+    'AMD_COMGR_LANGUAGE_OPENCL_2_0', 'AMD_COMGR_METADATA_KIND_LAST',
+    'AMD_COMGR_METADATA_KIND_LIST', 'AMD_COMGR_METADATA_KIND_MAP',
+    'AMD_COMGR_METADATA_KIND_NULL', 'AMD_COMGR_METADATA_KIND_STRING',
+    'AMD_COMGR_STATUS_ERROR',
+    'AMD_COMGR_STATUS_ERROR_INVALID_ARGUMENT',
+    'AMD_COMGR_STATUS_ERROR_OUT_OF_RESOURCES',
+    'AMD_COMGR_STATUS_SUCCESS', 'AMD_COMGR_SYMBOL_INFO_IS_UNDEFINED',
+    'AMD_COMGR_SYMBOL_INFO_LAST', 'AMD_COMGR_SYMBOL_INFO_NAME',
+    'AMD_COMGR_SYMBOL_INFO_NAME_LENGTH', 'AMD_COMGR_SYMBOL_INFO_SIZE',
+    'AMD_COMGR_SYMBOL_INFO_TYPE', 'AMD_COMGR_SYMBOL_INFO_VALUE',
+    'AMD_COMGR_SYMBOL_TYPE_AMDGPU_HSA_KERNEL',
+    'AMD_COMGR_SYMBOL_TYPE_COMMON', 'AMD_COMGR_SYMBOL_TYPE_FILE',
+    'AMD_COMGR_SYMBOL_TYPE_FUNC', 'AMD_COMGR_SYMBOL_TYPE_NOTYPE',
+    'AMD_COMGR_SYMBOL_TYPE_OBJECT', 'AMD_COMGR_SYMBOL_TYPE_SECTION',
+    'AMD_COMGR_SYMBOL_TYPE_UNKNOWN',
+    'HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
     'HIPRTC_ERROR_COMPILATION', 'HIPRTC_ERROR_INTERNAL_ERROR',
     'HIPRTC_ERROR_INVALID_INPUT', 'HIPRTC_ERROR_INVALID_OPTION',
     'HIPRTC_ERROR_INVALID_PROGRAM', 'HIPRTC_ERROR_LINKING',
@@ -5291,14 +5941,71 @@ __all__ = \
     'HIPresourcetype', 'HIPresourcetype__enumvalues',
     'HIPresourcetype_enum', '__hipGetPCH',
     '__hipPopCallConfiguration', '__hipPushCallConfiguration',
-    'c__Ea_HIP_SUCCESS', 'dim3', 'hipAccessPolicyWindow',
-    'hipAccessProperty', 'hipAccessPropertyNormal',
-    'hipAccessPropertyPersisting', 'hipAccessPropertyStreaming',
-    'hipAddressModeBorder', 'hipAddressModeClamp',
-    'hipAddressModeMirror', 'hipAddressModeWrap', 'hipApiName',
-    'hipArray3DCreate', 'hipArray3DGetDescriptor', 'hipArrayCreate',
-    'hipArrayDestroy', 'hipArrayGetDescriptor', 'hipArrayGetInfo',
-    'hipArrayMapInfo', 'hipArraySparseSubresourceType',
+    'amd_comgr_action_data_count', 'amd_comgr_action_data_get_data',
+    'amd_comgr_action_info_get_isa_name',
+    'amd_comgr_action_info_get_language',
+    'amd_comgr_action_info_get_logging',
+    'amd_comgr_action_info_get_option_list_count',
+    'amd_comgr_action_info_get_option_list_item',
+    'amd_comgr_action_info_get_options',
+    'amd_comgr_action_info_get_working_directory_path',
+    'amd_comgr_action_info_set_isa_name',
+    'amd_comgr_action_info_set_language',
+    'amd_comgr_action_info_set_logging',
+    'amd_comgr_action_info_set_option_list',
+    'amd_comgr_action_info_set_options',
+    'amd_comgr_action_info_set_working_directory_path',
+    'amd_comgr_action_info_t', 'amd_comgr_action_kind_s',
+    'amd_comgr_action_kind_t', 'amd_comgr_action_kind_t__enumvalues',
+    'amd_comgr_code_object_info_t', 'amd_comgr_create_action_info',
+    'amd_comgr_create_data', 'amd_comgr_create_data_set',
+    'amd_comgr_create_disassembly_info',
+    'amd_comgr_create_symbolizer_info', 'amd_comgr_data_kind_s',
+    'amd_comgr_data_kind_t', 'amd_comgr_data_kind_t__enumvalues',
+    'amd_comgr_data_set_add', 'amd_comgr_data_set_remove',
+    'amd_comgr_data_set_t', 'amd_comgr_data_t',
+    'amd_comgr_demangle_symbol_name', 'amd_comgr_destroy_action_info',
+    'amd_comgr_destroy_data_set',
+    'amd_comgr_destroy_disassembly_info',
+    'amd_comgr_destroy_metadata', 'amd_comgr_destroy_symbolizer_info',
+    'amd_comgr_disassemble_instruction',
+    'amd_comgr_disassembly_info_t', 'amd_comgr_do_action',
+    'amd_comgr_get_data', 'amd_comgr_get_data_isa_name',
+    'amd_comgr_get_data_kind', 'amd_comgr_get_data_metadata',
+    'amd_comgr_get_data_name', 'amd_comgr_get_isa_count',
+    'amd_comgr_get_isa_metadata', 'amd_comgr_get_isa_name',
+    'amd_comgr_get_mangled_name', 'amd_comgr_get_metadata_kind',
+    'amd_comgr_get_metadata_list_size',
+    'amd_comgr_get_metadata_map_size',
+    'amd_comgr_get_metadata_string', 'amd_comgr_get_version',
+    'amd_comgr_index_list_metadata', 'amd_comgr_iterate_map_metadata',
+    'amd_comgr_iterate_symbols', 'amd_comgr_language_s',
+    'amd_comgr_language_t', 'amd_comgr_language_t__enumvalues',
+    'amd_comgr_lookup_code_object',
+    'amd_comgr_map_name_expression_to_symbol_name',
+    'amd_comgr_metadata_kind_s', 'amd_comgr_metadata_kind_t',
+    'amd_comgr_metadata_kind_t__enumvalues',
+    'amd_comgr_metadata_lookup', 'amd_comgr_metadata_node_t',
+    'amd_comgr_populate_mangled_names',
+    'amd_comgr_populate_name_expression_map',
+    'amd_comgr_release_data', 'amd_comgr_set_data',
+    'amd_comgr_set_data_from_file_slice', 'amd_comgr_set_data_name',
+    'amd_comgr_status_s', 'amd_comgr_status_string',
+    'amd_comgr_status_t', 'amd_comgr_status_t__enumvalues',
+    'amd_comgr_symbol_get_info', 'amd_comgr_symbol_info_s',
+    'amd_comgr_symbol_info_t', 'amd_comgr_symbol_info_t__enumvalues',
+    'amd_comgr_symbol_lookup', 'amd_comgr_symbol_t',
+    'amd_comgr_symbol_type_s', 'amd_comgr_symbol_type_t',
+    'amd_comgr_symbol_type_t__enumvalues', 'amd_comgr_symbolize',
+    'amd_comgr_symbolizer_info_t', 'c__Ea_HIP_SUCCESS', 'dim3',
+    'hipAccessPolicyWindow', 'hipAccessProperty',
+    'hipAccessPropertyNormal', 'hipAccessPropertyPersisting',
+    'hipAccessPropertyStreaming', 'hipAddressModeBorder',
+    'hipAddressModeClamp', 'hipAddressModeMirror',
+    'hipAddressModeWrap', 'hipApiName', 'hipArray3DCreate',
+    'hipArray3DGetDescriptor', 'hipArrayCreate', 'hipArrayDestroy',
+    'hipArrayGetDescriptor', 'hipArrayGetInfo', 'hipArrayMapInfo',
+    'hipArraySparseSubresourceType',
     'hipArraySparseSubresourceTypeMiptail',
     'hipArraySparseSubresourceTypeSparseLevel', 'hipArray_Format',
     'hipArray_const_t', 'hipArray_t', 'hipBindTexture',
@@ -5853,8 +6560,13 @@ __all__ = \
     'struct_HIP_RESOURCE_VIEW_DESC_st', 'struct_HIP_TEXTURE_DESC_st',
     'struct___hip_surface', 'struct___hip_texture',
     'struct__hipGraphicsResource', 'struct__hiprtcProgram',
-    'struct_c__SA_hipDeviceArch_t', 'struct_dim3',
-    'struct_hipAccessPolicyWindow', 'struct_hipArray',
+    'struct_amd_comgr_action_info_s', 'struct_amd_comgr_data_s',
+    'struct_amd_comgr_data_set_s',
+    'struct_amd_comgr_disassembly_info_s',
+    'struct_amd_comgr_metadata_node_s', 'struct_amd_comgr_symbol_s',
+    'struct_amd_comgr_symbolizer_info_s',
+    'struct_c__SA_hipDeviceArch_t', 'struct_code_object_info_s',
+    'struct_dim3', 'struct_hipAccessPolicyWindow', 'struct_hipArray',
     'struct_hipArrayMapInfo', 'struct_hipArrayMapInfo_1_miptail',
     'struct_hipArrayMapInfo_1_sparseLevel',
     'struct_hipChannelFormatDesc', 'struct_hipDeviceProp_tR0600',
@@ -5905,3 +6617,5 @@ __all__ = \
     'union_hipExternalSemaphoreSignalParams_st_0_nvSciSync',
     'union_hipExternalSemaphoreWaitParams_st_0_nvSciSync',
     'union_hipKernelNodeAttrValue', 'union_hipResourceDesc_res']
+hipDeviceProp_t = hipDeviceProp_tR0600
+hipGetDeviceProperties = hipGetDevicePropertiesR0600
