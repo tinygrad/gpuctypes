@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# TARGET arch is: ['-D__HIP_PLATFORM_AMD__', '-I/opt/rocm/include']
+# TARGET arch is: ['-D__HIP_PLATFORM_AMD__', '-I/opt/rocm/include', '-x', 'c++']
 # WORD_SIZE is: 8
 # POINTER_SIZE is: 8
 # LONGDOUBLE_SIZE is: 16
@@ -442,99 +442,145 @@ struct_hipUUID_t._fields_ = [
 ]
 
 hipUUID = struct_hipUUID_t
-class struct_hipDeviceProp_t(Structure):
+class struct_hipDeviceProp_tR0600(Structure):
     pass
 
-struct_hipDeviceProp_t._pack_ = 1 # source:False
-struct_hipDeviceProp_t._fields_ = [
+struct_hipDeviceProp_tR0600._pack_ = 1 # source:False
+struct_hipDeviceProp_tR0600._fields_ = [
     ('name', ctypes.c_char * 256),
+    ('uuid', hipUUID),
+    ('luid', ctypes.c_char * 8),
+    ('luidDeviceNodeMask', ctypes.c_uint32),
+    ('PADDING_0', ctypes.c_ubyte * 4),
     ('totalGlobalMem', ctypes.c_uint64),
     ('sharedMemPerBlock', ctypes.c_uint64),
     ('regsPerBlock', ctypes.c_int32),
     ('warpSize', ctypes.c_int32),
+    ('memPitch', ctypes.c_uint64),
     ('maxThreadsPerBlock', ctypes.c_int32),
     ('maxThreadsDim', ctypes.c_int32 * 3),
     ('maxGridSize', ctypes.c_int32 * 3),
     ('clockRate', ctypes.c_int32),
-    ('memoryClockRate', ctypes.c_int32),
-    ('memoryBusWidth', ctypes.c_int32),
     ('totalConstMem', ctypes.c_uint64),
     ('major', ctypes.c_int32),
     ('minor', ctypes.c_int32),
-    ('multiProcessorCount', ctypes.c_int32),
-    ('l2CacheSize', ctypes.c_int32),
-    ('maxThreadsPerMultiProcessor', ctypes.c_int32),
-    ('computeMode', ctypes.c_int32),
-    ('clockInstructionRate', ctypes.c_int32),
-    ('arch', hipDeviceArch_t),
-    ('concurrentKernels', ctypes.c_int32),
-    ('pciDomainID', ctypes.c_int32),
-    ('pciBusID', ctypes.c_int32),
-    ('pciDeviceID', ctypes.c_int32),
-    ('maxSharedMemoryPerMultiProcessor', ctypes.c_uint64),
-    ('isMultiGpuBoard', ctypes.c_int32),
-    ('canMapHostMemory', ctypes.c_int32),
-    ('gcnArch', ctypes.c_int32),
-    ('gcnArchName', ctypes.c_char * 256),
-    ('integrated', ctypes.c_int32),
-    ('cooperativeLaunch', ctypes.c_int32),
-    ('cooperativeMultiDeviceLaunch', ctypes.c_int32),
-    ('maxTexture1DLinear', ctypes.c_int32),
-    ('maxTexture1D', ctypes.c_int32),
-    ('maxTexture2D', ctypes.c_int32 * 2),
-    ('maxTexture3D', ctypes.c_int32 * 3),
-    ('PADDING_0', ctypes.c_ubyte * 4),
-    ('hdpMemFlushCntl', ctypes.POINTER(ctypes.c_uint32)),
-    ('hdpRegFlushCntl', ctypes.POINTER(ctypes.c_uint32)),
-    ('memPitch', ctypes.c_uint64),
     ('textureAlignment', ctypes.c_uint64),
     ('texturePitchAlignment', ctypes.c_uint64),
+    ('deviceOverlap', ctypes.c_int32),
+    ('multiProcessorCount', ctypes.c_int32),
     ('kernelExecTimeoutEnabled', ctypes.c_int32),
+    ('integrated', ctypes.c_int32),
+    ('canMapHostMemory', ctypes.c_int32),
+    ('computeMode', ctypes.c_int32),
+    ('maxTexture1D', ctypes.c_int32),
+    ('maxTexture1DMipmap', ctypes.c_int32),
+    ('maxTexture1DLinear', ctypes.c_int32),
+    ('maxTexture2D', ctypes.c_int32 * 2),
+    ('maxTexture2DMipmap', ctypes.c_int32 * 2),
+    ('maxTexture2DLinear', ctypes.c_int32 * 3),
+    ('maxTexture2DGather', ctypes.c_int32 * 2),
+    ('maxTexture3D', ctypes.c_int32 * 3),
+    ('maxTexture3DAlt', ctypes.c_int32 * 3),
+    ('maxTextureCubemap', ctypes.c_int32),
+    ('maxTexture1DLayered', ctypes.c_int32 * 2),
+    ('maxTexture2DLayered', ctypes.c_int32 * 3),
+    ('maxTextureCubemapLayered', ctypes.c_int32 * 2),
+    ('maxSurface1D', ctypes.c_int32),
+    ('maxSurface2D', ctypes.c_int32 * 2),
+    ('maxSurface3D', ctypes.c_int32 * 3),
+    ('maxSurface1DLayered', ctypes.c_int32 * 2),
+    ('maxSurface2DLayered', ctypes.c_int32 * 3),
+    ('maxSurfaceCubemap', ctypes.c_int32),
+    ('maxSurfaceCubemapLayered', ctypes.c_int32 * 2),
+    ('surfaceAlignment', ctypes.c_uint64),
+    ('concurrentKernels', ctypes.c_int32),
     ('ECCEnabled', ctypes.c_int32),
+    ('pciBusID', ctypes.c_int32),
+    ('pciDeviceID', ctypes.c_int32),
+    ('pciDomainID', ctypes.c_int32),
     ('tccDriver', ctypes.c_int32),
+    ('asyncEngineCount', ctypes.c_int32),
+    ('unifiedAddressing', ctypes.c_int32),
+    ('memoryClockRate', ctypes.c_int32),
+    ('memoryBusWidth', ctypes.c_int32),
+    ('l2CacheSize', ctypes.c_int32),
+    ('persistingL2CacheMaxSize', ctypes.c_int32),
+    ('maxThreadsPerMultiProcessor', ctypes.c_int32),
+    ('streamPrioritiesSupported', ctypes.c_int32),
+    ('globalL1CacheSupported', ctypes.c_int32),
+    ('localL1CacheSupported', ctypes.c_int32),
+    ('sharedMemPerMultiprocessor', ctypes.c_uint64),
+    ('regsPerMultiprocessor', ctypes.c_int32),
+    ('managedMemory', ctypes.c_int32),
+    ('isMultiGpuBoard', ctypes.c_int32),
+    ('multiGpuBoardGroupID', ctypes.c_int32),
+    ('hostNativeAtomicSupported', ctypes.c_int32),
+    ('singleToDoublePrecisionPerfRatio', ctypes.c_int32),
+    ('pageableMemoryAccess', ctypes.c_int32),
+    ('concurrentManagedAccess', ctypes.c_int32),
+    ('computePreemptionSupported', ctypes.c_int32),
+    ('canUseHostPointerForRegisteredMem', ctypes.c_int32),
+    ('cooperativeLaunch', ctypes.c_int32),
+    ('cooperativeMultiDeviceLaunch', ctypes.c_int32),
+    ('sharedMemPerBlockOptin', ctypes.c_uint64),
+    ('pageableMemoryAccessUsesHostPageTables', ctypes.c_int32),
+    ('directManagedMemAccessFromHost', ctypes.c_int32),
+    ('maxBlocksPerMultiProcessor', ctypes.c_int32),
+    ('accessPolicyMaxWindowSize', ctypes.c_int32),
+    ('reservedSharedMemPerBlock', ctypes.c_uint64),
+    ('hostRegisterSupported', ctypes.c_int32),
+    ('sparseHipArraySupported', ctypes.c_int32),
+    ('hostRegisterReadOnlySupported', ctypes.c_int32),
+    ('timelineSemaphoreInteropSupported', ctypes.c_int32),
+    ('memoryPoolsSupported', ctypes.c_int32),
+    ('gpuDirectRDMASupported', ctypes.c_int32),
+    ('gpuDirectRDMAFlushWritesOptions', ctypes.c_uint32),
+    ('gpuDirectRDMAWritesOrdering', ctypes.c_int32),
+    ('memoryPoolSupportedHandleTypes', ctypes.c_uint32),
+    ('deferredMappingHipArraySupported', ctypes.c_int32),
+    ('ipcEventSupported', ctypes.c_int32),
+    ('clusterLaunch', ctypes.c_int32),
+    ('unifiedFunctionPointers', ctypes.c_int32),
+    ('reserved', ctypes.c_int32 * 63),
+    ('hipReserved', ctypes.c_int32 * 32),
+    ('gcnArchName', ctypes.c_char * 256),
+    ('maxSharedMemoryPerMultiProcessor', ctypes.c_uint64),
+    ('clockInstructionRate', ctypes.c_int32),
+    ('arch', hipDeviceArch_t),
+    ('hdpMemFlushCntl', ctypes.POINTER(ctypes.c_uint32)),
+    ('hdpRegFlushCntl', ctypes.POINTER(ctypes.c_uint32)),
     ('cooperativeMultiDeviceUnmatchedFunc', ctypes.c_int32),
     ('cooperativeMultiDeviceUnmatchedGridDim', ctypes.c_int32),
     ('cooperativeMultiDeviceUnmatchedBlockDim', ctypes.c_int32),
     ('cooperativeMultiDeviceUnmatchedSharedMem', ctypes.c_int32),
     ('isLargeBar', ctypes.c_int32),
     ('asicRevision', ctypes.c_int32),
-    ('managedMemory', ctypes.c_int32),
-    ('directManagedMemAccessFromHost', ctypes.c_int32),
-    ('concurrentManagedAccess', ctypes.c_int32),
-    ('pageableMemoryAccess', ctypes.c_int32),
-    ('pageableMemoryAccessUsesHostPageTables', ctypes.c_int32),
 ]
 
-hipDeviceProp_t = struct_hipDeviceProp_t
+hipDeviceProp_tR0600 = struct_hipDeviceProp_tR0600
 
 # values for enumeration 'hipMemoryType'
 hipMemoryType__enumvalues = {
-    0: 'hipMemoryTypeHost',
-    1: 'hipMemoryTypeDevice',
-    2: 'hipMemoryTypeArray',
-    3: 'hipMemoryTypeUnified',
-    4: 'hipMemoryTypeManaged',
+    0: 'hipMemoryTypeUnregistered',
+    1: 'hipMemoryTypeHost',
+    2: 'hipMemoryTypeDevice',
+    3: 'hipMemoryTypeManaged',
+    10: 'hipMemoryTypeArray',
+    11: 'hipMemoryTypeUnified',
 }
-hipMemoryTypeHost = 0
-hipMemoryTypeDevice = 1
-hipMemoryTypeArray = 2
-hipMemoryTypeUnified = 3
-hipMemoryTypeManaged = 4
+hipMemoryTypeUnregistered = 0
+hipMemoryTypeHost = 1
+hipMemoryTypeDevice = 2
+hipMemoryTypeManaged = 3
+hipMemoryTypeArray = 10
+hipMemoryTypeUnified = 11
 hipMemoryType = ctypes.c_uint32 # enum
 class struct_hipPointerAttribute_t(Structure):
     pass
 
-class union_hipPointerAttribute_t_0(Union):
-    _pack_ = 1 # source:False
-    _fields_ = [
-    ('memoryType', hipMemoryType),
-    ('type', hipMemoryType),
-     ]
-
 struct_hipPointerAttribute_t._pack_ = 1 # source:False
-struct_hipPointerAttribute_t._anonymous_ = ('_0',)
 struct_hipPointerAttribute_t._fields_ = [
-    ('_0', union_hipPointerAttribute_t_0),
+    ('type', hipMemoryType),
     ('device', ctypes.c_int32),
     ('devicePointer', ctypes.POINTER(None)),
     ('hostPointer', ctypes.POINTER(None)),
@@ -772,7 +818,7 @@ hipDeviceAttribute_t__enumvalues = {
     61: 'hipDeviceAttributeComputeCapabilityMinor',
     62: 'hipDeviceAttributeMultiGpuBoardGroupID',
     63: 'hipDeviceAttributeMultiprocessorCount',
-    64: 'hipDeviceAttributeName',
+    64: 'hipDeviceAttributeUnused1',
     65: 'hipDeviceAttributePageableMemoryAccess',
     66: 'hipDeviceAttributePageableMemoryAccessUsesHostPageTables',
     67: 'hipDeviceAttributePciBusId',
@@ -794,17 +840,18 @@ hipDeviceAttribute_t__enumvalues = {
     83: 'hipDeviceAttributeTotalConstantMemory',
     84: 'hipDeviceAttributeTotalGlobalMem',
     85: 'hipDeviceAttributeUnifiedAddressing',
-    86: 'hipDeviceAttributeUuid',
+    86: 'hipDeviceAttributeUnused2',
     87: 'hipDeviceAttributeWarpSize',
     88: 'hipDeviceAttributeMemoryPoolsSupported',
     89: 'hipDeviceAttributeVirtualMemoryManagementSupported',
+    90: 'hipDeviceAttributeHostRegisterSupported',
     9999: 'hipDeviceAttributeCudaCompatibleEnd',
     10000: 'hipDeviceAttributeAmdSpecificBegin',
     10000: 'hipDeviceAttributeClockInstructionRate',
-    10001: 'hipDeviceAttributeArch',
+    10001: 'hipDeviceAttributeUnused3',
     10002: 'hipDeviceAttributeMaxSharedMemoryPerMultiprocessor',
-    10003: 'hipDeviceAttributeGcnArch',
-    10004: 'hipDeviceAttributeGcnArchName',
+    10003: 'hipDeviceAttributeUnused4',
+    10004: 'hipDeviceAttributeUnused5',
     10005: 'hipDeviceAttributeHdpMemFlushCntl',
     10006: 'hipDeviceAttributeHdpRegFlushCntl',
     10007: 'hipDeviceAttributeCooperativeMultiDeviceUnmatchedFunc',
@@ -886,7 +933,7 @@ hipDeviceAttributeMemoryClockRate = 60
 hipDeviceAttributeComputeCapabilityMinor = 61
 hipDeviceAttributeMultiGpuBoardGroupID = 62
 hipDeviceAttributeMultiprocessorCount = 63
-hipDeviceAttributeName = 64
+hipDeviceAttributeUnused1 = 64
 hipDeviceAttributePageableMemoryAccess = 65
 hipDeviceAttributePageableMemoryAccessUsesHostPageTables = 66
 hipDeviceAttributePciBusId = 67
@@ -908,17 +955,18 @@ hipDeviceAttributeTexturePitchAlignment = 82
 hipDeviceAttributeTotalConstantMemory = 83
 hipDeviceAttributeTotalGlobalMem = 84
 hipDeviceAttributeUnifiedAddressing = 85
-hipDeviceAttributeUuid = 86
+hipDeviceAttributeUnused2 = 86
 hipDeviceAttributeWarpSize = 87
 hipDeviceAttributeMemoryPoolsSupported = 88
 hipDeviceAttributeVirtualMemoryManagementSupported = 89
+hipDeviceAttributeHostRegisterSupported = 90
 hipDeviceAttributeCudaCompatibleEnd = 9999
 hipDeviceAttributeAmdSpecificBegin = 10000
 hipDeviceAttributeClockInstructionRate = 10000
-hipDeviceAttributeArch = 10001
+hipDeviceAttributeUnused3 = 10001
 hipDeviceAttributeMaxSharedMemoryPerMultiprocessor = 10002
-hipDeviceAttributeGcnArch = 10003
-hipDeviceAttributeGcnArchName = 10004
+hipDeviceAttributeUnused4 = 10003
+hipDeviceAttributeUnused5 = 10004
 hipDeviceAttributeHdpMemFlushCntl = 10005
 hipDeviceAttributeHdpRegFlushCntl = 10006
 hipDeviceAttributeCooperativeMultiDeviceUnmatchedFunc = 10007
@@ -975,6 +1023,11 @@ struct_hipChannelFormatDesc._fields_ = [
 ]
 
 hipChannelFormatDesc = struct_hipChannelFormatDesc
+class struct_hipArray(Structure):
+    pass
+
+hipArray_t = ctypes.POINTER(struct_hipArray)
+hipArray_const_t = ctypes.POINTER(struct_hipArray)
 
 # values for enumeration 'hipArray_Format'
 hipArray_Format__enumvalues = {
@@ -1023,26 +1076,6 @@ struct_HIP_ARRAY3D_DESCRIPTOR._fields_ = [
 ]
 
 HIP_ARRAY3D_DESCRIPTOR = struct_HIP_ARRAY3D_DESCRIPTOR
-class struct_hipArray(Structure):
-    pass
-
-struct_hipArray._pack_ = 1 # source:False
-struct_hipArray._fields_ = [
-    ('data', ctypes.POINTER(None)),
-    ('desc', struct_hipChannelFormatDesc),
-    ('type', ctypes.c_uint32),
-    ('width', ctypes.c_uint32),
-    ('height', ctypes.c_uint32),
-    ('depth', ctypes.c_uint32),
-    ('Format', hipArray_Format),
-    ('NumChannels', ctypes.c_uint32),
-    ('isDrv', ctypes.c_bool),
-    ('PADDING_0', ctypes.c_ubyte * 3),
-    ('textureType', ctypes.c_uint32),
-    ('flags', ctypes.c_uint32),
-]
-
-hipArray = struct_hipArray
 class struct_hip_Memcpy2D(Structure):
     pass
 
@@ -1069,9 +1102,6 @@ struct_hip_Memcpy2D._fields_ = [
 ]
 
 hip_Memcpy2D = struct_hip_Memcpy2D
-hipArray_t = ctypes.POINTER(struct_hipArray)
-hiparray = ctypes.POINTER(struct_hipArray)
-hipArray_const_t = ctypes.POINTER(struct_hipArray)
 class struct_hipMipmappedArray(Structure):
     pass
 
@@ -1560,32 +1590,31 @@ class struct_HIP_MEMCPY3D(Structure):
 
 struct_HIP_MEMCPY3D._pack_ = 1 # source:False
 struct_HIP_MEMCPY3D._fields_ = [
-    ('srcXInBytes', ctypes.c_uint32),
-    ('srcY', ctypes.c_uint32),
-    ('srcZ', ctypes.c_uint32),
-    ('srcLOD', ctypes.c_uint32),
+    ('srcXInBytes', ctypes.c_uint64),
+    ('srcY', ctypes.c_uint64),
+    ('srcZ', ctypes.c_uint64),
+    ('srcLOD', ctypes.c_uint64),
     ('srcMemoryType', hipMemoryType),
     ('PADDING_0', ctypes.c_ubyte * 4),
     ('srcHost', ctypes.POINTER(None)),
     ('srcDevice', ctypes.POINTER(None)),
     ('srcArray', ctypes.POINTER(struct_hipArray)),
-    ('srcPitch', ctypes.c_uint32),
-    ('srcHeight', ctypes.c_uint32),
-    ('dstXInBytes', ctypes.c_uint32),
-    ('dstY', ctypes.c_uint32),
-    ('dstZ', ctypes.c_uint32),
-    ('dstLOD', ctypes.c_uint32),
+    ('srcPitch', ctypes.c_uint64),
+    ('srcHeight', ctypes.c_uint64),
+    ('dstXInBytes', ctypes.c_uint64),
+    ('dstY', ctypes.c_uint64),
+    ('dstZ', ctypes.c_uint64),
+    ('dstLOD', ctypes.c_uint64),
     ('dstMemoryType', hipMemoryType),
     ('PADDING_1', ctypes.c_ubyte * 4),
     ('dstHost', ctypes.POINTER(None)),
     ('dstDevice', ctypes.POINTER(None)),
     ('dstArray', ctypes.POINTER(struct_hipArray)),
-    ('dstPitch', ctypes.c_uint32),
-    ('dstHeight', ctypes.c_uint32),
-    ('WidthInBytes', ctypes.c_uint32),
-    ('Height', ctypes.c_uint32),
-    ('Depth', ctypes.c_uint32),
-    ('PADDING_2', ctypes.c_ubyte * 4),
+    ('dstPitch', ctypes.c_uint64),
+    ('dstHeight', ctypes.c_uint64),
+    ('WidthInBytes', ctypes.c_uint64),
+    ('Height', ctypes.c_uint64),
+    ('Depth', ctypes.c_uint64),
 ]
 
 HIP_MEMCPY3D = struct_HIP_MEMCPY3D
@@ -1673,6 +1702,12 @@ HIP_POINTER_ATTRIBUTE_IS_GPU_DIRECT_RDMA_CAPABLE = 15
 HIP_POINTER_ATTRIBUTE_ACCESS_FLAGS = 16
 HIP_POINTER_ATTRIBUTE_MEMPOOL_HANDLE = 17
 hipPointer_attribute = ctypes.c_uint32 # enum
+try:
+    hip_init = _libraries['FIXME_STUB'].hip_init
+    hip_init.restype = hipError_t
+    hip_init.argtypes = []
+except AttributeError:
+    pass
 class struct_ihipCtx_t(Structure):
     pass
 
@@ -2043,6 +2078,7 @@ hipExternalMemoryHandleType_enum__enumvalues = {
     5: 'hipExternalMemoryHandleTypeD3D12Resource',
     6: 'hipExternalMemoryHandleTypeD3D11Resource',
     7: 'hipExternalMemoryHandleTypeD3D11ResourceKmt',
+    8: 'hipExternalMemoryHandleTypeNvSciBuf',
 }
 hipExternalMemoryHandleTypeOpaqueFd = 1
 hipExternalMemoryHandleTypeOpaqueWin32 = 2
@@ -2051,6 +2087,7 @@ hipExternalMemoryHandleTypeD3D12Heap = 4
 hipExternalMemoryHandleTypeD3D12Resource = 5
 hipExternalMemoryHandleTypeD3D11Resource = 6
 hipExternalMemoryHandleTypeD3D11ResourceKmt = 7
+hipExternalMemoryHandleTypeNvSciBuf = 8
 hipExternalMemoryHandleType_enum = ctypes.c_uint32 # enum
 hipExternalMemoryHandleType = hipExternalMemoryHandleType_enum
 hipExternalMemoryHandleType__enumvalues = hipExternalMemoryHandleType_enum__enumvalues
@@ -2073,6 +2110,8 @@ union_hipExternalMemoryHandleDesc_st_handle._pack_ = 1 # source:False
 union_hipExternalMemoryHandleDesc_st_handle._fields_ = [
     ('fd', ctypes.c_int32),
     ('win32', struct_hipExternalMemoryHandleDesc_st_0_win32),
+    ('nvSciBufObject', ctypes.POINTER(None)),
+    ('PADDING_0', ctypes.c_ubyte * 8),
 ]
 
 struct_hipExternalMemoryHandleDesc_st._pack_ = 1 # source:False
@@ -2082,6 +2121,7 @@ struct_hipExternalMemoryHandleDesc_st._fields_ = [
     ('handle', union_hipExternalMemoryHandleDesc_st_handle),
     ('size', ctypes.c_uint64),
     ('flags', ctypes.c_uint32),
+    ('reserved', ctypes.c_uint32 * 16),
     ('PADDING_1', ctypes.c_ubyte * 4),
 ]
 
@@ -2094,10 +2134,25 @@ struct_hipExternalMemoryBufferDesc_st._fields_ = [
     ('offset', ctypes.c_uint64),
     ('size', ctypes.c_uint64),
     ('flags', ctypes.c_uint32),
+    ('reserved', ctypes.c_uint32 * 16),
     ('PADDING_0', ctypes.c_ubyte * 4),
 ]
 
 hipExternalMemoryBufferDesc = struct_hipExternalMemoryBufferDesc_st
+class struct_hipExternalMemoryMipmappedArrayDesc_st(Structure):
+    pass
+
+struct_hipExternalMemoryMipmappedArrayDesc_st._pack_ = 1 # source:False
+struct_hipExternalMemoryMipmappedArrayDesc_st._fields_ = [
+    ('offset', ctypes.c_uint64),
+    ('formatDesc', hipChannelFormatDesc),
+    ('PADDING_0', ctypes.c_ubyte * 4),
+    ('extent', hipExtent),
+    ('flags', ctypes.c_uint32),
+    ('numLevels', ctypes.c_uint32),
+]
+
+hipExternalMemoryMipmappedArrayDesc = struct_hipExternalMemoryMipmappedArrayDesc_st
 hipExternalMemory_t = ctypes.POINTER(None)
 
 # values for enumeration 'hipExternalSemaphoreHandleType_enum'
@@ -2106,11 +2161,23 @@ hipExternalSemaphoreHandleType_enum__enumvalues = {
     2: 'hipExternalSemaphoreHandleTypeOpaqueWin32',
     3: 'hipExternalSemaphoreHandleTypeOpaqueWin32Kmt',
     4: 'hipExternalSemaphoreHandleTypeD3D12Fence',
+    5: 'hipExternalSemaphoreHandleTypeD3D11Fence',
+    6: 'hipExternalSemaphoreHandleTypeNvSciSync',
+    7: 'hipExternalSemaphoreHandleTypeKeyedMutex',
+    8: 'hipExternalSemaphoreHandleTypeKeyedMutexKmt',
+    9: 'hipExternalSemaphoreHandleTypeTimelineSemaphoreFd',
+    10: 'hipExternalSemaphoreHandleTypeTimelineSemaphoreWin32',
 }
 hipExternalSemaphoreHandleTypeOpaqueFd = 1
 hipExternalSemaphoreHandleTypeOpaqueWin32 = 2
 hipExternalSemaphoreHandleTypeOpaqueWin32Kmt = 3
 hipExternalSemaphoreHandleTypeD3D12Fence = 4
+hipExternalSemaphoreHandleTypeD3D11Fence = 5
+hipExternalSemaphoreHandleTypeNvSciSync = 6
+hipExternalSemaphoreHandleTypeKeyedMutex = 7
+hipExternalSemaphoreHandleTypeKeyedMutexKmt = 8
+hipExternalSemaphoreHandleTypeTimelineSemaphoreFd = 9
+hipExternalSemaphoreHandleTypeTimelineSemaphoreWin32 = 10
 hipExternalSemaphoreHandleType_enum = ctypes.c_uint32 # enum
 hipExternalSemaphoreHandleType = hipExternalSemaphoreHandleType_enum
 hipExternalSemaphoreHandleType__enumvalues = hipExternalSemaphoreHandleType_enum__enumvalues
@@ -2133,6 +2200,8 @@ union_hipExternalSemaphoreHandleDesc_st_handle._pack_ = 1 # source:False
 union_hipExternalSemaphoreHandleDesc_st_handle._fields_ = [
     ('fd', ctypes.c_int32),
     ('win32', struct_hipExternalSemaphoreHandleDesc_st_0_win32),
+    ('NvSciSyncObj', ctypes.POINTER(None)),
+    ('PADDING_0', ctypes.c_ubyte * 8),
 ]
 
 struct_hipExternalSemaphoreHandleDesc_st._pack_ = 1 # source:False
@@ -2141,6 +2210,7 @@ struct_hipExternalSemaphoreHandleDesc_st._fields_ = [
     ('PADDING_0', ctypes.c_ubyte * 4),
     ('handle', union_hipExternalSemaphoreHandleDesc_st_handle),
     ('flags', ctypes.c_uint32),
+    ('reserved', ctypes.c_uint32 * 16),
     ('PADDING_1', ctypes.c_ubyte * 4),
 ]
 
@@ -2160,6 +2230,15 @@ struct_hipExternalSemaphoreSignalParams_st_0_fence._fields_ = [
     ('value', ctypes.c_uint64),
 ]
 
+class union_hipExternalSemaphoreSignalParams_st_0_nvSciSync(Union):
+    pass
+
+union_hipExternalSemaphoreSignalParams_st_0_nvSciSync._pack_ = 1 # source:False
+union_hipExternalSemaphoreSignalParams_st_0_nvSciSync._fields_ = [
+    ('fence', ctypes.POINTER(None)),
+    ('reserved', ctypes.c_uint64),
+]
+
 class struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex(Structure):
     pass
 
@@ -2171,6 +2250,7 @@ struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex._fields_ = [
 struct_hipExternalSemaphoreSignalParams_st_params._pack_ = 1 # source:False
 struct_hipExternalSemaphoreSignalParams_st_params._fields_ = [
     ('fence', struct_hipExternalSemaphoreSignalParams_st_0_fence),
+    ('nvSciSync', union_hipExternalSemaphoreSignalParams_st_0_nvSciSync),
     ('keyedMutex', struct_hipExternalSemaphoreSignalParams_st_0_keyedMutex),
     ('reserved', ctypes.c_uint32 * 12),
 ]
@@ -2198,6 +2278,15 @@ struct_hipExternalSemaphoreWaitParams_st_0_fence._fields_ = [
     ('value', ctypes.c_uint64),
 ]
 
+class union_hipExternalSemaphoreWaitParams_st_0_nvSciSync(Union):
+    pass
+
+union_hipExternalSemaphoreWaitParams_st_0_nvSciSync._pack_ = 1 # source:False
+union_hipExternalSemaphoreWaitParams_st_0_nvSciSync._fields_ = [
+    ('fence', ctypes.POINTER(None)),
+    ('reserved', ctypes.c_uint64),
+]
+
 class struct_hipExternalSemaphoreWaitParams_st_0_keyedMutex(Structure):
     pass
 
@@ -2211,6 +2300,7 @@ struct_hipExternalSemaphoreWaitParams_st_0_keyedMutex._fields_ = [
 struct_hipExternalSemaphoreWaitParams_st_params._pack_ = 1 # source:False
 struct_hipExternalSemaphoreWaitParams_st_params._fields_ = [
     ('fence', struct_hipExternalSemaphoreWaitParams_st_0_fence),
+    ('nvSciSync', union_hipExternalSemaphoreWaitParams_st_0_nvSciSync),
     ('keyedMutex', struct_hipExternalSemaphoreWaitParams_st_0_keyedMutex),
     ('reserved', ctypes.c_uint32 * 10),
 ]
@@ -2230,17 +2320,6 @@ try:
     __hipGetPCH.argtypes = [ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.c_uint32)]
 except AttributeError:
     pass
-
-# values for enumeration 'hipGLDeviceList'
-hipGLDeviceList__enumvalues = {
-    1: 'hipGLDeviceListAll',
-    2: 'hipGLDeviceListCurrentFrame',
-    3: 'hipGLDeviceListNextFrame',
-}
-hipGLDeviceListAll = 1
-hipGLDeviceListCurrentFrame = 2
-hipGLDeviceListNextFrame = 3
-hipGLDeviceList = ctypes.c_uint32 # enum
 
 # values for enumeration 'hipGraphicsRegisterFlags'
 hipGraphicsRegisterFlags__enumvalues = {
@@ -2813,9 +2892,9 @@ try:
 except AttributeError:
     pass
 try:
-    hipGetDeviceProperties = _libraries['libamdhip64.so'].hipGetDeviceProperties
-    hipGetDeviceProperties.restype = hipError_t
-    hipGetDeviceProperties.argtypes = [ctypes.POINTER(struct_hipDeviceProp_t), ctypes.c_int32]
+    hipGetDevicePropertiesR0600 = _libraries['libamdhip64.so'].hipGetDevicePropertiesR0600
+    hipGetDevicePropertiesR0600.restype = hipError_t
+    hipGetDevicePropertiesR0600.argtypes = [ctypes.POINTER(struct_hipDeviceProp_tR0600), ctypes.c_int32]
 except AttributeError:
     pass
 try:
@@ -2867,9 +2946,9 @@ try:
 except AttributeError:
     pass
 try:
-    hipChooseDevice = _libraries['libamdhip64.so'].hipChooseDevice
-    hipChooseDevice.restype = hipError_t
-    hipChooseDevice.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_hipDeviceProp_t)]
+    hipChooseDeviceR0600 = _libraries['libamdhip64.so'].hipChooseDeviceR0600
+    hipChooseDeviceR0600.restype = hipError_t
+    hipChooseDeviceR0600.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(struct_hipDeviceProp_tR0600)]
 except AttributeError:
     pass
 try:
@@ -2930,6 +3009,12 @@ try:
     hipGetLastError = _libraries['libamdhip64.so'].hipGetLastError
     hipGetLastError.restype = hipError_t
     hipGetLastError.argtypes = []
+except AttributeError:
+    pass
+try:
+    hipExtGetLastError = _libraries['libamdhip64.so'].hipExtGetLastError
+    hipExtGetLastError.restype = hipError_t
+    hipExtGetLastError.argtypes = []
 except AttributeError:
     pass
 try:
@@ -3179,6 +3264,12 @@ try:
     hipDestroyExternalMemory = _libraries['libamdhip64.so'].hipDestroyExternalMemory
     hipDestroyExternalMemory.restype = hipError_t
     hipDestroyExternalMemory.argtypes = [hipExternalMemory_t]
+except AttributeError:
+    pass
+try:
+    hipExternalMemoryGetMappedMipmappedArray = _libraries['FIXME_STUB'].hipExternalMemoryGetMappedMipmappedArray
+    hipExternalMemoryGetMappedMipmappedArray.restype = hipError_t
+    hipExternalMemoryGetMappedMipmappedArray.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipMipmappedArray)), hipExternalMemory_t, ctypes.POINTER(struct_hipExternalMemoryMipmappedArrayDesc_st)]
 except AttributeError:
     pass
 try:
@@ -3586,7 +3677,7 @@ except AttributeError:
 try:
     hipArrayDestroy = _libraries['libamdhip64.so'].hipArrayDestroy
     hipArrayDestroy.restype = hipError_t
-    hipArrayDestroy.argtypes = [ctypes.POINTER(struct_hipArray)]
+    hipArrayDestroy.argtypes = [hipArray_t]
 except AttributeError:
     pass
 try:
@@ -3604,7 +3695,7 @@ except AttributeError:
 try:
     hipFreeArray = _libraries['libamdhip64.so'].hipFreeArray
     hipFreeArray.restype = hipError_t
-    hipFreeArray.argtypes = [ctypes.POINTER(struct_hipArray)]
+    hipFreeArray.argtypes = [hipArray_t]
 except AttributeError:
     pass
 try:
@@ -3616,19 +3707,19 @@ except AttributeError:
 try:
     hipArrayGetInfo = _libraries['libamdhip64.so'].hipArrayGetInfo
     hipArrayGetInfo.restype = hipError_t
-    hipArrayGetInfo.argtypes = [ctypes.POINTER(struct_hipChannelFormatDesc), ctypes.POINTER(struct_hipExtent), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(struct_hipArray)]
+    hipArrayGetInfo.argtypes = [ctypes.POINTER(struct_hipChannelFormatDesc), ctypes.POINTER(struct_hipExtent), ctypes.POINTER(ctypes.c_uint32), hipArray_t]
 except AttributeError:
     pass
 try:
     hipArrayGetDescriptor = _libraries['libamdhip64.so'].hipArrayGetDescriptor
     hipArrayGetDescriptor.restype = hipError_t
-    hipArrayGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR), ctypes.POINTER(struct_hipArray)]
+    hipArrayGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY_DESCRIPTOR), hipArray_t]
 except AttributeError:
     pass
 try:
     hipArray3DGetDescriptor = _libraries['libamdhip64.so'].hipArray3DGetDescriptor
     hipArray3DGetDescriptor.restype = hipError_t
-    hipArray3DGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR), ctypes.POINTER(struct_hipArray)]
+    hipArray3DGetDescriptor.argtypes = [ctypes.POINTER(struct_HIP_ARRAY3D_DESCRIPTOR), hipArray_t]
 except AttributeError:
     pass
 try:
@@ -3658,19 +3749,19 @@ except AttributeError:
 try:
     hipMemcpy2DToArray = _libraries['libamdhip64.so'].hipMemcpy2DToArray
     hipMemcpy2DToArray.restype = hipError_t
-    hipMemcpy2DToArray.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind]
+    hipMemcpy2DToArray.argtypes = [hipArray_t, size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind]
 except AttributeError:
     pass
 try:
     hipMemcpy2DToArrayAsync = _libraries['libamdhip64.so'].hipMemcpy2DToArrayAsync
     hipMemcpy2DToArrayAsync.restype = hipError_t
-    hipMemcpy2DToArrayAsync.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
+    hipMemcpy2DToArrayAsync.argtypes = [hipArray_t, size_t, size_t, ctypes.POINTER(None), size_t, size_t, size_t, hipMemcpyKind, hipStream_t]
 except AttributeError:
     pass
 try:
     hipMemcpyToArray = _libraries['libamdhip64.so'].hipMemcpyToArray
     hipMemcpyToArray.restype = hipError_t
-    hipMemcpyToArray.argtypes = [ctypes.POINTER(struct_hipArray), size_t, size_t, ctypes.POINTER(None), size_t, hipMemcpyKind]
+    hipMemcpyToArray.argtypes = [hipArray_t, size_t, size_t, ctypes.POINTER(None), size_t, hipMemcpyKind]
 except AttributeError:
     pass
 try:
@@ -3694,13 +3785,13 @@ except AttributeError:
 try:
     hipMemcpyAtoH = _libraries['libamdhip64.so'].hipMemcpyAtoH
     hipMemcpyAtoH.restype = hipError_t
-    hipMemcpyAtoH.argtypes = [ctypes.POINTER(None), ctypes.POINTER(struct_hipArray), size_t, size_t]
+    hipMemcpyAtoH.argtypes = [ctypes.POINTER(None), hipArray_t, size_t, size_t]
 except AttributeError:
     pass
 try:
     hipMemcpyHtoA = _libraries['libamdhip64.so'].hipMemcpyHtoA
     hipMemcpyHtoA.restype = hipError_t
-    hipMemcpyHtoA.argtypes = [ctypes.POINTER(struct_hipArray), size_t, ctypes.POINTER(None), size_t]
+    hipMemcpyHtoA.argtypes = [hipArray_t, size_t, ctypes.POINTER(None), size_t]
 except AttributeError:
     pass
 try:
@@ -4643,6 +4734,12 @@ try:
 except AttributeError:
     pass
 try:
+    hipDrvGraphAddMemcpyNode = _libraries['FIXME_STUB'].hipDrvGraphAddMemcpyNode
+    hipDrvGraphAddMemcpyNode.restype = hipError_t
+    hipDrvGraphAddMemcpyNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_HIP_MEMCPY3D), hipCtx_t]
+except AttributeError:
+    pass
+try:
     hipGraphAddMemcpyNode = _libraries['libamdhip64.so'].hipGraphAddMemcpyNode
     hipGraphAddMemcpyNode.restype = hipError_t
     hipGraphAddMemcpyNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipMemcpy3DParms)]
@@ -4949,54 +5046,6 @@ try:
 except AttributeError:
     pass
 try:
-    hipGraphAddExternalSemaphoresWaitNode = _libraries['FIXME_STUB'].hipGraphAddExternalSemaphoresWaitNode
-    hipGraphAddExternalSemaphoresWaitNode.restype = hipError_t
-    hipGraphAddExternalSemaphoresWaitNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphAddExternalSemaphoresSignalNode = _libraries['FIXME_STUB'].hipGraphAddExternalSemaphoresSignalNode
-    hipGraphAddExternalSemaphoresSignalNode.restype = hipError_t
-    hipGraphAddExternalSemaphoresSignalNode.argtypes = [ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), hipGraph_t, ctypes.POINTER(ctypes.POINTER(struct_hipGraphNode)), size_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphExternalSemaphoresSignalNodeSetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresSignalNodeSetParams
-    hipGraphExternalSemaphoresSignalNodeSetParams.restype = hipError_t
-    hipGraphExternalSemaphoresSignalNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphExternalSemaphoresWaitNodeSetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresWaitNodeSetParams
-    hipGraphExternalSemaphoresWaitNodeSetParams.restype = hipError_t
-    hipGraphExternalSemaphoresWaitNodeSetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphExternalSemaphoresSignalNodeGetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresSignalNodeGetParams
-    hipGraphExternalSemaphoresSignalNodeGetParams.restype = hipError_t
-    hipGraphExternalSemaphoresSignalNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphExternalSemaphoresWaitNodeGetParams = _libraries['FIXME_STUB'].hipGraphExternalSemaphoresWaitNodeGetParams
-    hipGraphExternalSemaphoresWaitNodeGetParams.restype = hipError_t
-    hipGraphExternalSemaphoresWaitNodeGetParams.argtypes = [hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphExecExternalSemaphoresSignalNodeSetParams = _libraries['FIXME_STUB'].hipGraphExecExternalSemaphoresSignalNodeSetParams
-    hipGraphExecExternalSemaphoresSignalNodeSetParams.restype = hipError_t
-    hipGraphExecExternalSemaphoresSignalNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreSignalNodeParams)]
-except AttributeError:
-    pass
-try:
-    hipGraphExecExternalSemaphoresWaitNodeSetParams = _libraries['FIXME_STUB'].hipGraphExecExternalSemaphoresWaitNodeSetParams
-    hipGraphExecExternalSemaphoresWaitNodeSetParams.restype = hipError_t
-    hipGraphExecExternalSemaphoresWaitNodeSetParams.argtypes = [hipGraphExec_t, hipGraphNode_t, ctypes.POINTER(struct_hipExternalSemaphoreWaitNodeParams)]
-except AttributeError:
-    pass
-try:
     hipMemAddressFree = _libraries['libamdhip64.so'].hipMemAddressFree
     hipMemAddressFree.restype = hipError_t
     hipMemAddressFree.argtypes = [ctypes.POINTER(None), size_t]
@@ -5080,26 +5129,6 @@ try:
     hipMemUnmap.argtypes = [ctypes.POINTER(None), size_t]
 except AttributeError:
     pass
-GLuint = ctypes.c_uint32
-GLenum = ctypes.c_uint32
-try:
-    hipGLGetDevices = _libraries['libamdhip64.so'].hipGLGetDevices
-    hipGLGetDevices.restype = hipError_t
-    hipGLGetDevices.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_int32), ctypes.c_uint32, hipGLDeviceList]
-except AttributeError:
-    pass
-try:
-    hipGraphicsGLRegisterBuffer = _libraries['libamdhip64.so'].hipGraphicsGLRegisterBuffer
-    hipGraphicsGLRegisterBuffer.restype = hipError_t
-    hipGraphicsGLRegisterBuffer.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), GLuint, ctypes.c_uint32]
-except AttributeError:
-    pass
-try:
-    hipGraphicsGLRegisterImage = _libraries['libamdhip64.so'].hipGraphicsGLRegisterImage
-    hipGraphicsGLRegisterImage.restype = hipError_t
-    hipGraphicsGLRegisterImage.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hipGraphicsResource)), GLuint, GLenum, ctypes.c_uint32]
-except AttributeError:
-    pass
 try:
     hipGraphicsMapResources = _libraries['libamdhip64.so'].hipGraphicsMapResources
     hipGraphicsMapResources.restype = hipError_t
@@ -5146,8 +5175,20 @@ try:
     hipDestroySurfaceObject.argtypes = [hipSurfaceObject_t]
 except AttributeError:
     pass
+try:
+    hipExtModuleLaunchKernel = _libraries['FIXME_STUB'].hipExtModuleLaunchKernel
+    hipExtModuleLaunchKernel.restype = hipError_t
+    hipExtModuleLaunchKernel.argtypes = [hipFunction_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, size_t, hipStream_t, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(None)), hipEvent_t, hipEvent_t, uint32_t]
+except AttributeError:
+    pass
+try:
+    hipHccModuleLaunchKernel = _libraries['FIXME_STUB'].hipHccModuleLaunchKernel
+    hipHccModuleLaunchKernel.restype = hipError_t
+    hipHccModuleLaunchKernel.argtypes = [hipFunction_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, size_t, hipStream_t, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(None)), hipEvent_t, hipEvent_t]
+except AttributeError:
+    pass
 __all__ = \
-    ['GLenum', 'GLuint', 'HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
+    ['HIPRTC_ERROR_BUILTIN_OPERATION_FAILURE',
     'HIPRTC_ERROR_COMPILATION', 'HIPRTC_ERROR_INTERNAL_ERROR',
     'HIPRTC_ERROR_INVALID_INPUT', 'HIPRTC_ERROR_INVALID_OPTION',
     'HIPRTC_ERROR_INVALID_PROGRAM', 'HIPRTC_ERROR_LINKING',
@@ -5255,10 +5296,9 @@ __all__ = \
     'hipAccessPropertyPersisting', 'hipAccessPropertyStreaming',
     'hipAddressModeBorder', 'hipAddressModeClamp',
     'hipAddressModeMirror', 'hipAddressModeWrap', 'hipApiName',
-    'hipArray', 'hipArray3DCreate', 'hipArray3DGetDescriptor',
-    'hipArrayCreate', 'hipArrayDestroy', 'hipArrayGetDescriptor',
-    'hipArrayGetInfo', 'hipArrayMapInfo',
-    'hipArraySparseSubresourceType',
+    'hipArray3DCreate', 'hipArray3DGetDescriptor', 'hipArrayCreate',
+    'hipArrayDestroy', 'hipArrayGetDescriptor', 'hipArrayGetInfo',
+    'hipArrayMapInfo', 'hipArraySparseSubresourceType',
     'hipArraySparseSubresourceTypeMiptail',
     'hipArraySparseSubresourceTypeSparseLevel', 'hipArray_Format',
     'hipArray_const_t', 'hipArray_t', 'hipBindTexture',
@@ -5266,7 +5306,7 @@ __all__ = \
     'hipBindTextureToMipmappedArray', 'hipChannelFormatDesc',
     'hipChannelFormatKind', 'hipChannelFormatKindFloat',
     'hipChannelFormatKindNone', 'hipChannelFormatKindSigned',
-    'hipChannelFormatKindUnsigned', 'hipChooseDevice',
+    'hipChannelFormatKindUnsigned', 'hipChooseDeviceR0600',
     'hipComputeMode', 'hipComputeModeDefault',
     'hipComputeModeExclusive', 'hipComputeModeExclusiveProcess',
     'hipComputeModeProhibited', 'hipConfigureCall',
@@ -5285,7 +5325,7 @@ __all__ = \
     'hipDevP2PAttrPerformanceRank', 'hipDeviceArch_t',
     'hipDeviceAttributeAccessPolicyMaxWindowSize',
     'hipDeviceAttributeAmdSpecificBegin',
-    'hipDeviceAttributeAmdSpecificEnd', 'hipDeviceAttributeArch',
+    'hipDeviceAttributeAmdSpecificEnd',
     'hipDeviceAttributeAsicRevision',
     'hipDeviceAttributeAsyncEngineCount',
     'hipDeviceAttributeCanMapHostMemory',
@@ -5310,12 +5350,12 @@ __all__ = \
     'hipDeviceAttributeDeviceOverlap',
     'hipDeviceAttributeDirectManagedMemAccessFromHost',
     'hipDeviceAttributeEccEnabled',
-    'hipDeviceAttributeFineGrainSupport', 'hipDeviceAttributeGcnArch',
-    'hipDeviceAttributeGcnArchName',
+    'hipDeviceAttributeFineGrainSupport',
     'hipDeviceAttributeGlobalL1CacheSupported',
     'hipDeviceAttributeHdpMemFlushCntl',
     'hipDeviceAttributeHdpRegFlushCntl',
     'hipDeviceAttributeHostNativeAtomicSupported',
+    'hipDeviceAttributeHostRegisterSupported',
     'hipDeviceAttributeImageSupport', 'hipDeviceAttributeIntegrated',
     'hipDeviceAttributeIsLargeBar',
     'hipDeviceAttributeIsMultiGpuBoard',
@@ -5364,7 +5404,7 @@ __all__ = \
     'hipDeviceAttributeMemoryClockRate',
     'hipDeviceAttributeMemoryPoolsSupported',
     'hipDeviceAttributeMultiGpuBoardGroupID',
-    'hipDeviceAttributeMultiprocessorCount', 'hipDeviceAttributeName',
+    'hipDeviceAttributeMultiprocessorCount',
     'hipDeviceAttributePageableMemoryAccess',
     'hipDeviceAttributePageableMemoryAccessUsesHostPageTables',
     'hipDeviceAttributePciBusId', 'hipDeviceAttributePciDeviceId',
@@ -5382,7 +5422,10 @@ __all__ = \
     'hipDeviceAttributeTexturePitchAlignment',
     'hipDeviceAttributeTotalConstantMemory',
     'hipDeviceAttributeTotalGlobalMem',
-    'hipDeviceAttributeUnifiedAddressing', 'hipDeviceAttributeUuid',
+    'hipDeviceAttributeUnifiedAddressing',
+    'hipDeviceAttributeUnused1', 'hipDeviceAttributeUnused2',
+    'hipDeviceAttributeUnused3', 'hipDeviceAttributeUnused4',
+    'hipDeviceAttributeUnused5',
     'hipDeviceAttributeVendorSpecificBegin',
     'hipDeviceAttributeVirtualMemoryManagementSupported',
     'hipDeviceAttributeWallClockRate', 'hipDeviceAttributeWarpSize',
@@ -5398,21 +5441,22 @@ __all__ = \
     'hipDeviceGetUuid', 'hipDeviceGraphMemTrim', 'hipDeviceP2PAttr',
     'hipDevicePrimaryCtxGetState', 'hipDevicePrimaryCtxRelease',
     'hipDevicePrimaryCtxReset', 'hipDevicePrimaryCtxRetain',
-    'hipDevicePrimaryCtxSetFlags', 'hipDeviceProp_t',
+    'hipDevicePrimaryCtxSetFlags', 'hipDeviceProp_tR0600',
     'hipDeviceReset', 'hipDeviceSetCacheConfig',
     'hipDeviceSetGraphMemAttribute', 'hipDeviceSetLimit',
     'hipDeviceSetMemPool', 'hipDeviceSetSharedMemConfig',
     'hipDeviceSynchronize', 'hipDeviceTotalMem', 'hipDevice_t',
     'hipDeviceptr_t', 'hipDriverGetVersion', 'hipDrvGetErrorName',
-    'hipDrvGetErrorString', 'hipDrvMemcpy2DUnaligned',
-    'hipDrvMemcpy3D', 'hipDrvMemcpy3DAsync',
-    'hipDrvPointerGetAttributes', 'hipErrorAlreadyAcquired',
-    'hipErrorAlreadyMapped', 'hipErrorArrayIsMapped',
-    'hipErrorAssert', 'hipErrorCapturedEvent',
-    'hipErrorContextAlreadyCurrent', 'hipErrorContextAlreadyInUse',
-    'hipErrorContextIsDestroyed', 'hipErrorCooperativeLaunchTooLarge',
-    'hipErrorDeinitialized', 'hipErrorECCNotCorrectable',
-    'hipErrorFileNotFound', 'hipErrorGraphExecUpdateFailure',
+    'hipDrvGetErrorString', 'hipDrvGraphAddMemcpyNode',
+    'hipDrvMemcpy2DUnaligned', 'hipDrvMemcpy3D',
+    'hipDrvMemcpy3DAsync', 'hipDrvPointerGetAttributes',
+    'hipErrorAlreadyAcquired', 'hipErrorAlreadyMapped',
+    'hipErrorArrayIsMapped', 'hipErrorAssert',
+    'hipErrorCapturedEvent', 'hipErrorContextAlreadyCurrent',
+    'hipErrorContextAlreadyInUse', 'hipErrorContextIsDestroyed',
+    'hipErrorCooperativeLaunchTooLarge', 'hipErrorDeinitialized',
+    'hipErrorECCNotCorrectable', 'hipErrorFileNotFound',
+    'hipErrorGraphExecUpdateFailure',
     'hipErrorHostMemoryAlreadyRegistered',
     'hipErrorHostMemoryNotRegistered', 'hipErrorIllegalAddress',
     'hipErrorIllegalState', 'hipErrorInitializationError',
@@ -5450,28 +5494,37 @@ __all__ = \
     'hipErrorUnsupportedLimit', 'hipError_t', 'hipEventCreate',
     'hipEventCreateWithFlags', 'hipEventDestroy',
     'hipEventElapsedTime', 'hipEventQuery', 'hipEventRecord',
-    'hipEventSynchronize', 'hipEvent_t',
+    'hipEventSynchronize', 'hipEvent_t', 'hipExtGetLastError',
     'hipExtGetLinkTypeAndHopCount', 'hipExtLaunchKernel',
     'hipExtLaunchMultiKernelMultiDevice', 'hipExtMallocWithFlags',
-    'hipExtStreamCreateWithCUMask', 'hipExtStreamGetCUMask',
-    'hipExtent', 'hipExternalMemoryBufferDesc',
-    'hipExternalMemoryGetMappedBuffer', 'hipExternalMemoryHandleDesc',
-    'hipExternalMemoryHandleType',
+    'hipExtModuleLaunchKernel', 'hipExtStreamCreateWithCUMask',
+    'hipExtStreamGetCUMask', 'hipExtent',
+    'hipExternalMemoryBufferDesc', 'hipExternalMemoryGetMappedBuffer',
+    'hipExternalMemoryGetMappedMipmappedArray',
+    'hipExternalMemoryHandleDesc', 'hipExternalMemoryHandleType',
     'hipExternalMemoryHandleTypeD3D11Resource',
     'hipExternalMemoryHandleTypeD3D11ResourceKmt',
     'hipExternalMemoryHandleTypeD3D12Heap',
     'hipExternalMemoryHandleTypeD3D12Resource',
+    'hipExternalMemoryHandleTypeNvSciBuf',
     'hipExternalMemoryHandleTypeOpaqueFd',
     'hipExternalMemoryHandleTypeOpaqueWin32',
     'hipExternalMemoryHandleTypeOpaqueWin32Kmt',
     'hipExternalMemoryHandleType__enumvalues',
-    'hipExternalMemoryHandleType_enum', 'hipExternalMemory_t',
+    'hipExternalMemoryHandleType_enum',
+    'hipExternalMemoryMipmappedArrayDesc', 'hipExternalMemory_t',
     'hipExternalSemaphoreHandleDesc',
     'hipExternalSemaphoreHandleType',
+    'hipExternalSemaphoreHandleTypeD3D11Fence',
     'hipExternalSemaphoreHandleTypeD3D12Fence',
+    'hipExternalSemaphoreHandleTypeKeyedMutex',
+    'hipExternalSemaphoreHandleTypeKeyedMutexKmt',
+    'hipExternalSemaphoreHandleTypeNvSciSync',
     'hipExternalSemaphoreHandleTypeOpaqueFd',
     'hipExternalSemaphoreHandleTypeOpaqueWin32',
     'hipExternalSemaphoreHandleTypeOpaqueWin32Kmt',
+    'hipExternalSemaphoreHandleTypeTimelineSemaphoreFd',
+    'hipExternalSemaphoreHandleTypeTimelineSemaphoreWin32',
     'hipExternalSemaphoreHandleType__enumvalues',
     'hipExternalSemaphoreHandleType_enum',
     'hipExternalSemaphoreSignalNodeParams',
@@ -5490,11 +5543,9 @@ __all__ = \
     'hipFuncGetAttribute', 'hipFuncGetAttributes',
     'hipFuncSetAttribute', 'hipFuncSetCacheConfig',
     'hipFuncSetSharedMemConfig', 'hipFunctionLaunchParams',
-    'hipFunction_attribute', 'hipFunction_t', 'hipGLDeviceList',
-    'hipGLDeviceListAll', 'hipGLDeviceListCurrentFrame',
-    'hipGLDeviceListNextFrame', 'hipGLGetDevices',
-    'hipGetChannelDesc', 'hipGetDevice', 'hipGetDeviceCount',
-    'hipGetDeviceFlags', 'hipGetDeviceProperties', 'hipGetErrorName',
+    'hipFunction_attribute', 'hipFunction_t', 'hipGetChannelDesc',
+    'hipGetDevice', 'hipGetDeviceCount', 'hipGetDeviceFlags',
+    'hipGetDevicePropertiesR0600', 'hipGetErrorName',
     'hipGetErrorString', 'hipGetLastError',
     'hipGetMipmappedArrayLevel', 'hipGetStreamDeviceId',
     'hipGetSymbolAddress', 'hipGetSymbolSize',
@@ -5503,9 +5554,7 @@ __all__ = \
     'hipGetTextureObjectTextureDesc', 'hipGetTextureReference',
     'hipGraphAddChildGraphNode', 'hipGraphAddDependencies',
     'hipGraphAddEmptyNode', 'hipGraphAddEventRecordNode',
-    'hipGraphAddEventWaitNode',
-    'hipGraphAddExternalSemaphoresSignalNode',
-    'hipGraphAddExternalSemaphoresWaitNode', 'hipGraphAddHostNode',
+    'hipGraphAddEventWaitNode', 'hipGraphAddHostNode',
     'hipGraphAddKernelNode', 'hipGraphAddMemAllocNode',
     'hipGraphAddMemFreeNode', 'hipGraphAddMemcpyNode',
     'hipGraphAddMemcpyNode1D', 'hipGraphAddMemcpyNodeFromSymbol',
@@ -5529,8 +5578,6 @@ __all__ = \
     'hipGraphExecChildGraphNodeSetParams', 'hipGraphExecDestroy',
     'hipGraphExecEventRecordNodeSetEvent',
     'hipGraphExecEventWaitNodeSetEvent',
-    'hipGraphExecExternalSemaphoresSignalNodeSetParams',
-    'hipGraphExecExternalSemaphoresWaitNodeSetParams',
     'hipGraphExecHostNodeSetParams',
     'hipGraphExecKernelNodeSetParams',
     'hipGraphExecMemcpyNodeSetParams',
@@ -5546,13 +5593,10 @@ __all__ = \
     'hipGraphExecUpdateErrorTopologyChanged',
     'hipGraphExecUpdateErrorUnsupportedFunctionChange',
     'hipGraphExecUpdateResult', 'hipGraphExecUpdateSuccess',
-    'hipGraphExec_t', 'hipGraphExternalSemaphoresSignalNodeGetParams',
-    'hipGraphExternalSemaphoresSignalNodeSetParams',
-    'hipGraphExternalSemaphoresWaitNodeGetParams',
-    'hipGraphExternalSemaphoresWaitNodeSetParams', 'hipGraphGetEdges',
-    'hipGraphGetNodes', 'hipGraphGetRootNodes',
-    'hipGraphHostNodeGetParams', 'hipGraphHostNodeSetParams',
-    'hipGraphInstantiate', 'hipGraphInstantiateFlagAutoFreeOnLaunch',
+    'hipGraphExec_t', 'hipGraphGetEdges', 'hipGraphGetNodes',
+    'hipGraphGetRootNodes', 'hipGraphHostNodeGetParams',
+    'hipGraphHostNodeSetParams', 'hipGraphInstantiate',
+    'hipGraphInstantiateFlagAutoFreeOnLaunch',
     'hipGraphInstantiateFlagDeviceLaunch',
     'hipGraphInstantiateFlagUpload',
     'hipGraphInstantiateFlagUseNodePriority',
@@ -5583,10 +5627,8 @@ __all__ = \
     'hipGraphNodeTypeWaitEvent', 'hipGraphNode_t',
     'hipGraphReleaseUserObject', 'hipGraphRemoveDependencies',
     'hipGraphRetainUserObject', 'hipGraphUpload',
-    'hipGraphUserObjectMove', 'hipGraph_t',
-    'hipGraphicsGLRegisterBuffer', 'hipGraphicsGLRegisterImage',
-    'hipGraphicsMapResources', 'hipGraphicsRegisterFlags',
-    'hipGraphicsRegisterFlagsNone',
+    'hipGraphUserObjectMove', 'hipGraph_t', 'hipGraphicsMapResources',
+    'hipGraphicsRegisterFlags', 'hipGraphicsRegisterFlagsNone',
     'hipGraphicsRegisterFlagsReadOnly',
     'hipGraphicsRegisterFlagsSurfaceLoadStore',
     'hipGraphicsRegisterFlagsTextureGather',
@@ -5594,12 +5636,13 @@ __all__ = \
     'hipGraphicsResourceGetMappedPointer', 'hipGraphicsResource_t',
     'hipGraphicsSubResourceGetMappedArray',
     'hipGraphicsUnmapResources', 'hipGraphicsUnregisterResource',
-    'hipHostAlloc', 'hipHostFn_t', 'hipHostFree',
-    'hipHostGetDevicePointer', 'hipHostGetFlags', 'hipHostMalloc',
-    'hipHostNodeParams', 'hipHostRegister', 'hipHostUnregister',
-    'hipImportExternalMemory', 'hipImportExternalSemaphore',
-    'hipInit', 'hipIpcCloseMemHandle', 'hipIpcEventHandle_t',
-    'hipIpcGetEventHandle', 'hipIpcGetMemHandle', 'hipIpcMemHandle_t',
+    'hipHccModuleLaunchKernel', 'hipHostAlloc', 'hipHostFn_t',
+    'hipHostFree', 'hipHostGetDevicePointer', 'hipHostGetFlags',
+    'hipHostMalloc', 'hipHostNodeParams', 'hipHostRegister',
+    'hipHostUnregister', 'hipImportExternalMemory',
+    'hipImportExternalSemaphore', 'hipInit', 'hipIpcCloseMemHandle',
+    'hipIpcEventHandle_t', 'hipIpcGetEventHandle',
+    'hipIpcGetMemHandle', 'hipIpcMemHandle_t',
     'hipIpcOpenEventHandle', 'hipIpcOpenMemHandle', 'hipJitOption',
     'hipJitOptionCacheMode', 'hipJitOptionErrorLogBuffer',
     'hipJitOptionErrorLogBufferSizeBytes',
@@ -5690,16 +5733,17 @@ __all__ = \
     'hipMemcpyToSymbolAsync', 'hipMemcpyWithStream',
     'hipMemoryAdvise', 'hipMemoryType', 'hipMemoryTypeArray',
     'hipMemoryTypeDevice', 'hipMemoryTypeHost',
-    'hipMemoryTypeManaged', 'hipMemoryTypeUnified', 'hipMemset',
-    'hipMemset2D', 'hipMemset2DAsync', 'hipMemset3D',
-    'hipMemset3DAsync', 'hipMemsetAsync', 'hipMemsetD16',
-    'hipMemsetD16Async', 'hipMemsetD32', 'hipMemsetD32Async',
-    'hipMemsetD8', 'hipMemsetD8Async', 'hipMemsetParams',
-    'hipMipmappedArray', 'hipMipmappedArrayCreate',
-    'hipMipmappedArrayDestroy', 'hipMipmappedArrayGetLevel',
-    'hipMipmappedArray_const_t', 'hipMipmappedArray_t',
-    'hipModuleGetFunction', 'hipModuleGetGlobal',
-    'hipModuleGetTexRef', 'hipModuleLaunchCooperativeKernel',
+    'hipMemoryTypeManaged', 'hipMemoryTypeUnified',
+    'hipMemoryTypeUnregistered', 'hipMemset', 'hipMemset2D',
+    'hipMemset2DAsync', 'hipMemset3D', 'hipMemset3DAsync',
+    'hipMemsetAsync', 'hipMemsetD16', 'hipMemsetD16Async',
+    'hipMemsetD32', 'hipMemsetD32Async', 'hipMemsetD8',
+    'hipMemsetD8Async', 'hipMemsetParams', 'hipMipmappedArray',
+    'hipMipmappedArrayCreate', 'hipMipmappedArrayDestroy',
+    'hipMipmappedArrayGetLevel', 'hipMipmappedArray_const_t',
+    'hipMipmappedArray_t', 'hipModuleGetFunction',
+    'hipModuleGetGlobal', 'hipModuleGetTexRef',
+    'hipModuleLaunchCooperativeKernel',
     'hipModuleLaunchCooperativeKernelMultiDevice',
     'hipModuleLaunchKernel', 'hipModuleLoad', 'hipModuleLoadData',
     'hipModuleLoadDataEx',
@@ -5787,7 +5831,7 @@ __all__ = \
     'hipUserObjectFlags', 'hipUserObjectNoDestructorSync',
     'hipUserObjectRelease', 'hipUserObjectRetain',
     'hipUserObjectRetainFlags', 'hipUserObject_t',
-    'hipWaitExternalSemaphoresAsync', 'hip_Memcpy2D', 'hiparray',
+    'hipWaitExternalSemaphoresAsync', 'hip_Memcpy2D', 'hip_init',
     'hipmipmappedArray', 'hiprtcAddNameExpression',
     'hiprtcCompileProgram', 'hiprtcCreateProgram',
     'hiprtcDestroyProgram', 'hiprtcGetBitcode',
@@ -5813,10 +5857,11 @@ __all__ = \
     'struct_hipAccessPolicyWindow', 'struct_hipArray',
     'struct_hipArrayMapInfo', 'struct_hipArrayMapInfo_1_miptail',
     'struct_hipArrayMapInfo_1_sparseLevel',
-    'struct_hipChannelFormatDesc', 'struct_hipDeviceProp_t',
+    'struct_hipChannelFormatDesc', 'struct_hipDeviceProp_tR0600',
     'struct_hipExtent', 'struct_hipExternalMemoryBufferDesc_st',
     'struct_hipExternalMemoryHandleDesc_st',
     'struct_hipExternalMemoryHandleDesc_st_0_win32',
+    'struct_hipExternalMemoryMipmappedArrayDesc_st',
     'struct_hipExternalSemaphoreHandleDesc_st',
     'struct_hipExternalSemaphoreHandleDesc_st_0_win32',
     'struct_hipExternalSemaphoreSignalNodeParams',
@@ -5857,5 +5902,6 @@ __all__ = \
     'union_hipArrayMapInfo_subresource',
     'union_hipExternalMemoryHandleDesc_st_handle',
     'union_hipExternalSemaphoreHandleDesc_st_handle',
-    'union_hipKernelNodeAttrValue', 'union_hipPointerAttribute_t_0',
-    'union_hipResourceDesc_res']
+    'union_hipExternalSemaphoreSignalParams_st_0_nvSciSync',
+    'union_hipExternalSemaphoreWaitParams_st_0_nvSciSync',
+    'union_hipKernelNodeAttrValue', 'union_hipResourceDesc_res']
