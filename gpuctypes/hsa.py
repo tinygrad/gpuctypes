@@ -27,17 +27,8 @@ def char_pointer_cast(string, encoding='utf-8'):
 
 
 
-class FunctionFactoryStub:
-    def __getattr__(self, _):
-      return ctypes.CFUNCTYPE(lambda y:y)
-
-# libraries['FIXME_STUB'] explanation
-# As you did not list (-l libraryname.so) a library that exports this function
-# This is a non-working stub instead. 
-# You can either re-run clan2py with -l /path/to/library.so
-# Or manually fix this by comment the ctypes.CDLL loading
 _libraries = {}
-_libraries['libhsa'] = ctypes.CDLL('/opt/rocm/lib/libhsa-runtime64.so') #  ctypes.CDLL('FIXME_STUB')
+_libraries['libhsa-runtime64.so'] = ctypes.CDLL('/opt/rocm/lib/libhsa-runtime64.so')
 class AsDictMixin:
     @classmethod
     def as_dict(cls, self):
@@ -231,9 +222,12 @@ HSA_STATUS_ERROR_INVALID_SIGNAL_GROUP = 4132
 HSA_STATUS_ERROR_INVALID_RUNTIME_STATE = 4133
 HSA_STATUS_ERROR_FATAL = 4134
 hsa_status_t = ctypes.c_uint32 # enum
-hsa_status_string = _libraries['libhsa'].hsa_status_string
-hsa_status_string.restype = hsa_status_t
-hsa_status_string.argtypes = [hsa_status_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+try:
+    hsa_status_string = _libraries['libhsa-runtime64.so'].hsa_status_string
+    hsa_status_string.restype = hsa_status_t
+    hsa_status_string.argtypes = [hsa_status_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
 class struct_hsa_dim3_s(Structure):
     pass
 
@@ -259,12 +253,18 @@ HSA_ACCESS_PERMISSION_WO = 2
 HSA_ACCESS_PERMISSION_RW = 3
 hsa_access_permission_t = ctypes.c_uint32 # enum
 hsa_file_t = ctypes.c_int32
-hsa_init = _libraries['libhsa'].hsa_init
-hsa_init.restype = hsa_status_t
-hsa_init.argtypes = []
-hsa_shut_down = _libraries['libhsa'].hsa_shut_down
-hsa_shut_down.restype = hsa_status_t
-hsa_shut_down.argtypes = []
+try:
+    hsa_init = _libraries['libhsa-runtime64.so'].hsa_init
+    hsa_init.restype = hsa_status_t
+    hsa_init.argtypes = []
+except AttributeError:
+    pass
+try:
+    hsa_shut_down = _libraries['libhsa-runtime64.so'].hsa_shut_down
+    hsa_shut_down.restype = hsa_status_t
+    hsa_shut_down.argtypes = []
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_endianness_t'
 hsa_endianness_t__enumvalues = {
@@ -327,9 +327,12 @@ HSA_AMD_SYSTEM_INFO_DMABUF_SUPPORTED = 516
 HSA_AMD_SYSTEM_INFO_VIRTUAL_MEM_API_SUPPORTED = 517
 HSA_AMD_SYSTEM_INFO_XNACK_ENABLED = 518
 hsa_system_info_t = ctypes.c_uint32 # enum
-hsa_system_get_info = _libraries['libhsa'].hsa_system_get_info
-hsa_system_get_info.restype = hsa_status_t
-hsa_system_get_info.argtypes = [hsa_system_info_t, ctypes.POINTER(None)]
+try:
+    hsa_system_get_info = _libraries['libhsa-runtime64.so'].hsa_system_get_info
+    hsa_system_get_info.restype = hsa_status_t
+    hsa_system_get_info.argtypes = [hsa_system_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_extension_t'
 hsa_extension_t__enumvalues = {
@@ -356,22 +359,37 @@ HSA_EXTENSION_AMD_AQLPROFILE = 514
 HSA_AMD_LAST_EXTENSION = 514
 hsa_extension_t = ctypes.c_uint32 # enum
 uint16_t = ctypes.c_uint16
-hsa_extension_get_name = _libraries['libhsa'].hsa_extension_get_name
-hsa_extension_get_name.restype = hsa_status_t
-hsa_extension_get_name.argtypes = [uint16_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
-hsa_system_extension_supported = _libraries['libhsa'].hsa_system_extension_supported
-hsa_system_extension_supported.restype = hsa_status_t
-hsa_system_extension_supported.argtypes = [uint16_t, uint16_t, uint16_t, ctypes.POINTER(ctypes.c_bool)]
-hsa_system_major_extension_supported = _libraries['libhsa'].hsa_system_major_extension_supported
-hsa_system_major_extension_supported.restype = hsa_status_t
-hsa_system_major_extension_supported.argtypes = [uint16_t, uint16_t, ctypes.POINTER(ctypes.c_uint16), ctypes.POINTER(ctypes.c_bool)]
-hsa_system_get_extension_table = _libraries['libhsa'].hsa_system_get_extension_table
-hsa_system_get_extension_table.restype = hsa_status_t
-hsa_system_get_extension_table.argtypes = [uint16_t, uint16_t, uint16_t, ctypes.POINTER(None)]
+try:
+    hsa_extension_get_name = _libraries['libhsa-runtime64.so'].hsa_extension_get_name
+    hsa_extension_get_name.restype = hsa_status_t
+    hsa_extension_get_name.argtypes = [uint16_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
+except AttributeError:
+    pass
+try:
+    hsa_system_extension_supported = _libraries['libhsa-runtime64.so'].hsa_system_extension_supported
+    hsa_system_extension_supported.restype = hsa_status_t
+    hsa_system_extension_supported.argtypes = [uint16_t, uint16_t, uint16_t, ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
+try:
+    hsa_system_major_extension_supported = _libraries['libhsa-runtime64.so'].hsa_system_major_extension_supported
+    hsa_system_major_extension_supported.restype = hsa_status_t
+    hsa_system_major_extension_supported.argtypes = [uint16_t, uint16_t, ctypes.POINTER(ctypes.c_uint16), ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
+try:
+    hsa_system_get_extension_table = _libraries['libhsa-runtime64.so'].hsa_system_get_extension_table
+    hsa_system_get_extension_table.restype = hsa_status_t
+    hsa_system_get_extension_table.argtypes = [uint16_t, uint16_t, uint16_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
 size_t = ctypes.c_uint64
-hsa_system_get_major_extension_table = _libraries['libhsa'].hsa_system_get_major_extension_table
-hsa_system_get_major_extension_table.restype = hsa_status_t
-hsa_system_get_major_extension_table.argtypes = [uint16_t, uint16_t, size_t, ctypes.POINTER(None)]
+try:
+    hsa_system_get_major_extension_table = _libraries['libhsa-runtime64.so'].hsa_system_get_major_extension_table
+    hsa_system_get_major_extension_table.restype = hsa_status_t
+    hsa_system_get_major_extension_table.argtypes = [uint16_t, uint16_t, size_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
 class struct_hsa_agent_s(Structure):
     pass
 
@@ -469,12 +487,18 @@ HSA_AGENT_INFO_VERSION_MAJOR = 21
 HSA_AGENT_INFO_VERSION_MINOR = 22
 HSA_AGENT_INFO_LAST = 2147483647
 hsa_agent_info_t = ctypes.c_uint32 # enum
-hsa_agent_get_info = _libraries['libhsa'].hsa_agent_get_info
-hsa_agent_get_info.restype = hsa_status_t
-hsa_agent_get_info.argtypes = [hsa_agent_t, hsa_agent_info_t, ctypes.POINTER(None)]
-hsa_iterate_agents = _libraries['libhsa'].hsa_iterate_agents
-hsa_iterate_agents.restype = hsa_status_t
-hsa_iterate_agents.argtypes = [ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_agent_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+try:
+    hsa_agent_get_info = _libraries['libhsa-runtime64.so'].hsa_agent_get_info
+    hsa_agent_get_info.restype = hsa_status_t
+    hsa_agent_get_info.argtypes = [hsa_agent_t, hsa_agent_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_iterate_agents = _libraries['libhsa-runtime64.so'].hsa_iterate_agents
+    hsa_iterate_agents.restype = hsa_status_t
+    hsa_iterate_agents.argtypes = [ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_agent_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_exception_policy_t'
 hsa_exception_policy_t__enumvalues = {
@@ -484,9 +508,12 @@ hsa_exception_policy_t__enumvalues = {
 HSA_EXCEPTION_POLICY_BREAK = 1
 HSA_EXCEPTION_POLICY_DETECT = 2
 hsa_exception_policy_t = ctypes.c_uint32 # enum
-hsa_agent_get_exception_policies = _libraries['libhsa'].hsa_agent_get_exception_policies
-hsa_agent_get_exception_policies.restype = hsa_status_t
-hsa_agent_get_exception_policies.argtypes = [hsa_agent_t, hsa_profile_t, ctypes.POINTER(ctypes.c_uint16)]
+try:
+    hsa_agent_get_exception_policies = _libraries['libhsa-runtime64.so'].hsa_agent_get_exception_policies
+    hsa_agent_get_exception_policies.restype = hsa_status_t
+    hsa_agent_get_exception_policies.argtypes = [hsa_agent_t, hsa_profile_t, ctypes.POINTER(ctypes.c_uint16)]
+except AttributeError:
+    pass
 class struct_hsa_cache_s(Structure):
     pass
 
@@ -509,18 +536,30 @@ HSA_CACHE_INFO_NAME = 1
 HSA_CACHE_INFO_LEVEL = 2
 HSA_CACHE_INFO_SIZE = 3
 hsa_cache_info_t = ctypes.c_uint32 # enum
-hsa_cache_get_info = _libraries['libhsa'].hsa_cache_get_info
-hsa_cache_get_info.restype = hsa_status_t
-hsa_cache_get_info.argtypes = [hsa_cache_t, hsa_cache_info_t, ctypes.POINTER(None)]
-hsa_agent_iterate_caches = _libraries['libhsa'].hsa_agent_iterate_caches
-hsa_agent_iterate_caches.restype = hsa_status_t
-hsa_agent_iterate_caches.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_cache_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_agent_extension_supported = _libraries['libhsa'].hsa_agent_extension_supported
-hsa_agent_extension_supported.restype = hsa_status_t
-hsa_agent_extension_supported.argtypes = [uint16_t, hsa_agent_t, uint16_t, uint16_t, ctypes.POINTER(ctypes.c_bool)]
-hsa_agent_major_extension_supported = _libraries['libhsa'].hsa_agent_major_extension_supported
-hsa_agent_major_extension_supported.restype = hsa_status_t
-hsa_agent_major_extension_supported.argtypes = [uint16_t, hsa_agent_t, uint16_t, ctypes.POINTER(ctypes.c_uint16), ctypes.POINTER(ctypes.c_bool)]
+try:
+    hsa_cache_get_info = _libraries['libhsa-runtime64.so'].hsa_cache_get_info
+    hsa_cache_get_info.restype = hsa_status_t
+    hsa_cache_get_info.argtypes = [hsa_cache_t, hsa_cache_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_agent_iterate_caches = _libraries['libhsa-runtime64.so'].hsa_agent_iterate_caches
+    hsa_agent_iterate_caches.restype = hsa_status_t
+    hsa_agent_iterate_caches.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_cache_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_agent_extension_supported = _libraries['libhsa-runtime64.so'].hsa_agent_extension_supported
+    hsa_agent_extension_supported.restype = hsa_status_t
+    hsa_agent_extension_supported.argtypes = [uint16_t, hsa_agent_t, uint16_t, uint16_t, ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
+try:
+    hsa_agent_major_extension_supported = _libraries['libhsa-runtime64.so'].hsa_agent_major_extension_supported
+    hsa_agent_major_extension_supported.restype = hsa_status_t
+    hsa_agent_major_extension_supported.argtypes = [uint16_t, hsa_agent_t, uint16_t, ctypes.POINTER(ctypes.c_uint16), ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
 class struct_hsa_signal_s(Structure):
     pass
 
@@ -532,183 +571,360 @@ struct_hsa_signal_s._fields_ = [
 hsa_signal_t = struct_hsa_signal_s
 hsa_signal_value_t = ctypes.c_int64
 uint32_t = ctypes.c_uint32
-hsa_signal_create = _libraries['libhsa'].hsa_signal_create
-hsa_signal_create.restype = hsa_status_t
-hsa_signal_create.argtypes = [hsa_signal_value_t, uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(struct_hsa_signal_s)]
-hsa_signal_destroy = _libraries['libhsa'].hsa_signal_destroy
-hsa_signal_destroy.restype = hsa_status_t
-hsa_signal_destroy.argtypes = [hsa_signal_t]
-hsa_signal_load_scacquire = _libraries['libhsa'].hsa_signal_load_scacquire
-hsa_signal_load_scacquire.restype = hsa_signal_value_t
-hsa_signal_load_scacquire.argtypes = [hsa_signal_t]
-hsa_signal_load_relaxed = _libraries['libhsa'].hsa_signal_load_relaxed
-hsa_signal_load_relaxed.restype = hsa_signal_value_t
-hsa_signal_load_relaxed.argtypes = [hsa_signal_t]
-hsa_signal_load_acquire = _libraries['libhsa'].hsa_signal_load_acquire
-hsa_signal_load_acquire.restype = hsa_signal_value_t
-hsa_signal_load_acquire.argtypes = [hsa_signal_t]
-hsa_signal_store_relaxed = _libraries['libhsa'].hsa_signal_store_relaxed
-hsa_signal_store_relaxed.restype = None
-hsa_signal_store_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_store_screlease = _libraries['libhsa'].hsa_signal_store_screlease
-hsa_signal_store_screlease.restype = None
-hsa_signal_store_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_store_release = _libraries['libhsa'].hsa_signal_store_release
-hsa_signal_store_release.restype = None
-hsa_signal_store_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_silent_store_relaxed = _libraries['libhsa'].hsa_signal_silent_store_relaxed
-hsa_signal_silent_store_relaxed.restype = None
-hsa_signal_silent_store_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_silent_store_screlease = _libraries['libhsa'].hsa_signal_silent_store_screlease
-hsa_signal_silent_store_screlease.restype = None
-hsa_signal_silent_store_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_scacq_screl = _libraries['libhsa'].hsa_signal_exchange_scacq_screl
-hsa_signal_exchange_scacq_screl.restype = hsa_signal_value_t
-hsa_signal_exchange_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_acq_rel = _libraries['libhsa'].hsa_signal_exchange_acq_rel
-hsa_signal_exchange_acq_rel.restype = hsa_signal_value_t
-hsa_signal_exchange_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_scacquire = _libraries['libhsa'].hsa_signal_exchange_scacquire
-hsa_signal_exchange_scacquire.restype = hsa_signal_value_t
-hsa_signal_exchange_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_acquire = _libraries['libhsa'].hsa_signal_exchange_acquire
-hsa_signal_exchange_acquire.restype = hsa_signal_value_t
-hsa_signal_exchange_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_relaxed = _libraries['libhsa'].hsa_signal_exchange_relaxed
-hsa_signal_exchange_relaxed.restype = hsa_signal_value_t
-hsa_signal_exchange_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_screlease = _libraries['libhsa'].hsa_signal_exchange_screlease
-hsa_signal_exchange_screlease.restype = hsa_signal_value_t
-hsa_signal_exchange_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_exchange_release = _libraries['libhsa'].hsa_signal_exchange_release
-hsa_signal_exchange_release.restype = hsa_signal_value_t
-hsa_signal_exchange_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_cas_scacq_screl = _libraries['libhsa'].hsa_signal_cas_scacq_screl
-hsa_signal_cas_scacq_screl.restype = hsa_signal_value_t
-hsa_signal_cas_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_cas_acq_rel = _libraries['libhsa'].hsa_signal_cas_acq_rel
-hsa_signal_cas_acq_rel.restype = hsa_signal_value_t
-hsa_signal_cas_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_cas_scacquire = _libraries['libhsa'].hsa_signal_cas_scacquire
-hsa_signal_cas_scacquire.restype = hsa_signal_value_t
-hsa_signal_cas_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_cas_acquire = _libraries['libhsa'].hsa_signal_cas_acquire
-hsa_signal_cas_acquire.restype = hsa_signal_value_t
-hsa_signal_cas_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_cas_relaxed = _libraries['libhsa'].hsa_signal_cas_relaxed
-hsa_signal_cas_relaxed.restype = hsa_signal_value_t
-hsa_signal_cas_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_cas_screlease = _libraries['libhsa'].hsa_signal_cas_screlease
-hsa_signal_cas_screlease.restype = hsa_signal_value_t
-hsa_signal_cas_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_cas_release = _libraries['libhsa'].hsa_signal_cas_release
-hsa_signal_cas_release.restype = hsa_signal_value_t
-hsa_signal_cas_release.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
-hsa_signal_add_scacq_screl = _libraries['libhsa'].hsa_signal_add_scacq_screl
-hsa_signal_add_scacq_screl.restype = None
-hsa_signal_add_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_add_acq_rel = _libraries['libhsa'].hsa_signal_add_acq_rel
-hsa_signal_add_acq_rel.restype = None
-hsa_signal_add_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_add_scacquire = _libraries['libhsa'].hsa_signal_add_scacquire
-hsa_signal_add_scacquire.restype = None
-hsa_signal_add_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_add_acquire = _libraries['libhsa'].hsa_signal_add_acquire
-hsa_signal_add_acquire.restype = None
-hsa_signal_add_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_add_relaxed = _libraries['libhsa'].hsa_signal_add_relaxed
-hsa_signal_add_relaxed.restype = None
-hsa_signal_add_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_add_screlease = _libraries['libhsa'].hsa_signal_add_screlease
-hsa_signal_add_screlease.restype = None
-hsa_signal_add_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_add_release = _libraries['libhsa'].hsa_signal_add_release
-hsa_signal_add_release.restype = None
-hsa_signal_add_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_scacq_screl = _libraries['libhsa'].hsa_signal_subtract_scacq_screl
-hsa_signal_subtract_scacq_screl.restype = None
-hsa_signal_subtract_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_acq_rel = _libraries['libhsa'].hsa_signal_subtract_acq_rel
-hsa_signal_subtract_acq_rel.restype = None
-hsa_signal_subtract_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_scacquire = _libraries['libhsa'].hsa_signal_subtract_scacquire
-hsa_signal_subtract_scacquire.restype = None
-hsa_signal_subtract_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_acquire = _libraries['libhsa'].hsa_signal_subtract_acquire
-hsa_signal_subtract_acquire.restype = None
-hsa_signal_subtract_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_relaxed = _libraries['libhsa'].hsa_signal_subtract_relaxed
-hsa_signal_subtract_relaxed.restype = None
-hsa_signal_subtract_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_screlease = _libraries['libhsa'].hsa_signal_subtract_screlease
-hsa_signal_subtract_screlease.restype = None
-hsa_signal_subtract_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_subtract_release = _libraries['libhsa'].hsa_signal_subtract_release
-hsa_signal_subtract_release.restype = None
-hsa_signal_subtract_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_scacq_screl = _libraries['libhsa'].hsa_signal_and_scacq_screl
-hsa_signal_and_scacq_screl.restype = None
-hsa_signal_and_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_acq_rel = _libraries['libhsa'].hsa_signal_and_acq_rel
-hsa_signal_and_acq_rel.restype = None
-hsa_signal_and_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_scacquire = _libraries['libhsa'].hsa_signal_and_scacquire
-hsa_signal_and_scacquire.restype = None
-hsa_signal_and_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_acquire = _libraries['libhsa'].hsa_signal_and_acquire
-hsa_signal_and_acquire.restype = None
-hsa_signal_and_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_relaxed = _libraries['libhsa'].hsa_signal_and_relaxed
-hsa_signal_and_relaxed.restype = None
-hsa_signal_and_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_screlease = _libraries['libhsa'].hsa_signal_and_screlease
-hsa_signal_and_screlease.restype = None
-hsa_signal_and_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_and_release = _libraries['libhsa'].hsa_signal_and_release
-hsa_signal_and_release.restype = None
-hsa_signal_and_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_scacq_screl = _libraries['libhsa'].hsa_signal_or_scacq_screl
-hsa_signal_or_scacq_screl.restype = None
-hsa_signal_or_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_acq_rel = _libraries['libhsa'].hsa_signal_or_acq_rel
-hsa_signal_or_acq_rel.restype = None
-hsa_signal_or_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_scacquire = _libraries['libhsa'].hsa_signal_or_scacquire
-hsa_signal_or_scacquire.restype = None
-hsa_signal_or_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_acquire = _libraries['libhsa'].hsa_signal_or_acquire
-hsa_signal_or_acquire.restype = None
-hsa_signal_or_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_relaxed = _libraries['libhsa'].hsa_signal_or_relaxed
-hsa_signal_or_relaxed.restype = None
-hsa_signal_or_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_screlease = _libraries['libhsa'].hsa_signal_or_screlease
-hsa_signal_or_screlease.restype = None
-hsa_signal_or_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_or_release = _libraries['libhsa'].hsa_signal_or_release
-hsa_signal_or_release.restype = None
-hsa_signal_or_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_scacq_screl = _libraries['libhsa'].hsa_signal_xor_scacq_screl
-hsa_signal_xor_scacq_screl.restype = None
-hsa_signal_xor_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_acq_rel = _libraries['libhsa'].hsa_signal_xor_acq_rel
-hsa_signal_xor_acq_rel.restype = None
-hsa_signal_xor_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_scacquire = _libraries['libhsa'].hsa_signal_xor_scacquire
-hsa_signal_xor_scacquire.restype = None
-hsa_signal_xor_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_acquire = _libraries['libhsa'].hsa_signal_xor_acquire
-hsa_signal_xor_acquire.restype = None
-hsa_signal_xor_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_relaxed = _libraries['libhsa'].hsa_signal_xor_relaxed
-hsa_signal_xor_relaxed.restype = None
-hsa_signal_xor_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_screlease = _libraries['libhsa'].hsa_signal_xor_screlease
-hsa_signal_xor_screlease.restype = None
-hsa_signal_xor_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
-hsa_signal_xor_release = _libraries['libhsa'].hsa_signal_xor_release
-hsa_signal_xor_release.restype = None
-hsa_signal_xor_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+try:
+    hsa_signal_create = _libraries['libhsa-runtime64.so'].hsa_signal_create
+    hsa_signal_create.restype = hsa_status_t
+    hsa_signal_create.argtypes = [hsa_signal_value_t, uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(struct_hsa_signal_s)]
+except AttributeError:
+    pass
+try:
+    hsa_signal_destroy = _libraries['libhsa-runtime64.so'].hsa_signal_destroy
+    hsa_signal_destroy.restype = hsa_status_t
+    hsa_signal_destroy.argtypes = [hsa_signal_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_load_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_load_scacquire
+    hsa_signal_load_scacquire.restype = hsa_signal_value_t
+    hsa_signal_load_scacquire.argtypes = [hsa_signal_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_load_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_load_relaxed
+    hsa_signal_load_relaxed.restype = hsa_signal_value_t
+    hsa_signal_load_relaxed.argtypes = [hsa_signal_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_load_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_load_acquire
+    hsa_signal_load_acquire.restype = hsa_signal_value_t
+    hsa_signal_load_acquire.argtypes = [hsa_signal_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_store_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_store_relaxed
+    hsa_signal_store_relaxed.restype = None
+    hsa_signal_store_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_store_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_store_screlease
+    hsa_signal_store_screlease.restype = None
+    hsa_signal_store_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_store_release = _libraries['libhsa-runtime64.so'].hsa_signal_store_release
+    hsa_signal_store_release.restype = None
+    hsa_signal_store_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_silent_store_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_silent_store_relaxed
+    hsa_signal_silent_store_relaxed.restype = None
+    hsa_signal_silent_store_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_silent_store_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_silent_store_screlease
+    hsa_signal_silent_store_screlease.restype = None
+    hsa_signal_silent_store_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_scacq_screl
+    hsa_signal_exchange_scacq_screl.restype = hsa_signal_value_t
+    hsa_signal_exchange_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_acq_rel
+    hsa_signal_exchange_acq_rel.restype = hsa_signal_value_t
+    hsa_signal_exchange_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_scacquire
+    hsa_signal_exchange_scacquire.restype = hsa_signal_value_t
+    hsa_signal_exchange_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_acquire
+    hsa_signal_exchange_acquire.restype = hsa_signal_value_t
+    hsa_signal_exchange_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_relaxed
+    hsa_signal_exchange_relaxed.restype = hsa_signal_value_t
+    hsa_signal_exchange_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_screlease
+    hsa_signal_exchange_screlease.restype = hsa_signal_value_t
+    hsa_signal_exchange_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_exchange_release = _libraries['libhsa-runtime64.so'].hsa_signal_exchange_release
+    hsa_signal_exchange_release.restype = hsa_signal_value_t
+    hsa_signal_exchange_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_cas_scacq_screl
+    hsa_signal_cas_scacq_screl.restype = hsa_signal_value_t
+    hsa_signal_cas_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_cas_acq_rel
+    hsa_signal_cas_acq_rel.restype = hsa_signal_value_t
+    hsa_signal_cas_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_cas_scacquire
+    hsa_signal_cas_scacquire.restype = hsa_signal_value_t
+    hsa_signal_cas_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_cas_acquire
+    hsa_signal_cas_acquire.restype = hsa_signal_value_t
+    hsa_signal_cas_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_cas_relaxed
+    hsa_signal_cas_relaxed.restype = hsa_signal_value_t
+    hsa_signal_cas_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_cas_screlease
+    hsa_signal_cas_screlease.restype = hsa_signal_value_t
+    hsa_signal_cas_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_cas_release = _libraries['libhsa-runtime64.so'].hsa_signal_cas_release
+    hsa_signal_cas_release.restype = hsa_signal_value_t
+    hsa_signal_cas_release.argtypes = [hsa_signal_t, hsa_signal_value_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_add_scacq_screl
+    hsa_signal_add_scacq_screl.restype = None
+    hsa_signal_add_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_add_acq_rel
+    hsa_signal_add_acq_rel.restype = None
+    hsa_signal_add_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_add_scacquire
+    hsa_signal_add_scacquire.restype = None
+    hsa_signal_add_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_add_acquire
+    hsa_signal_add_acquire.restype = None
+    hsa_signal_add_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_add_relaxed
+    hsa_signal_add_relaxed.restype = None
+    hsa_signal_add_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_add_screlease
+    hsa_signal_add_screlease.restype = None
+    hsa_signal_add_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_add_release = _libraries['libhsa-runtime64.so'].hsa_signal_add_release
+    hsa_signal_add_release.restype = None
+    hsa_signal_add_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_scacq_screl
+    hsa_signal_subtract_scacq_screl.restype = None
+    hsa_signal_subtract_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_acq_rel
+    hsa_signal_subtract_acq_rel.restype = None
+    hsa_signal_subtract_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_scacquire
+    hsa_signal_subtract_scacquire.restype = None
+    hsa_signal_subtract_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_acquire
+    hsa_signal_subtract_acquire.restype = None
+    hsa_signal_subtract_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_relaxed
+    hsa_signal_subtract_relaxed.restype = None
+    hsa_signal_subtract_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_screlease
+    hsa_signal_subtract_screlease.restype = None
+    hsa_signal_subtract_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_subtract_release = _libraries['libhsa-runtime64.so'].hsa_signal_subtract_release
+    hsa_signal_subtract_release.restype = None
+    hsa_signal_subtract_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_and_scacq_screl
+    hsa_signal_and_scacq_screl.restype = None
+    hsa_signal_and_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_and_acq_rel
+    hsa_signal_and_acq_rel.restype = None
+    hsa_signal_and_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_and_scacquire
+    hsa_signal_and_scacquire.restype = None
+    hsa_signal_and_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_and_acquire
+    hsa_signal_and_acquire.restype = None
+    hsa_signal_and_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_and_relaxed
+    hsa_signal_and_relaxed.restype = None
+    hsa_signal_and_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_and_screlease
+    hsa_signal_and_screlease.restype = None
+    hsa_signal_and_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_and_release = _libraries['libhsa-runtime64.so'].hsa_signal_and_release
+    hsa_signal_and_release.restype = None
+    hsa_signal_and_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_or_scacq_screl
+    hsa_signal_or_scacq_screl.restype = None
+    hsa_signal_or_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_or_acq_rel
+    hsa_signal_or_acq_rel.restype = None
+    hsa_signal_or_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_or_scacquire
+    hsa_signal_or_scacquire.restype = None
+    hsa_signal_or_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_or_acquire
+    hsa_signal_or_acquire.restype = None
+    hsa_signal_or_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_or_relaxed
+    hsa_signal_or_relaxed.restype = None
+    hsa_signal_or_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_or_screlease
+    hsa_signal_or_screlease.restype = None
+    hsa_signal_or_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_or_release = _libraries['libhsa-runtime64.so'].hsa_signal_or_release
+    hsa_signal_or_release.restype = None
+    hsa_signal_or_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_signal_xor_scacq_screl
+    hsa_signal_xor_scacq_screl.restype = None
+    hsa_signal_xor_scacq_screl.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_acq_rel = _libraries['libhsa-runtime64.so'].hsa_signal_xor_acq_rel
+    hsa_signal_xor_acq_rel.restype = None
+    hsa_signal_xor_acq_rel.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_xor_scacquire
+    hsa_signal_xor_scacquire.restype = None
+    hsa_signal_xor_scacquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_xor_acquire
+    hsa_signal_xor_acquire.restype = None
+    hsa_signal_xor_acquire.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_xor_relaxed
+    hsa_signal_xor_relaxed.restype = None
+    hsa_signal_xor_relaxed.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_screlease = _libraries['libhsa-runtime64.so'].hsa_signal_xor_screlease
+    hsa_signal_xor_screlease.restype = None
+    hsa_signal_xor_screlease.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_xor_release = _libraries['libhsa-runtime64.so'].hsa_signal_xor_release
+    hsa_signal_xor_release.restype = None
+    hsa_signal_xor_release.argtypes = [hsa_signal_t, hsa_signal_value_t]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_signal_condition_t'
 hsa_signal_condition_t__enumvalues = {
@@ -732,15 +948,24 @@ HSA_WAIT_STATE_BLOCKED = 0
 HSA_WAIT_STATE_ACTIVE = 1
 hsa_wait_state_t = ctypes.c_uint32 # enum
 uint64_t = ctypes.c_uint64
-hsa_signal_wait_scacquire = _libraries['libhsa'].hsa_signal_wait_scacquire
-hsa_signal_wait_scacquire.restype = hsa_signal_value_t
-hsa_signal_wait_scacquire.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, uint64_t, hsa_wait_state_t]
-hsa_signal_wait_relaxed = _libraries['libhsa'].hsa_signal_wait_relaxed
-hsa_signal_wait_relaxed.restype = hsa_signal_value_t
-hsa_signal_wait_relaxed.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, uint64_t, hsa_wait_state_t]
-hsa_signal_wait_acquire = _libraries['libhsa'].hsa_signal_wait_acquire
-hsa_signal_wait_acquire.restype = hsa_signal_value_t
-hsa_signal_wait_acquire.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, uint64_t, hsa_wait_state_t]
+try:
+    hsa_signal_wait_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_wait_scacquire
+    hsa_signal_wait_scacquire.restype = hsa_signal_value_t
+    hsa_signal_wait_scacquire.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, uint64_t, hsa_wait_state_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_wait_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_wait_relaxed
+    hsa_signal_wait_relaxed.restype = hsa_signal_value_t
+    hsa_signal_wait_relaxed.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, uint64_t, hsa_wait_state_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_wait_acquire = _libraries['libhsa-runtime64.so'].hsa_signal_wait_acquire
+    hsa_signal_wait_acquire.restype = hsa_signal_value_t
+    hsa_signal_wait_acquire.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, uint64_t, hsa_wait_state_t]
+except AttributeError:
+    pass
 class struct_hsa_signal_group_s(Structure):
     pass
 
@@ -750,18 +975,30 @@ struct_hsa_signal_group_s._fields_ = [
 ]
 
 hsa_signal_group_t = struct_hsa_signal_group_s
-hsa_signal_group_create = _libraries['libhsa'].hsa_signal_group_create
-hsa_signal_group_create.restype = hsa_status_t
-hsa_signal_group_create.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_signal_s), uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(struct_hsa_signal_group_s)]
-hsa_signal_group_destroy = _libraries['libhsa'].hsa_signal_group_destroy
-hsa_signal_group_destroy.restype = hsa_status_t
-hsa_signal_group_destroy.argtypes = [hsa_signal_group_t]
-hsa_signal_group_wait_any_scacquire = _libraries['libhsa'].hsa_signal_group_wait_any_scacquire
-hsa_signal_group_wait_any_scacquire.restype = hsa_status_t
-hsa_signal_group_wait_any_scacquire.argtypes = [hsa_signal_group_t, ctypes.POINTER(hsa_signal_condition_t), ctypes.POINTER(ctypes.c_int64), hsa_wait_state_t, ctypes.POINTER(struct_hsa_signal_s), ctypes.POINTER(ctypes.c_int64)]
-hsa_signal_group_wait_any_relaxed = _libraries['libhsa'].hsa_signal_group_wait_any_relaxed
-hsa_signal_group_wait_any_relaxed.restype = hsa_status_t
-hsa_signal_group_wait_any_relaxed.argtypes = [hsa_signal_group_t, ctypes.POINTER(hsa_signal_condition_t), ctypes.POINTER(ctypes.c_int64), hsa_wait_state_t, ctypes.POINTER(struct_hsa_signal_s), ctypes.POINTER(ctypes.c_int64)]
+try:
+    hsa_signal_group_create = _libraries['libhsa-runtime64.so'].hsa_signal_group_create
+    hsa_signal_group_create.restype = hsa_status_t
+    hsa_signal_group_create.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_signal_s), uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(struct_hsa_signal_group_s)]
+except AttributeError:
+    pass
+try:
+    hsa_signal_group_destroy = _libraries['libhsa-runtime64.so'].hsa_signal_group_destroy
+    hsa_signal_group_destroy.restype = hsa_status_t
+    hsa_signal_group_destroy.argtypes = [hsa_signal_group_t]
+except AttributeError:
+    pass
+try:
+    hsa_signal_group_wait_any_scacquire = _libraries['libhsa-runtime64.so'].hsa_signal_group_wait_any_scacquire
+    hsa_signal_group_wait_any_scacquire.restype = hsa_status_t
+    hsa_signal_group_wait_any_scacquire.argtypes = [hsa_signal_group_t, ctypes.POINTER(hsa_signal_condition_t), ctypes.POINTER(ctypes.c_int64), hsa_wait_state_t, ctypes.POINTER(struct_hsa_signal_s), ctypes.POINTER(ctypes.c_int64)]
+except AttributeError:
+    pass
+try:
+    hsa_signal_group_wait_any_relaxed = _libraries['libhsa-runtime64.so'].hsa_signal_group_wait_any_relaxed
+    hsa_signal_group_wait_any_relaxed.restype = hsa_status_t
+    hsa_signal_group_wait_any_relaxed.argtypes = [hsa_signal_group_t, ctypes.POINTER(hsa_signal_condition_t), ctypes.POINTER(ctypes.c_int64), hsa_wait_state_t, ctypes.POINTER(struct_hsa_signal_s), ctypes.POINTER(ctypes.c_int64)]
+except AttributeError:
+    pass
 class struct_hsa_region_s(Structure):
     pass
 
@@ -807,96 +1044,186 @@ struct_hsa_queue_s._fields_ = [
 ]
 
 hsa_queue_t = struct_hsa_queue_s
-hsa_queue_create = _libraries['libhsa'].hsa_queue_create
-hsa_queue_create.restype = hsa_status_t
-hsa_queue_create.argtypes = [hsa_agent_t, uint32_t, hsa_queue_type32_t, ctypes.CFUNCTYPE(None, hsa_status_t, ctypes.POINTER(struct_hsa_queue_s), ctypes.POINTER(None)), ctypes.POINTER(None), uint32_t, uint32_t, ctypes.POINTER(ctypes.POINTER(struct_hsa_queue_s))]
-hsa_soft_queue_create = _libraries['libhsa'].hsa_soft_queue_create
-hsa_soft_queue_create.restype = hsa_status_t
-hsa_soft_queue_create.argtypes = [hsa_region_t, uint32_t, hsa_queue_type32_t, uint32_t, hsa_signal_t, ctypes.POINTER(ctypes.POINTER(struct_hsa_queue_s))]
-hsa_queue_destroy = _libraries['libhsa'].hsa_queue_destroy
-hsa_queue_destroy.restype = hsa_status_t
-hsa_queue_destroy.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_inactivate = _libraries['libhsa'].hsa_queue_inactivate
-hsa_queue_inactivate.restype = hsa_status_t
-hsa_queue_inactivate.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_load_read_index_acquire = _libraries['libhsa'].hsa_queue_load_read_index_acquire
-hsa_queue_load_read_index_acquire.restype = uint64_t
-hsa_queue_load_read_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_load_read_index_scacquire = _libraries['libhsa'].hsa_queue_load_read_index_scacquire
-hsa_queue_load_read_index_scacquire.restype = uint64_t
-hsa_queue_load_read_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_load_read_index_relaxed = _libraries['libhsa'].hsa_queue_load_read_index_relaxed
-hsa_queue_load_read_index_relaxed.restype = uint64_t
-hsa_queue_load_read_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_load_write_index_acquire = _libraries['libhsa'].hsa_queue_load_write_index_acquire
-hsa_queue_load_write_index_acquire.restype = uint64_t
-hsa_queue_load_write_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_load_write_index_scacquire = _libraries['libhsa'].hsa_queue_load_write_index_scacquire
-hsa_queue_load_write_index_scacquire.restype = uint64_t
-hsa_queue_load_write_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_load_write_index_relaxed = _libraries['libhsa'].hsa_queue_load_write_index_relaxed
-hsa_queue_load_write_index_relaxed.restype = uint64_t
-hsa_queue_load_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
-hsa_queue_store_write_index_relaxed = _libraries['libhsa'].hsa_queue_store_write_index_relaxed
-hsa_queue_store_write_index_relaxed.restype = None
-hsa_queue_store_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_store_write_index_release = _libraries['libhsa'].hsa_queue_store_write_index_release
-hsa_queue_store_write_index_release.restype = None
-hsa_queue_store_write_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_store_write_index_screlease = _libraries['libhsa'].hsa_queue_store_write_index_screlease
-hsa_queue_store_write_index_screlease.restype = None
-hsa_queue_store_write_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_cas_write_index_acq_rel = _libraries['libhsa'].hsa_queue_cas_write_index_acq_rel
-hsa_queue_cas_write_index_acq_rel.restype = uint64_t
-hsa_queue_cas_write_index_acq_rel.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_cas_write_index_scacq_screl = _libraries['libhsa'].hsa_queue_cas_write_index_scacq_screl
-hsa_queue_cas_write_index_scacq_screl.restype = uint64_t
-hsa_queue_cas_write_index_scacq_screl.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_cas_write_index_acquire = _libraries['libhsa'].hsa_queue_cas_write_index_acquire
-hsa_queue_cas_write_index_acquire.restype = uint64_t
-hsa_queue_cas_write_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_cas_write_index_scacquire = _libraries['libhsa'].hsa_queue_cas_write_index_scacquire
-hsa_queue_cas_write_index_scacquire.restype = uint64_t
-hsa_queue_cas_write_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_cas_write_index_relaxed = _libraries['libhsa'].hsa_queue_cas_write_index_relaxed
-hsa_queue_cas_write_index_relaxed.restype = uint64_t
-hsa_queue_cas_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_cas_write_index_release = _libraries['libhsa'].hsa_queue_cas_write_index_release
-hsa_queue_cas_write_index_release.restype = uint64_t
-hsa_queue_cas_write_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_cas_write_index_screlease = _libraries['libhsa'].hsa_queue_cas_write_index_screlease
-hsa_queue_cas_write_index_screlease.restype = uint64_t
-hsa_queue_cas_write_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
-hsa_queue_add_write_index_acq_rel = _libraries['libhsa'].hsa_queue_add_write_index_acq_rel
-hsa_queue_add_write_index_acq_rel.restype = uint64_t
-hsa_queue_add_write_index_acq_rel.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_add_write_index_scacq_screl = _libraries['libhsa'].hsa_queue_add_write_index_scacq_screl
-hsa_queue_add_write_index_scacq_screl.restype = uint64_t
-hsa_queue_add_write_index_scacq_screl.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_add_write_index_acquire = _libraries['libhsa'].hsa_queue_add_write_index_acquire
-hsa_queue_add_write_index_acquire.restype = uint64_t
-hsa_queue_add_write_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_add_write_index_scacquire = _libraries['libhsa'].hsa_queue_add_write_index_scacquire
-hsa_queue_add_write_index_scacquire.restype = uint64_t
-hsa_queue_add_write_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_add_write_index_relaxed = _libraries['libhsa'].hsa_queue_add_write_index_relaxed
-hsa_queue_add_write_index_relaxed.restype = uint64_t
-hsa_queue_add_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_add_write_index_release = _libraries['libhsa'].hsa_queue_add_write_index_release
-hsa_queue_add_write_index_release.restype = uint64_t
-hsa_queue_add_write_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_add_write_index_screlease = _libraries['libhsa'].hsa_queue_add_write_index_screlease
-hsa_queue_add_write_index_screlease.restype = uint64_t
-hsa_queue_add_write_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_store_read_index_relaxed = _libraries['libhsa'].hsa_queue_store_read_index_relaxed
-hsa_queue_store_read_index_relaxed.restype = None
-hsa_queue_store_read_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_store_read_index_release = _libraries['libhsa'].hsa_queue_store_read_index_release
-hsa_queue_store_read_index_release.restype = None
-hsa_queue_store_read_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
-hsa_queue_store_read_index_screlease = _libraries['libhsa'].hsa_queue_store_read_index_screlease
-hsa_queue_store_read_index_screlease.restype = None
-hsa_queue_store_read_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+try:
+    hsa_queue_create = _libraries['libhsa-runtime64.so'].hsa_queue_create
+    hsa_queue_create.restype = hsa_status_t
+    hsa_queue_create.argtypes = [hsa_agent_t, uint32_t, hsa_queue_type32_t, ctypes.CFUNCTYPE(None, hsa_status_t, ctypes.POINTER(struct_hsa_queue_s), ctypes.POINTER(None)), ctypes.POINTER(None), uint32_t, uint32_t, ctypes.POINTER(ctypes.POINTER(struct_hsa_queue_s))]
+except AttributeError:
+    pass
+try:
+    hsa_soft_queue_create = _libraries['libhsa-runtime64.so'].hsa_soft_queue_create
+    hsa_soft_queue_create.restype = hsa_status_t
+    hsa_soft_queue_create.argtypes = [hsa_region_t, uint32_t, hsa_queue_type32_t, uint32_t, hsa_signal_t, ctypes.POINTER(ctypes.POINTER(struct_hsa_queue_s))]
+except AttributeError:
+    pass
+try:
+    hsa_queue_destroy = _libraries['libhsa-runtime64.so'].hsa_queue_destroy
+    hsa_queue_destroy.restype = hsa_status_t
+    hsa_queue_destroy.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_inactivate = _libraries['libhsa-runtime64.so'].hsa_queue_inactivate
+    hsa_queue_inactivate.restype = hsa_status_t
+    hsa_queue_inactivate.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_load_read_index_acquire = _libraries['libhsa-runtime64.so'].hsa_queue_load_read_index_acquire
+    hsa_queue_load_read_index_acquire.restype = uint64_t
+    hsa_queue_load_read_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_load_read_index_scacquire = _libraries['libhsa-runtime64.so'].hsa_queue_load_read_index_scacquire
+    hsa_queue_load_read_index_scacquire.restype = uint64_t
+    hsa_queue_load_read_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_load_read_index_relaxed = _libraries['libhsa-runtime64.so'].hsa_queue_load_read_index_relaxed
+    hsa_queue_load_read_index_relaxed.restype = uint64_t
+    hsa_queue_load_read_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_load_write_index_acquire = _libraries['libhsa-runtime64.so'].hsa_queue_load_write_index_acquire
+    hsa_queue_load_write_index_acquire.restype = uint64_t
+    hsa_queue_load_write_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_load_write_index_scacquire = _libraries['libhsa-runtime64.so'].hsa_queue_load_write_index_scacquire
+    hsa_queue_load_write_index_scacquire.restype = uint64_t
+    hsa_queue_load_write_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_load_write_index_relaxed = _libraries['libhsa-runtime64.so'].hsa_queue_load_write_index_relaxed
+    hsa_queue_load_write_index_relaxed.restype = uint64_t
+    hsa_queue_load_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s)]
+except AttributeError:
+    pass
+try:
+    hsa_queue_store_write_index_relaxed = _libraries['libhsa-runtime64.so'].hsa_queue_store_write_index_relaxed
+    hsa_queue_store_write_index_relaxed.restype = None
+    hsa_queue_store_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_store_write_index_release = _libraries['libhsa-runtime64.so'].hsa_queue_store_write_index_release
+    hsa_queue_store_write_index_release.restype = None
+    hsa_queue_store_write_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_store_write_index_screlease = _libraries['libhsa-runtime64.so'].hsa_queue_store_write_index_screlease
+    hsa_queue_store_write_index_screlease.restype = None
+    hsa_queue_store_write_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_acq_rel = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_acq_rel
+    hsa_queue_cas_write_index_acq_rel.restype = uint64_t
+    hsa_queue_cas_write_index_acq_rel.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_scacq_screl
+    hsa_queue_cas_write_index_scacq_screl.restype = uint64_t
+    hsa_queue_cas_write_index_scacq_screl.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_acquire = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_acquire
+    hsa_queue_cas_write_index_acquire.restype = uint64_t
+    hsa_queue_cas_write_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_scacquire = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_scacquire
+    hsa_queue_cas_write_index_scacquire.restype = uint64_t
+    hsa_queue_cas_write_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_relaxed = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_relaxed
+    hsa_queue_cas_write_index_relaxed.restype = uint64_t
+    hsa_queue_cas_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_release = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_release
+    hsa_queue_cas_write_index_release.restype = uint64_t
+    hsa_queue_cas_write_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_cas_write_index_screlease = _libraries['libhsa-runtime64.so'].hsa_queue_cas_write_index_screlease
+    hsa_queue_cas_write_index_screlease.restype = uint64_t
+    hsa_queue_cas_write_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_acq_rel = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_acq_rel
+    hsa_queue_add_write_index_acq_rel.restype = uint64_t
+    hsa_queue_add_write_index_acq_rel.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_scacq_screl = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_scacq_screl
+    hsa_queue_add_write_index_scacq_screl.restype = uint64_t
+    hsa_queue_add_write_index_scacq_screl.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_acquire = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_acquire
+    hsa_queue_add_write_index_acquire.restype = uint64_t
+    hsa_queue_add_write_index_acquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_scacquire = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_scacquire
+    hsa_queue_add_write_index_scacquire.restype = uint64_t
+    hsa_queue_add_write_index_scacquire.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_relaxed = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_relaxed
+    hsa_queue_add_write_index_relaxed.restype = uint64_t
+    hsa_queue_add_write_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_release = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_release
+    hsa_queue_add_write_index_release.restype = uint64_t
+    hsa_queue_add_write_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_add_write_index_screlease = _libraries['libhsa-runtime64.so'].hsa_queue_add_write_index_screlease
+    hsa_queue_add_write_index_screlease.restype = uint64_t
+    hsa_queue_add_write_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_store_read_index_relaxed = _libraries['libhsa-runtime64.so'].hsa_queue_store_read_index_relaxed
+    hsa_queue_store_read_index_relaxed.restype = None
+    hsa_queue_store_read_index_relaxed.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_store_read_index_release = _libraries['libhsa-runtime64.so'].hsa_queue_store_read_index_release
+    hsa_queue_store_read_index_release.restype = None
+    hsa_queue_store_read_index_release.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_queue_store_read_index_screlease = _libraries['libhsa-runtime64.so'].hsa_queue_store_read_index_screlease
+    hsa_queue_store_read_index_screlease.restype = None
+    hsa_queue_store_read_index_screlease.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint64_t]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_packet_type_t'
 hsa_packet_type_t__enumvalues = {
@@ -1088,30 +1415,54 @@ HSA_REGION_INFO_RUNTIME_ALLOC_ALLOWED = 5
 HSA_REGION_INFO_RUNTIME_ALLOC_GRANULE = 6
 HSA_REGION_INFO_RUNTIME_ALLOC_ALIGNMENT = 7
 hsa_region_info_t = ctypes.c_uint32 # enum
-hsa_region_get_info = _libraries['libhsa'].hsa_region_get_info
-hsa_region_get_info.restype = hsa_status_t
-hsa_region_get_info.argtypes = [hsa_region_t, hsa_region_info_t, ctypes.POINTER(None)]
-hsa_agent_iterate_regions = _libraries['libhsa'].hsa_agent_iterate_regions
-hsa_agent_iterate_regions.restype = hsa_status_t
-hsa_agent_iterate_regions.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_region_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_memory_allocate = _libraries['libhsa'].hsa_memory_allocate
-hsa_memory_allocate.restype = hsa_status_t
-hsa_memory_allocate.argtypes = [hsa_region_t, size_t, ctypes.POINTER(ctypes.POINTER(None))]
-hsa_memory_free = _libraries['libhsa'].hsa_memory_free
-hsa_memory_free.restype = hsa_status_t
-hsa_memory_free.argtypes = [ctypes.POINTER(None)]
-hsa_memory_copy = _libraries['libhsa'].hsa_memory_copy
-hsa_memory_copy.restype = hsa_status_t
-hsa_memory_copy.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t]
-hsa_memory_assign_agent = _libraries['libhsa'].hsa_memory_assign_agent
-hsa_memory_assign_agent.restype = hsa_status_t
-hsa_memory_assign_agent.argtypes = [ctypes.POINTER(None), hsa_agent_t, hsa_access_permission_t]
-hsa_memory_register = _libraries['libhsa'].hsa_memory_register
-hsa_memory_register.restype = hsa_status_t
-hsa_memory_register.argtypes = [ctypes.POINTER(None), size_t]
-hsa_memory_deregister = _libraries['libhsa'].hsa_memory_deregister
-hsa_memory_deregister.restype = hsa_status_t
-hsa_memory_deregister.argtypes = [ctypes.POINTER(None), size_t]
+try:
+    hsa_region_get_info = _libraries['libhsa-runtime64.so'].hsa_region_get_info
+    hsa_region_get_info.restype = hsa_status_t
+    hsa_region_get_info.argtypes = [hsa_region_t, hsa_region_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_agent_iterate_regions = _libraries['libhsa-runtime64.so'].hsa_agent_iterate_regions
+    hsa_agent_iterate_regions.restype = hsa_status_t
+    hsa_agent_iterate_regions.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_region_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_memory_allocate = _libraries['libhsa-runtime64.so'].hsa_memory_allocate
+    hsa_memory_allocate.restype = hsa_status_t
+    hsa_memory_allocate.argtypes = [hsa_region_t, size_t, ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hsa_memory_free = _libraries['libhsa-runtime64.so'].hsa_memory_free
+    hsa_memory_free.restype = hsa_status_t
+    hsa_memory_free.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_memory_copy = _libraries['libhsa-runtime64.so'].hsa_memory_copy
+    hsa_memory_copy.restype = hsa_status_t
+    hsa_memory_copy.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hsa_memory_assign_agent = _libraries['libhsa-runtime64.so'].hsa_memory_assign_agent
+    hsa_memory_assign_agent.restype = hsa_status_t
+    hsa_memory_assign_agent.argtypes = [ctypes.POINTER(None), hsa_agent_t, hsa_access_permission_t]
+except AttributeError:
+    pass
+try:
+    hsa_memory_register = _libraries['libhsa-runtime64.so'].hsa_memory_register
+    hsa_memory_register.restype = hsa_status_t
+    hsa_memory_register.argtypes = [ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
+try:
+    hsa_memory_deregister = _libraries['libhsa-runtime64.so'].hsa_memory_deregister
+    hsa_memory_deregister.restype = hsa_status_t
+    hsa_memory_deregister.argtypes = [ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
 class struct_hsa_isa_s(Structure):
     pass
 
@@ -1121,12 +1472,18 @@ struct_hsa_isa_s._fields_ = [
 ]
 
 hsa_isa_t = struct_hsa_isa_s
-hsa_isa_from_name = _libraries['libhsa'].hsa_isa_from_name
-hsa_isa_from_name.restype = hsa_status_t
-hsa_isa_from_name.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_isa_s)]
-hsa_agent_iterate_isas = _libraries['libhsa'].hsa_agent_iterate_isas
-hsa_agent_iterate_isas.restype = hsa_status_t
-hsa_agent_iterate_isas.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_isa_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+try:
+    hsa_isa_from_name = _libraries['libhsa-runtime64.so'].hsa_isa_from_name
+    hsa_isa_from_name.restype = hsa_status_t
+    hsa_isa_from_name.argtypes = [ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_isa_s)]
+except AttributeError:
+    pass
+try:
+    hsa_agent_iterate_isas = _libraries['libhsa-runtime64.so'].hsa_agent_iterate_isas
+    hsa_agent_iterate_isas.restype = hsa_status_t
+    hsa_agent_iterate_isas.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_isa_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_isa_info_t'
 hsa_isa_info_t__enumvalues = {
@@ -1162,15 +1519,24 @@ HSA_ISA_INFO_GRID_MAX_DIM = 14
 HSA_ISA_INFO_GRID_MAX_SIZE = 16
 HSA_ISA_INFO_FBARRIER_MAX_SIZE = 17
 hsa_isa_info_t = ctypes.c_uint32 # enum
-hsa_isa_get_info = _libraries['libhsa'].hsa_isa_get_info
-hsa_isa_get_info.restype = hsa_status_t
-hsa_isa_get_info.argtypes = [hsa_isa_t, hsa_isa_info_t, uint32_t, ctypes.POINTER(None)]
-hsa_isa_get_info_alt = _libraries['libhsa'].hsa_isa_get_info_alt
-hsa_isa_get_info_alt.restype = hsa_status_t
-hsa_isa_get_info_alt.argtypes = [hsa_isa_t, hsa_isa_info_t, ctypes.POINTER(None)]
-hsa_isa_get_exception_policies = _libraries['libhsa'].hsa_isa_get_exception_policies
-hsa_isa_get_exception_policies.restype = hsa_status_t
-hsa_isa_get_exception_policies.argtypes = [hsa_isa_t, hsa_profile_t, ctypes.POINTER(ctypes.c_uint16)]
+try:
+    hsa_isa_get_info = _libraries['libhsa-runtime64.so'].hsa_isa_get_info
+    hsa_isa_get_info.restype = hsa_status_t
+    hsa_isa_get_info.argtypes = [hsa_isa_t, hsa_isa_info_t, uint32_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_isa_get_info_alt = _libraries['libhsa-runtime64.so'].hsa_isa_get_info_alt
+    hsa_isa_get_info_alt.restype = hsa_status_t
+    hsa_isa_get_info_alt.argtypes = [hsa_isa_t, hsa_isa_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_isa_get_exception_policies = _libraries['libhsa-runtime64.so'].hsa_isa_get_exception_policies
+    hsa_isa_get_exception_policies.restype = hsa_status_t
+    hsa_isa_get_exception_policies.argtypes = [hsa_isa_t, hsa_profile_t, ctypes.POINTER(ctypes.c_uint16)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_fp_type_t'
 hsa_fp_type_t__enumvalues = {
@@ -1200,9 +1566,12 @@ hsa_round_method_t__enumvalues = {
 HSA_ROUND_METHOD_SINGLE = 1
 HSA_ROUND_METHOD_DOUBLE = 2
 hsa_round_method_t = ctypes.c_uint32 # enum
-hsa_isa_get_round_method = _libraries['libhsa'].hsa_isa_get_round_method
-hsa_isa_get_round_method.restype = hsa_status_t
-hsa_isa_get_round_method.argtypes = [hsa_isa_t, hsa_fp_type_t, hsa_flush_mode_t, ctypes.POINTER(hsa_round_method_t)]
+try:
+    hsa_isa_get_round_method = _libraries['libhsa-runtime64.so'].hsa_isa_get_round_method
+    hsa_isa_get_round_method.restype = hsa_status_t
+    hsa_isa_get_round_method.argtypes = [hsa_isa_t, hsa_fp_type_t, hsa_flush_mode_t, ctypes.POINTER(hsa_round_method_t)]
+except AttributeError:
+    pass
 class struct_hsa_wavefront_s(Structure):
     pass
 
@@ -1219,15 +1588,24 @@ hsa_wavefront_info_t__enumvalues = {
 }
 HSA_WAVEFRONT_INFO_SIZE = 0
 hsa_wavefront_info_t = ctypes.c_uint32 # enum
-hsa_wavefront_get_info = _libraries['libhsa'].hsa_wavefront_get_info
-hsa_wavefront_get_info.restype = hsa_status_t
-hsa_wavefront_get_info.argtypes = [hsa_wavefront_t, hsa_wavefront_info_t, ctypes.POINTER(None)]
-hsa_isa_iterate_wavefronts = _libraries['libhsa'].hsa_isa_iterate_wavefronts
-hsa_isa_iterate_wavefronts.restype = hsa_status_t
-hsa_isa_iterate_wavefronts.argtypes = [hsa_isa_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_wavefront_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_isa_compatible = _libraries['libhsa'].hsa_isa_compatible
-hsa_isa_compatible.restype = hsa_status_t
-hsa_isa_compatible.argtypes = [hsa_isa_t, hsa_isa_t, ctypes.POINTER(ctypes.c_bool)]
+try:
+    hsa_wavefront_get_info = _libraries['libhsa-runtime64.so'].hsa_wavefront_get_info
+    hsa_wavefront_get_info.restype = hsa_status_t
+    hsa_wavefront_get_info.argtypes = [hsa_wavefront_t, hsa_wavefront_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_isa_iterate_wavefronts = _libraries['libhsa-runtime64.so'].hsa_isa_iterate_wavefronts
+    hsa_isa_iterate_wavefronts.restype = hsa_status_t
+    hsa_isa_iterate_wavefronts.argtypes = [hsa_isa_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_wavefront_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_isa_compatible = _libraries['libhsa-runtime64.so'].hsa_isa_compatible
+    hsa_isa_compatible.restype = hsa_status_t
+    hsa_isa_compatible.argtypes = [hsa_isa_t, hsa_isa_t, ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
 class struct_hsa_code_object_reader_s(Structure):
     pass
 
@@ -1237,15 +1615,24 @@ struct_hsa_code_object_reader_s._fields_ = [
 ]
 
 hsa_code_object_reader_t = struct_hsa_code_object_reader_s
-hsa_code_object_reader_create_from_file = _libraries['libhsa'].hsa_code_object_reader_create_from_file
-hsa_code_object_reader_create_from_file.restype = hsa_status_t
-hsa_code_object_reader_create_from_file.argtypes = [hsa_file_t, ctypes.POINTER(struct_hsa_code_object_reader_s)]
-hsa_code_object_reader_create_from_memory = _libraries['libhsa'].hsa_code_object_reader_create_from_memory
-hsa_code_object_reader_create_from_memory.restype = hsa_status_t
-hsa_code_object_reader_create_from_memory.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_code_object_reader_s)]
-hsa_code_object_reader_destroy = _libraries['libhsa'].hsa_code_object_reader_destroy
-hsa_code_object_reader_destroy.restype = hsa_status_t
-hsa_code_object_reader_destroy.argtypes = [hsa_code_object_reader_t]
+try:
+    hsa_code_object_reader_create_from_file = _libraries['libhsa-runtime64.so'].hsa_code_object_reader_create_from_file
+    hsa_code_object_reader_create_from_file.restype = hsa_status_t
+    hsa_code_object_reader_create_from_file.argtypes = [hsa_file_t, ctypes.POINTER(struct_hsa_code_object_reader_s)]
+except AttributeError:
+    pass
+try:
+    hsa_code_object_reader_create_from_memory = _libraries['libhsa-runtime64.so'].hsa_code_object_reader_create_from_memory
+    hsa_code_object_reader_create_from_memory.restype = hsa_status_t
+    hsa_code_object_reader_create_from_memory.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_code_object_reader_s)]
+except AttributeError:
+    pass
+try:
+    hsa_code_object_reader_destroy = _libraries['libhsa-runtime64.so'].hsa_code_object_reader_destroy
+    hsa_code_object_reader_destroy.restype = hsa_status_t
+    hsa_code_object_reader_destroy.argtypes = [hsa_code_object_reader_t]
+except AttributeError:
+    pass
 class struct_hsa_executable_s(Structure):
     pass
 
@@ -1264,15 +1651,24 @@ hsa_executable_state_t__enumvalues = {
 HSA_EXECUTABLE_STATE_UNFROZEN = 0
 HSA_EXECUTABLE_STATE_FROZEN = 1
 hsa_executable_state_t = ctypes.c_uint32 # enum
-hsa_executable_create = _libraries['libhsa'].hsa_executable_create
-hsa_executable_create.restype = hsa_status_t
-hsa_executable_create.argtypes = [hsa_profile_t, hsa_executable_state_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_executable_s)]
-hsa_executable_create_alt = _libraries['libhsa'].hsa_executable_create_alt
-hsa_executable_create_alt.restype = hsa_status_t
-hsa_executable_create_alt.argtypes = [hsa_profile_t, hsa_default_float_rounding_mode_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_executable_s)]
-hsa_executable_destroy = _libraries['libhsa'].hsa_executable_destroy
-hsa_executable_destroy.restype = hsa_status_t
-hsa_executable_destroy.argtypes = [hsa_executable_t]
+try:
+    hsa_executable_create = _libraries['libhsa-runtime64.so'].hsa_executable_create
+    hsa_executable_create.restype = hsa_status_t
+    hsa_executable_create.argtypes = [hsa_profile_t, hsa_executable_state_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_executable_s)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_create_alt = _libraries['libhsa-runtime64.so'].hsa_executable_create_alt
+    hsa_executable_create_alt.restype = hsa_status_t
+    hsa_executable_create_alt.argtypes = [hsa_profile_t, hsa_default_float_rounding_mode_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_executable_s)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_destroy = _libraries['libhsa-runtime64.so'].hsa_executable_destroy
+    hsa_executable_destroy.restype = hsa_status_t
+    hsa_executable_destroy.argtypes = [hsa_executable_t]
+except AttributeError:
+    pass
 class struct_hsa_loaded_code_object_s(Structure):
     pass
 
@@ -1282,15 +1678,24 @@ struct_hsa_loaded_code_object_s._fields_ = [
 ]
 
 hsa_loaded_code_object_t = struct_hsa_loaded_code_object_s
-hsa_executable_load_program_code_object = _libraries['libhsa'].hsa_executable_load_program_code_object
-hsa_executable_load_program_code_object.restype = hsa_status_t
-hsa_executable_load_program_code_object.argtypes = [hsa_executable_t, hsa_code_object_reader_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_loaded_code_object_s)]
-hsa_executable_load_agent_code_object = _libraries['libhsa'].hsa_executable_load_agent_code_object
-hsa_executable_load_agent_code_object.restype = hsa_status_t
-hsa_executable_load_agent_code_object.argtypes = [hsa_executable_t, hsa_agent_t, hsa_code_object_reader_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_loaded_code_object_s)]
-hsa_executable_freeze = _libraries['libhsa'].hsa_executable_freeze
-hsa_executable_freeze.restype = hsa_status_t
-hsa_executable_freeze.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char)]
+try:
+    hsa_executable_load_program_code_object = _libraries['libhsa-runtime64.so'].hsa_executable_load_program_code_object
+    hsa_executable_load_program_code_object.restype = hsa_status_t
+    hsa_executable_load_program_code_object.argtypes = [hsa_executable_t, hsa_code_object_reader_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_loaded_code_object_s)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_load_agent_code_object = _libraries['libhsa-runtime64.so'].hsa_executable_load_agent_code_object
+    hsa_executable_load_agent_code_object.restype = hsa_status_t
+    hsa_executable_load_agent_code_object.argtypes = [hsa_executable_t, hsa_agent_t, hsa_code_object_reader_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_loaded_code_object_s)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_freeze = _libraries['libhsa-runtime64.so'].hsa_executable_freeze
+    hsa_executable_freeze.restype = hsa_status_t
+    hsa_executable_freeze.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_executable_info_t'
 hsa_executable_info_t__enumvalues = {
@@ -1302,24 +1707,42 @@ HSA_EXECUTABLE_INFO_PROFILE = 1
 HSA_EXECUTABLE_INFO_STATE = 2
 HSA_EXECUTABLE_INFO_DEFAULT_FLOAT_ROUNDING_MODE = 3
 hsa_executable_info_t = ctypes.c_uint32 # enum
-hsa_executable_get_info = _libraries['libhsa'].hsa_executable_get_info
-hsa_executable_get_info.restype = hsa_status_t
-hsa_executable_get_info.argtypes = [hsa_executable_t, hsa_executable_info_t, ctypes.POINTER(None)]
-hsa_executable_global_variable_define = _libraries['libhsa'].hsa_executable_global_variable_define
-hsa_executable_global_variable_define.restype = hsa_status_t
-hsa_executable_global_variable_define.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)]
-hsa_executable_agent_global_variable_define = _libraries['libhsa'].hsa_executable_agent_global_variable_define
-hsa_executable_agent_global_variable_define.restype = hsa_status_t
-hsa_executable_agent_global_variable_define.argtypes = [hsa_executable_t, hsa_agent_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)]
-hsa_executable_readonly_variable_define = _libraries['libhsa'].hsa_executable_readonly_variable_define
-hsa_executable_readonly_variable_define.restype = hsa_status_t
-hsa_executable_readonly_variable_define.argtypes = [hsa_executable_t, hsa_agent_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)]
-hsa_executable_validate = _libraries['libhsa'].hsa_executable_validate
-hsa_executable_validate.restype = hsa_status_t
-hsa_executable_validate.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_uint32)]
-hsa_executable_validate_alt = _libraries['libhsa'].hsa_executable_validate_alt
-hsa_executable_validate_alt.restype = hsa_status_t
-hsa_executable_validate_alt.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_uint32)]
+try:
+    hsa_executable_get_info = _libraries['libhsa-runtime64.so'].hsa_executable_get_info
+    hsa_executable_get_info.restype = hsa_status_t
+    hsa_executable_get_info.argtypes = [hsa_executable_t, hsa_executable_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_global_variable_define = _libraries['libhsa-runtime64.so'].hsa_executable_global_variable_define
+    hsa_executable_global_variable_define.restype = hsa_status_t
+    hsa_executable_global_variable_define.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_agent_global_variable_define = _libraries['libhsa-runtime64.so'].hsa_executable_agent_global_variable_define
+    hsa_executable_agent_global_variable_define.restype = hsa_status_t
+    hsa_executable_agent_global_variable_define.argtypes = [hsa_executable_t, hsa_agent_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_readonly_variable_define = _libraries['libhsa-runtime64.so'].hsa_executable_readonly_variable_define
+    hsa_executable_readonly_variable_define.restype = hsa_status_t
+    hsa_executable_readonly_variable_define.argtypes = [hsa_executable_t, hsa_agent_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_validate = _libraries['libhsa-runtime64.so'].hsa_executable_validate
+    hsa_executable_validate.restype = hsa_status_t
+    hsa_executable_validate.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_validate_alt = _libraries['libhsa-runtime64.so'].hsa_executable_validate_alt
+    hsa_executable_validate_alt.restype = hsa_status_t
+    hsa_executable_validate_alt.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 class struct_hsa_executable_symbol_s(Structure):
     pass
 
@@ -1330,12 +1753,18 @@ struct_hsa_executable_symbol_s._fields_ = [
 
 hsa_executable_symbol_t = struct_hsa_executable_symbol_s
 int32_t = ctypes.c_int32
-hsa_executable_get_symbol = _libraries['libhsa'].hsa_executable_get_symbol
-hsa_executable_get_symbol.restype = hsa_status_t
-hsa_executable_get_symbol.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), hsa_agent_t, int32_t, ctypes.POINTER(struct_hsa_executable_symbol_s)]
-hsa_executable_get_symbol_by_name = _libraries['libhsa'].hsa_executable_get_symbol_by_name
-hsa_executable_get_symbol_by_name.restype = hsa_status_t
-hsa_executable_get_symbol_by_name.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(struct_hsa_executable_symbol_s)]
+try:
+    hsa_executable_get_symbol = _libraries['libhsa-runtime64.so'].hsa_executable_get_symbol
+    hsa_executable_get_symbol.restype = hsa_status_t
+    hsa_executable_get_symbol.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), hsa_agent_t, int32_t, ctypes.POINTER(struct_hsa_executable_symbol_s)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_get_symbol_by_name = _libraries['libhsa-runtime64.so'].hsa_executable_get_symbol_by_name
+    hsa_executable_get_symbol_by_name.restype = hsa_status_t
+    hsa_executable_get_symbol_by_name.argtypes = [hsa_executable_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(struct_hsa_executable_symbol_s)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_symbol_kind_t'
 hsa_symbol_kind_t__enumvalues = {
@@ -1425,18 +1854,30 @@ HSA_EXECUTABLE_SYMBOL_INFO_KERNEL_CALL_CONVENTION = 18
 HSA_EXECUTABLE_SYMBOL_INFO_INDIRECT_FUNCTION_OBJECT = 23
 HSA_EXECUTABLE_SYMBOL_INFO_INDIRECT_FUNCTION_CALL_CONVENTION = 16
 hsa_executable_symbol_info_t = ctypes.c_uint32 # enum
-hsa_executable_symbol_get_info = _libraries['libhsa'].hsa_executable_symbol_get_info
-hsa_executable_symbol_get_info.restype = hsa_status_t
-hsa_executable_symbol_get_info.argtypes = [hsa_executable_symbol_t, hsa_executable_symbol_info_t, ctypes.POINTER(None)]
-hsa_executable_iterate_symbols = _libraries['libhsa'].hsa_executable_iterate_symbols
-hsa_executable_iterate_symbols.restype = hsa_status_t
-hsa_executable_iterate_symbols.argtypes = [hsa_executable_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_executable_s, struct_hsa_executable_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_executable_iterate_agent_symbols = _libraries['libhsa'].hsa_executable_iterate_agent_symbols
-hsa_executable_iterate_agent_symbols.restype = hsa_status_t
-hsa_executable_iterate_agent_symbols.argtypes = [hsa_executable_t, hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_executable_s, struct_hsa_agent_s, struct_hsa_executable_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_executable_iterate_program_symbols = _libraries['libhsa'].hsa_executable_iterate_program_symbols
-hsa_executable_iterate_program_symbols.restype = hsa_status_t
-hsa_executable_iterate_program_symbols.argtypes = [hsa_executable_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_executable_s, struct_hsa_executable_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+try:
+    hsa_executable_symbol_get_info = _libraries['libhsa-runtime64.so'].hsa_executable_symbol_get_info
+    hsa_executable_symbol_get_info.restype = hsa_status_t
+    hsa_executable_symbol_get_info.argtypes = [hsa_executable_symbol_t, hsa_executable_symbol_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_iterate_symbols = _libraries['libhsa-runtime64.so'].hsa_executable_iterate_symbols
+    hsa_executable_iterate_symbols.restype = hsa_status_t
+    hsa_executable_iterate_symbols.argtypes = [hsa_executable_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_executable_s, struct_hsa_executable_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_iterate_agent_symbols = _libraries['libhsa-runtime64.so'].hsa_executable_iterate_agent_symbols
+    hsa_executable_iterate_agent_symbols.restype = hsa_status_t
+    hsa_executable_iterate_agent_symbols.argtypes = [hsa_executable_t, hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_executable_s, struct_hsa_agent_s, struct_hsa_executable_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_iterate_program_symbols = _libraries['libhsa-runtime64.so'].hsa_executable_iterate_program_symbols
+    hsa_executable_iterate_program_symbols.restype = hsa_status_t
+    hsa_executable_iterate_program_symbols.argtypes = [hsa_executable_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_executable_s, struct_hsa_executable_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
 class struct_hsa_code_object_s(Structure):
     pass
 
@@ -1455,15 +1896,24 @@ struct_hsa_callback_data_s._fields_ = [
 ]
 
 hsa_callback_data_t = struct_hsa_callback_data_s
-hsa_code_object_serialize = _libraries['libhsa'].hsa_code_object_serialize
-hsa_code_object_serialize.restype = hsa_status_t
-hsa_code_object_serialize.argtypes = [hsa_code_object_t, ctypes.CFUNCTYPE(hsa_status_t, ctypes.c_uint64, struct_hsa_callback_data_s, ctypes.POINTER(ctypes.POINTER(None))), hsa_callback_data_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
-hsa_code_object_deserialize = _libraries['libhsa'].hsa_code_object_deserialize
-hsa_code_object_deserialize.restype = hsa_status_t
-hsa_code_object_deserialize.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_code_object_s)]
-hsa_code_object_destroy = _libraries['libhsa'].hsa_code_object_destroy
-hsa_code_object_destroy.restype = hsa_status_t
-hsa_code_object_destroy.argtypes = [hsa_code_object_t]
+try:
+    hsa_code_object_serialize = _libraries['libhsa-runtime64.so'].hsa_code_object_serialize
+    hsa_code_object_serialize.restype = hsa_status_t
+    hsa_code_object_serialize.argtypes = [hsa_code_object_t, ctypes.CFUNCTYPE(hsa_status_t, ctypes.c_uint64, struct_hsa_callback_data_s, ctypes.POINTER(ctypes.POINTER(None))), hsa_callback_data_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hsa_code_object_deserialize = _libraries['libhsa-runtime64.so'].hsa_code_object_deserialize
+    hsa_code_object_deserialize.restype = hsa_status_t
+    hsa_code_object_deserialize.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_code_object_s)]
+except AttributeError:
+    pass
+try:
+    hsa_code_object_destroy = _libraries['libhsa-runtime64.so'].hsa_code_object_destroy
+    hsa_code_object_destroy.restype = hsa_status_t
+    hsa_code_object_destroy.argtypes = [hsa_code_object_t]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_code_object_type_t'
 hsa_code_object_type_t__enumvalues = {
@@ -1488,12 +1938,18 @@ HSA_CODE_OBJECT_INFO_MACHINE_MODEL = 3
 HSA_CODE_OBJECT_INFO_PROFILE = 4
 HSA_CODE_OBJECT_INFO_DEFAULT_FLOAT_ROUNDING_MODE = 5
 hsa_code_object_info_t = ctypes.c_uint32 # enum
-hsa_code_object_get_info = _libraries['libhsa'].hsa_code_object_get_info
-hsa_code_object_get_info.restype = hsa_status_t
-hsa_code_object_get_info.argtypes = [hsa_code_object_t, hsa_code_object_info_t, ctypes.POINTER(None)]
-hsa_executable_load_code_object = _libraries['libhsa'].hsa_executable_load_code_object
-hsa_executable_load_code_object.restype = hsa_status_t
-hsa_executable_load_code_object.argtypes = [hsa_executable_t, hsa_agent_t, hsa_code_object_t, ctypes.POINTER(ctypes.c_char)]
+try:
+    hsa_code_object_get_info = _libraries['libhsa-runtime64.so'].hsa_code_object_get_info
+    hsa_code_object_get_info.restype = hsa_status_t
+    hsa_code_object_get_info.argtypes = [hsa_code_object_t, hsa_code_object_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_executable_load_code_object = _libraries['libhsa-runtime64.so'].hsa_executable_load_code_object
+    hsa_executable_load_code_object.restype = hsa_status_t
+    hsa_executable_load_code_object.argtypes = [hsa_executable_t, hsa_agent_t, hsa_code_object_t, ctypes.POINTER(ctypes.c_char)]
+except AttributeError:
+    pass
 class struct_hsa_code_symbol_s(Structure):
     pass
 
@@ -1503,12 +1959,18 @@ struct_hsa_code_symbol_s._fields_ = [
 ]
 
 hsa_code_symbol_t = struct_hsa_code_symbol_s
-hsa_code_object_get_symbol = _libraries['libhsa'].hsa_code_object_get_symbol
-hsa_code_object_get_symbol.restype = hsa_status_t
-hsa_code_object_get_symbol.argtypes = [hsa_code_object_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_code_symbol_s)]
-hsa_code_object_get_symbol_from_name = _libraries['libhsa'].hsa_code_object_get_symbol_from_name
-hsa_code_object_get_symbol_from_name.restype = hsa_status_t
-hsa_code_object_get_symbol_from_name.argtypes = [hsa_code_object_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_code_symbol_s)]
+try:
+    hsa_code_object_get_symbol = _libraries['libhsa-runtime64.so'].hsa_code_object_get_symbol
+    hsa_code_object_get_symbol.restype = hsa_status_t
+    hsa_code_object_get_symbol.argtypes = [hsa_code_object_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_code_symbol_s)]
+except AttributeError:
+    pass
+try:
+    hsa_code_object_get_symbol_from_name = _libraries['libhsa-runtime64.so'].hsa_code_object_get_symbol_from_name
+    hsa_code_object_get_symbol_from_name.restype = hsa_status_t
+    hsa_code_object_get_symbol_from_name.argtypes = [hsa_code_object_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_code_symbol_s)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_code_symbol_info_t'
 hsa_code_symbol_info_t__enumvalues = {
@@ -1552,15 +2014,21 @@ HSA_CODE_SYMBOL_INFO_KERNEL_DYNAMIC_CALLSTACK = 15
 HSA_CODE_SYMBOL_INFO_KERNEL_CALL_CONVENTION = 18
 HSA_CODE_SYMBOL_INFO_INDIRECT_FUNCTION_CALL_CONVENTION = 16
 hsa_code_symbol_info_t = ctypes.c_uint32 # enum
-hsa_code_symbol_get_info = _libraries['libhsa'].hsa_code_symbol_get_info
-hsa_code_symbol_get_info.restype = hsa_status_t
-hsa_code_symbol_get_info.argtypes = [hsa_code_symbol_t, hsa_code_symbol_info_t, ctypes.POINTER(None)]
-hsa_code_object_iterate_symbols = _libraries['libhsa'].hsa_code_object_iterate_symbols
-hsa_code_object_iterate_symbols.restype = hsa_status_t
-hsa_code_object_iterate_symbols.argtypes = [hsa_code_object_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_code_object_s, struct_hsa_code_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+try:
+    hsa_code_symbol_get_info = _libraries['libhsa-runtime64.so'].hsa_code_symbol_get_info
+    hsa_code_symbol_get_info.restype = hsa_status_t
+    hsa_code_symbol_get_info.argtypes = [hsa_code_symbol_t, hsa_code_symbol_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_code_object_iterate_symbols = _libraries['libhsa-runtime64.so'].hsa_code_object_iterate_symbols
+    hsa_code_object_iterate_symbols.restype = hsa_status_t
+    hsa_code_object_iterate_symbols.argtypes = [hsa_code_object_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_code_object_s, struct_hsa_code_symbol_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
-# values for enumeration 'enum_hsa_ext_image_h_68'
-enum_hsa_ext_image_h_68__enumvalues = {
+# values for enumeration 'enumhsa_ext_image_h_68'
+enumhsa_ext_image_h_68__enumvalues = {
     12288: 'HSA_EXT_STATUS_ERROR_IMAGE_FORMAT_UNSUPPORTED',
     12289: 'HSA_EXT_STATUS_ERROR_IMAGE_SIZE_UNSUPPORTED',
     12290: 'HSA_EXT_STATUS_ERROR_IMAGE_PITCH_UNSUPPORTED',
@@ -1570,10 +2038,10 @@ HSA_EXT_STATUS_ERROR_IMAGE_FORMAT_UNSUPPORTED = 12288
 HSA_EXT_STATUS_ERROR_IMAGE_SIZE_UNSUPPORTED = 12289
 HSA_EXT_STATUS_ERROR_IMAGE_PITCH_UNSUPPORTED = 12290
 HSA_EXT_STATUS_ERROR_SAMPLER_DESCRIPTOR_UNSUPPORTED = 12291
-enum_hsa_ext_image_h_68 = ctypes.c_uint32 # enum
+enumhsa_ext_image_h_68 = ctypes.c_uint32 # enum
 
-# values for enumeration 'enum_hsa_ext_image_h_93'
-enum_hsa_ext_image_h_93__enumvalues = {
+# values for enumeration 'enumhsa_ext_image_h_93'
+enumhsa_ext_image_h_93__enumvalues = {
     12288: 'HSA_EXT_AGENT_INFO_IMAGE_1D_MAX_ELEMENTS',
     12289: 'HSA_EXT_AGENT_INFO_IMAGE_1DA_MAX_ELEMENTS',
     12290: 'HSA_EXT_AGENT_INFO_IMAGE_1DB_MAX_ELEMENTS',
@@ -1601,7 +2069,7 @@ HSA_EXT_AGENT_INFO_MAX_IMAGE_RD_HANDLES = 12297
 HSA_EXT_AGENT_INFO_MAX_IMAGE_RORW_HANDLES = 12298
 HSA_EXT_AGENT_INFO_MAX_SAMPLER_HANDLERS = 12299
 HSA_EXT_AGENT_INFO_IMAGE_LINEAR_ROW_PITCH_ALIGNMENT = 12300
-enum_hsa_ext_image_h_93 = ctypes.c_uint32 # enum
+enumhsa_ext_image_h_93 = ctypes.c_uint32 # enum
 class struct_hsa_ext_image_s(Structure):
     pass
 
@@ -1767,12 +2235,18 @@ hsa_ext_image_data_layout_t__enumvalues = {
 HSA_EXT_IMAGE_DATA_LAYOUT_OPAQUE = 0
 HSA_EXT_IMAGE_DATA_LAYOUT_LINEAR = 1
 hsa_ext_image_data_layout_t = ctypes.c_uint32 # enum
-hsa_ext_image_get_capability = _libraries['libhsa'].hsa_ext_image_get_capability
-hsa_ext_image_get_capability.restype = hsa_status_t
-hsa_ext_image_get_capability.argtypes = [hsa_agent_t, hsa_ext_image_geometry_t, ctypes.POINTER(struct_hsa_ext_image_format_s), ctypes.POINTER(ctypes.c_uint32)]
-hsa_ext_image_get_capability_with_layout = _libraries['libhsa'].hsa_ext_image_get_capability_with_layout
-hsa_ext_image_get_capability_with_layout.restype = hsa_status_t
-hsa_ext_image_get_capability_with_layout.argtypes = [hsa_agent_t, hsa_ext_image_geometry_t, ctypes.POINTER(struct_hsa_ext_image_format_s), hsa_ext_image_data_layout_t, ctypes.POINTER(ctypes.c_uint32)]
+try:
+    hsa_ext_image_get_capability = _libraries['libhsa-runtime64.so'].hsa_ext_image_get_capability
+    hsa_ext_image_get_capability.restype = hsa_status_t
+    hsa_ext_image_get_capability.argtypes = [hsa_agent_t, hsa_ext_image_geometry_t, ctypes.POINTER(struct_hsa_ext_image_format_s), ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_get_capability_with_layout = _libraries['libhsa-runtime64.so'].hsa_ext_image_get_capability_with_layout
+    hsa_ext_image_get_capability_with_layout.restype = hsa_status_t
+    hsa_ext_image_get_capability_with_layout.argtypes = [hsa_agent_t, hsa_ext_image_geometry_t, ctypes.POINTER(struct_hsa_ext_image_format_s), hsa_ext_image_data_layout_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 class struct_hsa_ext_image_data_info_s(Structure):
     pass
 
@@ -1783,24 +2257,42 @@ struct_hsa_ext_image_data_info_s._fields_ = [
 ]
 
 hsa_ext_image_data_info_t = struct_hsa_ext_image_data_info_s
-hsa_ext_image_data_get_info = _libraries['libhsa'].hsa_ext_image_data_get_info
-hsa_ext_image_data_get_info.restype = hsa_status_t
-hsa_ext_image_data_get_info.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), hsa_access_permission_t, ctypes.POINTER(struct_hsa_ext_image_data_info_s)]
-hsa_ext_image_data_get_info_with_layout = _libraries['libhsa'].hsa_ext_image_data_get_info_with_layout
-hsa_ext_image_data_get_info_with_layout.restype = hsa_status_t
-hsa_ext_image_data_get_info_with_layout.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), hsa_access_permission_t, hsa_ext_image_data_layout_t, size_t, size_t, ctypes.POINTER(struct_hsa_ext_image_data_info_s)]
-hsa_ext_image_create = _libraries['libhsa'].hsa_ext_image_create
-hsa_ext_image_create.restype = hsa_status_t
-hsa_ext_image_create.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), ctypes.POINTER(None), hsa_access_permission_t, ctypes.POINTER(struct_hsa_ext_image_s)]
-hsa_ext_image_create_with_layout = _libraries['libhsa'].hsa_ext_image_create_with_layout
-hsa_ext_image_create_with_layout.restype = hsa_status_t
-hsa_ext_image_create_with_layout.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), ctypes.POINTER(None), hsa_access_permission_t, hsa_ext_image_data_layout_t, size_t, size_t, ctypes.POINTER(struct_hsa_ext_image_s)]
-hsa_ext_image_destroy = _libraries['libhsa'].hsa_ext_image_destroy
-hsa_ext_image_destroy.restype = hsa_status_t
-hsa_ext_image_destroy.argtypes = [hsa_agent_t, hsa_ext_image_t]
-hsa_ext_image_copy = _libraries['libhsa'].hsa_ext_image_copy
-hsa_ext_image_copy.restype = hsa_status_t
-hsa_ext_image_copy.argtypes = [hsa_agent_t, hsa_ext_image_t, ctypes.POINTER(struct_hsa_dim3_s), hsa_ext_image_t, ctypes.POINTER(struct_hsa_dim3_s), ctypes.POINTER(struct_hsa_dim3_s)]
+try:
+    hsa_ext_image_data_get_info = _libraries['libhsa-runtime64.so'].hsa_ext_image_data_get_info
+    hsa_ext_image_data_get_info.restype = hsa_status_t
+    hsa_ext_image_data_get_info.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), hsa_access_permission_t, ctypes.POINTER(struct_hsa_ext_image_data_info_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_data_get_info_with_layout = _libraries['libhsa-runtime64.so'].hsa_ext_image_data_get_info_with_layout
+    hsa_ext_image_data_get_info_with_layout.restype = hsa_status_t
+    hsa_ext_image_data_get_info_with_layout.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), hsa_access_permission_t, hsa_ext_image_data_layout_t, size_t, size_t, ctypes.POINTER(struct_hsa_ext_image_data_info_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_create = _libraries['libhsa-runtime64.so'].hsa_ext_image_create
+    hsa_ext_image_create.restype = hsa_status_t
+    hsa_ext_image_create.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), ctypes.POINTER(None), hsa_access_permission_t, ctypes.POINTER(struct_hsa_ext_image_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_create_with_layout = _libraries['libhsa-runtime64.so'].hsa_ext_image_create_with_layout
+    hsa_ext_image_create_with_layout.restype = hsa_status_t
+    hsa_ext_image_create_with_layout.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), ctypes.POINTER(None), hsa_access_permission_t, hsa_ext_image_data_layout_t, size_t, size_t, ctypes.POINTER(struct_hsa_ext_image_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_destroy = _libraries['libhsa-runtime64.so'].hsa_ext_image_destroy
+    hsa_ext_image_destroy.restype = hsa_status_t
+    hsa_ext_image_destroy.argtypes = [hsa_agent_t, hsa_ext_image_t]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_copy = _libraries['libhsa-runtime64.so'].hsa_ext_image_copy
+    hsa_ext_image_copy.restype = hsa_status_t
+    hsa_ext_image_copy.argtypes = [hsa_agent_t, hsa_ext_image_t, ctypes.POINTER(struct_hsa_dim3_s), hsa_ext_image_t, ctypes.POINTER(struct_hsa_dim3_s), ctypes.POINTER(struct_hsa_dim3_s)]
+except AttributeError:
+    pass
 class struct_hsa_ext_image_region_s(Structure):
     _pack_ = 1 # source:False
     _fields_ = [
@@ -1809,15 +2301,24 @@ class struct_hsa_ext_image_region_s(Structure):
      ]
 
 hsa_ext_image_region_t = struct_hsa_ext_image_region_s
-hsa_ext_image_import = _libraries['libhsa'].hsa_ext_image_import
-hsa_ext_image_import.restype = hsa_status_t
-hsa_ext_image_import.argtypes = [hsa_agent_t, ctypes.POINTER(None), size_t, size_t, hsa_ext_image_t, ctypes.POINTER(struct_hsa_ext_image_region_s)]
-hsa_ext_image_export = _libraries['libhsa'].hsa_ext_image_export
-hsa_ext_image_export.restype = hsa_status_t
-hsa_ext_image_export.argtypes = [hsa_agent_t, hsa_ext_image_t, ctypes.POINTER(None), size_t, size_t, ctypes.POINTER(struct_hsa_ext_image_region_s)]
-hsa_ext_image_clear = _libraries['libhsa'].hsa_ext_image_clear
-hsa_ext_image_clear.restype = hsa_status_t
-hsa_ext_image_clear.argtypes = [hsa_agent_t, hsa_ext_image_t, ctypes.POINTER(None), ctypes.POINTER(struct_hsa_ext_image_region_s)]
+try:
+    hsa_ext_image_import = _libraries['libhsa-runtime64.so'].hsa_ext_image_import
+    hsa_ext_image_import.restype = hsa_status_t
+    hsa_ext_image_import.argtypes = [hsa_agent_t, ctypes.POINTER(None), size_t, size_t, hsa_ext_image_t, ctypes.POINTER(struct_hsa_ext_image_region_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_export = _libraries['libhsa-runtime64.so'].hsa_ext_image_export
+    hsa_ext_image_export.restype = hsa_status_t
+    hsa_ext_image_export.argtypes = [hsa_agent_t, hsa_ext_image_t, ctypes.POINTER(None), size_t, size_t, ctypes.POINTER(struct_hsa_ext_image_region_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_image_clear = _libraries['libhsa-runtime64.so'].hsa_ext_image_clear
+    hsa_ext_image_clear.restype = hsa_status_t
+    hsa_ext_image_clear.argtypes = [hsa_agent_t, hsa_ext_image_t, ctypes.POINTER(None), ctypes.POINTER(struct_hsa_ext_image_region_s)]
+except AttributeError:
+    pass
 class struct_hsa_ext_sampler_s(Structure):
     pass
 
@@ -1874,12 +2375,18 @@ struct_hsa_ext_sampler_descriptor_s._fields_ = [
 ]
 
 hsa_ext_sampler_descriptor_t = struct_hsa_ext_sampler_descriptor_s
-hsa_ext_sampler_create = _libraries['libhsa'].hsa_ext_sampler_create
-hsa_ext_sampler_create.restype = hsa_status_t
-hsa_ext_sampler_create.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_sampler_descriptor_s), ctypes.POINTER(struct_hsa_ext_sampler_s)]
-hsa_ext_sampler_destroy = _libraries['libhsa'].hsa_ext_sampler_destroy
-hsa_ext_sampler_destroy.restype = hsa_status_t
-hsa_ext_sampler_destroy.argtypes = [hsa_agent_t, hsa_ext_sampler_t]
+try:
+    hsa_ext_sampler_create = _libraries['libhsa-runtime64.so'].hsa_ext_sampler_create
+    hsa_ext_sampler_create.restype = hsa_status_t
+    hsa_ext_sampler_create.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_sampler_descriptor_s), ctypes.POINTER(struct_hsa_ext_sampler_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_sampler_destroy = _libraries['libhsa-runtime64.so'].hsa_ext_sampler_destroy
+    hsa_ext_sampler_destroy.restype = hsa_status_t
+    hsa_ext_sampler_destroy.argtypes = [hsa_agent_t, hsa_ext_sampler_t]
+except AttributeError:
+    pass
 class struct_hsa_ext_images_1_00_pfn_s(Structure):
     pass
 
@@ -1958,8 +2465,8 @@ struct_hsa_amd_barrier_value_packet_s._fields_ = [
 
 hsa_amd_barrier_value_packet_t = struct_hsa_amd_barrier_value_packet_s
 
-# values for enumeration 'enum_hsa_ext_amd_h_179'
-enum_hsa_ext_amd_h_179__enumvalues = {
+# values for enumeration 'enumhsa_ext_amd_h_179'
+enumhsa_ext_amd_h_179__enumvalues = {
     40: 'HSA_STATUS_ERROR_INVALID_MEMORY_POOL',
     41: 'HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION',
     42: 'HSA_STATUS_ERROR_ILLEGAL_INSTRUCTION',
@@ -1973,7 +2480,7 @@ HSA_STATUS_ERROR_ILLEGAL_INSTRUCTION = 42
 HSA_STATUS_ERROR_MEMORY_FAULT = 43
 HSA_STATUS_CU_MASK_REDUCED = 44
 HSA_STATUS_ERROR_OUT_OF_REGISTERS = 45
-enum_hsa_ext_amd_h_179 = ctypes.c_uint32 # enum
+enumhsa_ext_amd_h_179 = ctypes.c_uint32 # enum
 
 # values for enumeration 'hsa_amd_iommu_version_t'
 hsa_amd_iommu_version_t__enumvalues = {
@@ -2129,12 +2636,18 @@ HSA_AMD_COHERENCY_TYPE_NONCOHERENT = 1
 hsa_amd_coherency_type_s = ctypes.c_uint32 # enum
 hsa_amd_coherency_type_t = hsa_amd_coherency_type_s
 hsa_amd_coherency_type_t__enumvalues = hsa_amd_coherency_type_s__enumvalues
-hsa_amd_coherency_get_type = _libraries['libhsa'].hsa_amd_coherency_get_type
-hsa_amd_coherency_get_type.restype = hsa_status_t
-hsa_amd_coherency_get_type.argtypes = [hsa_agent_t, ctypes.POINTER(hsa_amd_coherency_type_s)]
-hsa_amd_coherency_set_type = _libraries['libhsa'].hsa_amd_coherency_set_type
-hsa_amd_coherency_set_type.restype = hsa_status_t
-hsa_amd_coherency_set_type.argtypes = [hsa_agent_t, hsa_amd_coherency_type_t]
+try:
+    hsa_amd_coherency_get_type = _libraries['libhsa-runtime64.so'].hsa_amd_coherency_get_type
+    hsa_amd_coherency_get_type.restype = hsa_status_t
+    hsa_amd_coherency_get_type.argtypes = [hsa_agent_t, ctypes.POINTER(hsa_amd_coherency_type_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_coherency_set_type = _libraries['libhsa-runtime64.so'].hsa_amd_coherency_set_type
+    hsa_amd_coherency_set_type.restype = hsa_status_t
+    hsa_amd_coherency_set_type.argtypes = [hsa_agent_t, hsa_amd_coherency_type_t]
+except AttributeError:
+    pass
 class struct_hsa_amd_profiling_dispatch_time_s(Structure):
     pass
 
@@ -2155,21 +2668,36 @@ struct_hsa_amd_profiling_async_copy_time_s._fields_ = [
 ]
 
 hsa_amd_profiling_async_copy_time_t = struct_hsa_amd_profiling_async_copy_time_s
-hsa_amd_profiling_set_profiler_enabled = _libraries['libhsa'].hsa_amd_profiling_set_profiler_enabled
-hsa_amd_profiling_set_profiler_enabled.restype = hsa_status_t
-hsa_amd_profiling_set_profiler_enabled.argtypes = [ctypes.POINTER(struct_hsa_queue_s), ctypes.c_int32]
-hsa_amd_profiling_async_copy_enable = _libraries['libhsa'].hsa_amd_profiling_async_copy_enable
-hsa_amd_profiling_async_copy_enable.restype = hsa_status_t
-hsa_amd_profiling_async_copy_enable.argtypes = [ctypes.c_bool]
-hsa_amd_profiling_get_dispatch_time = _libraries['libhsa'].hsa_amd_profiling_get_dispatch_time
-hsa_amd_profiling_get_dispatch_time.restype = hsa_status_t
-hsa_amd_profiling_get_dispatch_time.argtypes = [hsa_agent_t, hsa_signal_t, ctypes.POINTER(struct_hsa_amd_profiling_dispatch_time_s)]
-hsa_amd_profiling_get_async_copy_time = _libraries['libhsa'].hsa_amd_profiling_get_async_copy_time
-hsa_amd_profiling_get_async_copy_time.restype = hsa_status_t
-hsa_amd_profiling_get_async_copy_time.argtypes = [hsa_signal_t, ctypes.POINTER(struct_hsa_amd_profiling_async_copy_time_s)]
-hsa_amd_profiling_convert_tick_to_system_domain = _libraries['libhsa'].hsa_amd_profiling_convert_tick_to_system_domain
-hsa_amd_profiling_convert_tick_to_system_domain.restype = hsa_status_t
-hsa_amd_profiling_convert_tick_to_system_domain.argtypes = [hsa_agent_t, uint64_t, ctypes.POINTER(ctypes.c_uint64)]
+try:
+    hsa_amd_profiling_set_profiler_enabled = _libraries['libhsa-runtime64.so'].hsa_amd_profiling_set_profiler_enabled
+    hsa_amd_profiling_set_profiler_enabled.restype = hsa_status_t
+    hsa_amd_profiling_set_profiler_enabled.argtypes = [ctypes.POINTER(struct_hsa_queue_s), ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hsa_amd_profiling_async_copy_enable = _libraries['libhsa-runtime64.so'].hsa_amd_profiling_async_copy_enable
+    hsa_amd_profiling_async_copy_enable.restype = hsa_status_t
+    hsa_amd_profiling_async_copy_enable.argtypes = [ctypes.c_bool]
+except AttributeError:
+    pass
+try:
+    hsa_amd_profiling_get_dispatch_time = _libraries['libhsa-runtime64.so'].hsa_amd_profiling_get_dispatch_time
+    hsa_amd_profiling_get_dispatch_time.restype = hsa_status_t
+    hsa_amd_profiling_get_dispatch_time.argtypes = [hsa_agent_t, hsa_signal_t, ctypes.POINTER(struct_hsa_amd_profiling_dispatch_time_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_profiling_get_async_copy_time = _libraries['libhsa-runtime64.so'].hsa_amd_profiling_get_async_copy_time
+    hsa_amd_profiling_get_async_copy_time.restype = hsa_status_t
+    hsa_amd_profiling_get_async_copy_time.argtypes = [hsa_signal_t, ctypes.POINTER(struct_hsa_amd_profiling_async_copy_time_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_profiling_convert_tick_to_system_domain = _libraries['libhsa-runtime64.so'].hsa_amd_profiling_convert_tick_to_system_domain
+    hsa_amd_profiling_convert_tick_to_system_domain.restype = hsa_status_t
+    hsa_amd_profiling_convert_tick_to_system_domain.argtypes = [hsa_agent_t, uint64_t, ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_signal_attribute_t'
 hsa_amd_signal_attribute_t__enumvalues = {
@@ -2179,31 +2707,55 @@ hsa_amd_signal_attribute_t__enumvalues = {
 HSA_AMD_SIGNAL_AMD_GPU_ONLY = 1
 HSA_AMD_SIGNAL_IPC = 2
 hsa_amd_signal_attribute_t = ctypes.c_uint32 # enum
-hsa_amd_signal_create = _libraries['libhsa'].hsa_amd_signal_create
-hsa_amd_signal_create.restype = hsa_status_t
-hsa_amd_signal_create.argtypes = [hsa_signal_value_t, uint32_t, ctypes.POINTER(struct_hsa_agent_s), uint64_t, ctypes.POINTER(struct_hsa_signal_s)]
-hsa_amd_signal_value_pointer = _libraries['libhsa'].hsa_amd_signal_value_pointer
-hsa_amd_signal_value_pointer.restype = hsa_status_t
-hsa_amd_signal_value_pointer.argtypes = [hsa_signal_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_int64))]
+try:
+    hsa_amd_signal_create = _libraries['libhsa-runtime64.so'].hsa_amd_signal_create
+    hsa_amd_signal_create.restype = hsa_status_t
+    hsa_amd_signal_create.argtypes = [hsa_signal_value_t, uint32_t, ctypes.POINTER(struct_hsa_agent_s), uint64_t, ctypes.POINTER(struct_hsa_signal_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_signal_value_pointer = _libraries['libhsa-runtime64.so'].hsa_amd_signal_value_pointer
+    hsa_amd_signal_value_pointer.restype = hsa_status_t
+    hsa_amd_signal_value_pointer.argtypes = [hsa_signal_t, ctypes.POINTER(ctypes.POINTER(ctypes.c_int64))]
+except AttributeError:
+    pass
 hsa_amd_signal_handler = ctypes.CFUNCTYPE(ctypes.c_bool, ctypes.c_int64, ctypes.POINTER(None))
-hsa_amd_signal_async_handler = _libraries['libhsa'].hsa_amd_signal_async_handler
-hsa_amd_signal_async_handler.restype = hsa_status_t
-hsa_amd_signal_async_handler.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, hsa_amd_signal_handler, ctypes.POINTER(None)]
-hsa_amd_async_function = _libraries['libhsa'].hsa_amd_async_function
-hsa_amd_async_function.restype = hsa_status_t
-hsa_amd_async_function.argtypes = [ctypes.CFUNCTYPE(None, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_amd_signal_wait_any = _libraries['libhsa'].hsa_amd_signal_wait_any
-hsa_amd_signal_wait_any.restype = uint32_t
-hsa_amd_signal_wait_any.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_signal_s), ctypes.POINTER(hsa_signal_condition_t), ctypes.POINTER(ctypes.c_int64), uint64_t, hsa_wait_state_t, ctypes.POINTER(ctypes.c_int64)]
-hsa_amd_image_get_info_max_dim = _libraries['libhsa'].hsa_amd_image_get_info_max_dim
-hsa_amd_image_get_info_max_dim.restype = hsa_status_t
-hsa_amd_image_get_info_max_dim.argtypes = [hsa_agent_t, hsa_agent_info_t, ctypes.POINTER(None)]
-hsa_amd_queue_cu_set_mask = _libraries['libhsa'].hsa_amd_queue_cu_set_mask
-hsa_amd_queue_cu_set_mask.restype = hsa_status_t
-hsa_amd_queue_cu_set_mask.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint32_t, ctypes.POINTER(ctypes.c_uint32)]
-hsa_amd_queue_cu_get_mask = _libraries['libhsa'].hsa_amd_queue_cu_get_mask
-hsa_amd_queue_cu_get_mask.restype = hsa_status_t
-hsa_amd_queue_cu_get_mask.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint32_t, ctypes.POINTER(ctypes.c_uint32)]
+try:
+    hsa_amd_signal_async_handler = _libraries['libhsa-runtime64.so'].hsa_amd_signal_async_handler
+    hsa_amd_signal_async_handler.restype = hsa_status_t
+    hsa_amd_signal_async_handler.argtypes = [hsa_signal_t, hsa_signal_condition_t, hsa_signal_value_t, hsa_amd_signal_handler, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_async_function = _libraries['libhsa-runtime64.so'].hsa_amd_async_function
+    hsa_amd_async_function.restype = hsa_status_t
+    hsa_amd_async_function.argtypes = [ctypes.CFUNCTYPE(None, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_signal_wait_any = _libraries['libhsa-runtime64.so'].hsa_amd_signal_wait_any
+    hsa_amd_signal_wait_any.restype = uint32_t
+    hsa_amd_signal_wait_any.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_signal_s), ctypes.POINTER(hsa_signal_condition_t), ctypes.POINTER(ctypes.c_int64), uint64_t, hsa_wait_state_t, ctypes.POINTER(ctypes.c_int64)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_image_get_info_max_dim = _libraries['libhsa-runtime64.so'].hsa_amd_image_get_info_max_dim
+    hsa_amd_image_get_info_max_dim.restype = hsa_status_t
+    hsa_amd_image_get_info_max_dim.argtypes = [hsa_agent_t, hsa_agent_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_queue_cu_set_mask = _libraries['libhsa-runtime64.so'].hsa_amd_queue_cu_set_mask
+    hsa_amd_queue_cu_set_mask.restype = hsa_status_t
+    hsa_amd_queue_cu_set_mask.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint32_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_queue_cu_get_mask = _libraries['libhsa-runtime64.so'].hsa_amd_queue_cu_get_mask
+    hsa_amd_queue_cu_get_mask.restype = hsa_status_t
+    hsa_amd_queue_cu_get_mask.argtypes = [ctypes.POINTER(struct_hsa_queue_s), uint32_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_segment_t'
 hsa_amd_segment_t__enumvalues = {
@@ -2288,27 +2840,48 @@ HSA_AMD_MEMORY_POOL_PCIE_FLAG = 1
 hsa_amd_memory_pool_flag_s = ctypes.c_uint32 # enum
 hsa_amd_memory_pool_flag_t = hsa_amd_memory_pool_flag_s
 hsa_amd_memory_pool_flag_t__enumvalues = hsa_amd_memory_pool_flag_s__enumvalues
-hsa_amd_memory_pool_get_info = _libraries['libhsa'].hsa_amd_memory_pool_get_info
-hsa_amd_memory_pool_get_info.restype = hsa_status_t
-hsa_amd_memory_pool_get_info.argtypes = [hsa_amd_memory_pool_t, hsa_amd_memory_pool_info_t, ctypes.POINTER(None)]
-hsa_amd_agent_iterate_memory_pools = _libraries['libhsa'].hsa_amd_agent_iterate_memory_pools
-hsa_amd_agent_iterate_memory_pools.restype = hsa_status_t
-hsa_amd_agent_iterate_memory_pools.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_amd_memory_pool_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
-hsa_amd_memory_pool_allocate = _libraries['libhsa'].hsa_amd_memory_pool_allocate
-hsa_amd_memory_pool_allocate.restype = hsa_status_t
-hsa_amd_memory_pool_allocate.argtypes = [hsa_amd_memory_pool_t, size_t, uint32_t, ctypes.POINTER(ctypes.POINTER(None))]
-hsa_amd_memory_pool_free = _libraries['libhsa'].hsa_amd_memory_pool_free
-hsa_amd_memory_pool_free.restype = hsa_status_t
-hsa_amd_memory_pool_free.argtypes = [ctypes.POINTER(None)]
-hsa_amd_memory_async_copy = _libraries['libhsa'].hsa_amd_memory_async_copy
-hsa_amd_memory_async_copy.restype = hsa_status_t
-hsa_amd_memory_async_copy.argtypes = [ctypes.POINTER(None), hsa_agent_t, ctypes.POINTER(None), hsa_agent_t, size_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t]
-hsa_amd_memory_async_copy_on_engine = _libraries['libhsa'].hsa_amd_memory_async_copy_on_engine
-hsa_amd_memory_async_copy_on_engine.restype = hsa_status_t
-hsa_amd_memory_async_copy_on_engine.argtypes = [ctypes.POINTER(None), hsa_agent_t, ctypes.POINTER(None), hsa_agent_t, size_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t, hsa_amd_sdma_engine_id_t, ctypes.c_bool]
-hsa_amd_memory_copy_engine_status = _libraries['libhsa'].hsa_amd_memory_copy_engine_status
-hsa_amd_memory_copy_engine_status.restype = hsa_status_t
-hsa_amd_memory_copy_engine_status.argtypes = [hsa_agent_t, hsa_agent_t, ctypes.POINTER(ctypes.c_uint32)]
+try:
+    hsa_amd_memory_pool_get_info = _libraries['libhsa-runtime64.so'].hsa_amd_memory_pool_get_info
+    hsa_amd_memory_pool_get_info.restype = hsa_status_t
+    hsa_amd_memory_pool_get_info.argtypes = [hsa_amd_memory_pool_t, hsa_amd_memory_pool_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_agent_iterate_memory_pools = _libraries['libhsa-runtime64.so'].hsa_amd_agent_iterate_memory_pools
+    hsa_amd_agent_iterate_memory_pools.restype = hsa_status_t
+    hsa_amd_agent_iterate_memory_pools.argtypes = [hsa_agent_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_amd_memory_pool_s, ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_pool_allocate = _libraries['libhsa-runtime64.so'].hsa_amd_memory_pool_allocate
+    hsa_amd_memory_pool_allocate.restype = hsa_status_t
+    hsa_amd_memory_pool_allocate.argtypes = [hsa_amd_memory_pool_t, size_t, uint32_t, ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_pool_free = _libraries['libhsa-runtime64.so'].hsa_amd_memory_pool_free
+    hsa_amd_memory_pool_free.restype = hsa_status_t
+    hsa_amd_memory_pool_free.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_async_copy = _libraries['libhsa-runtime64.so'].hsa_amd_memory_async_copy
+    hsa_amd_memory_async_copy.restype = hsa_status_t
+    hsa_amd_memory_async_copy.argtypes = [ctypes.POINTER(None), hsa_agent_t, ctypes.POINTER(None), hsa_agent_t, size_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_async_copy_on_engine = _libraries['libhsa-runtime64.so'].hsa_amd_memory_async_copy_on_engine
+    hsa_amd_memory_async_copy_on_engine.restype = hsa_status_t
+    hsa_amd_memory_async_copy_on_engine.argtypes = [ctypes.POINTER(None), hsa_agent_t, ctypes.POINTER(None), hsa_agent_t, size_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t, hsa_amd_sdma_engine_id_t, ctypes.c_bool]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_copy_engine_status = _libraries['libhsa-runtime64.so'].hsa_amd_memory_copy_engine_status
+    hsa_amd_memory_copy_engine_status.restype = hsa_status_t
+    hsa_amd_memory_copy_engine_status.argtypes = [hsa_agent_t, hsa_agent_t, ctypes.POINTER(ctypes.c_uint32)]
+except AttributeError:
+    pass
 class struct_hsa_pitched_ptr_s(Structure):
     pass
 
@@ -2333,9 +2906,12 @@ hsaHostToDevice = 1
 hsaDeviceToHost = 2
 hsaDeviceToDevice = 3
 hsa_amd_copy_direction_t = ctypes.c_uint32 # enum
-hsa_amd_memory_async_copy_rect = _libraries['libhsa'].hsa_amd_memory_async_copy_rect
-hsa_amd_memory_async_copy_rect.restype = hsa_status_t
-hsa_amd_memory_async_copy_rect.argtypes = [ctypes.POINTER(struct_hsa_pitched_ptr_s), ctypes.POINTER(struct_hsa_dim3_s), ctypes.POINTER(struct_hsa_pitched_ptr_s), ctypes.POINTER(struct_hsa_dim3_s), ctypes.POINTER(struct_hsa_dim3_s), hsa_agent_t, hsa_amd_copy_direction_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t]
+try:
+    hsa_amd_memory_async_copy_rect = _libraries['libhsa-runtime64.so'].hsa_amd_memory_async_copy_rect
+    hsa_amd_memory_async_copy_rect.restype = hsa_status_t
+    hsa_amd_memory_async_copy_rect.argtypes = [ctypes.POINTER(struct_hsa_pitched_ptr_s), ctypes.POINTER(struct_hsa_dim3_s), ctypes.POINTER(struct_hsa_pitched_ptr_s), ctypes.POINTER(struct_hsa_dim3_s), ctypes.POINTER(struct_hsa_dim3_s), hsa_agent_t, hsa_amd_copy_direction_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_memory_pool_access_t'
 hsa_amd_memory_pool_access_t__enumvalues = {
@@ -2391,36 +2967,66 @@ HSA_AMD_AGENT_MEMORY_POOL_INFO_ACCESS = 0
 HSA_AMD_AGENT_MEMORY_POOL_INFO_NUM_LINK_HOPS = 1
 HSA_AMD_AGENT_MEMORY_POOL_INFO_LINK_INFO = 2
 hsa_amd_agent_memory_pool_info_t = ctypes.c_uint32 # enum
-hsa_amd_agent_memory_pool_get_info = _libraries['libhsa'].hsa_amd_agent_memory_pool_get_info
-hsa_amd_agent_memory_pool_get_info.restype = hsa_status_t
-hsa_amd_agent_memory_pool_get_info.argtypes = [hsa_agent_t, hsa_amd_memory_pool_t, hsa_amd_agent_memory_pool_info_t, ctypes.POINTER(None)]
-hsa_amd_agents_allow_access = _libraries['libhsa'].hsa_amd_agents_allow_access
-hsa_amd_agents_allow_access.restype = hsa_status_t
-hsa_amd_agents_allow_access.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(None)]
-hsa_amd_memory_pool_can_migrate = _libraries['libhsa'].hsa_amd_memory_pool_can_migrate
-hsa_amd_memory_pool_can_migrate.restype = hsa_status_t
-hsa_amd_memory_pool_can_migrate.argtypes = [hsa_amd_memory_pool_t, hsa_amd_memory_pool_t, ctypes.POINTER(ctypes.c_bool)]
-hsa_amd_memory_migrate = _libraries['libhsa'].hsa_amd_memory_migrate
-hsa_amd_memory_migrate.restype = hsa_status_t
-hsa_amd_memory_migrate.argtypes = [ctypes.POINTER(None), hsa_amd_memory_pool_t, uint32_t]
-hsa_amd_memory_lock = _libraries['libhsa'].hsa_amd_memory_lock
-hsa_amd_memory_lock.restype = hsa_status_t
-hsa_amd_memory_lock.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(None))]
-hsa_amd_memory_lock_to_pool = _libraries['libhsa'].hsa_amd_memory_lock_to_pool
-hsa_amd_memory_lock_to_pool.restype = hsa_status_t
-hsa_amd_memory_lock_to_pool.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.c_int32, hsa_amd_memory_pool_t, uint32_t, ctypes.POINTER(ctypes.POINTER(None))]
-hsa_amd_memory_unlock = _libraries['libhsa'].hsa_amd_memory_unlock
-hsa_amd_memory_unlock.restype = hsa_status_t
-hsa_amd_memory_unlock.argtypes = [ctypes.POINTER(None)]
-hsa_amd_memory_fill = _libraries['libhsa'].hsa_amd_memory_fill
-hsa_amd_memory_fill.restype = hsa_status_t
-hsa_amd_memory_fill.argtypes = [ctypes.POINTER(None), uint32_t, size_t]
-hsa_amd_interop_map_buffer = _libraries['libhsa'].hsa_amd_interop_map_buffer
-hsa_amd_interop_map_buffer.restype = hsa_status_t
-hsa_amd_interop_map_buffer.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.c_int32, uint32_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(None))]
-hsa_amd_interop_unmap_buffer = _libraries['libhsa'].hsa_amd_interop_unmap_buffer
-hsa_amd_interop_unmap_buffer.restype = hsa_status_t
-hsa_amd_interop_unmap_buffer.argtypes = [ctypes.POINTER(None)]
+try:
+    hsa_amd_agent_memory_pool_get_info = _libraries['libhsa-runtime64.so'].hsa_amd_agent_memory_pool_get_info
+    hsa_amd_agent_memory_pool_get_info.restype = hsa_status_t
+    hsa_amd_agent_memory_pool_get_info.argtypes = [hsa_agent_t, hsa_amd_memory_pool_t, hsa_amd_agent_memory_pool_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_agents_allow_access = _libraries['libhsa-runtime64.so'].hsa_amd_agents_allow_access
+    hsa_amd_agents_allow_access.restype = hsa_status_t
+    hsa_amd_agents_allow_access.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_pool_can_migrate = _libraries['libhsa-runtime64.so'].hsa_amd_memory_pool_can_migrate
+    hsa_amd_memory_pool_can_migrate.restype = hsa_status_t
+    hsa_amd_memory_pool_can_migrate.argtypes = [hsa_amd_memory_pool_t, hsa_amd_memory_pool_t, ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_migrate = _libraries['libhsa-runtime64.so'].hsa_amd_memory_migrate
+    hsa_amd_memory_migrate.restype = hsa_status_t
+    hsa_amd_memory_migrate.argtypes = [ctypes.POINTER(None), hsa_amd_memory_pool_t, uint32_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_lock = _libraries['libhsa-runtime64.so'].hsa_amd_memory_lock
+    hsa_amd_memory_lock.restype = hsa_status_t
+    hsa_amd_memory_lock.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_lock_to_pool = _libraries['libhsa-runtime64.so'].hsa_amd_memory_lock_to_pool
+    hsa_amd_memory_lock_to_pool.restype = hsa_status_t
+    hsa_amd_memory_lock_to_pool.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.c_int32, hsa_amd_memory_pool_t, uint32_t, ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_unlock = _libraries['libhsa-runtime64.so'].hsa_amd_memory_unlock
+    hsa_amd_memory_unlock.restype = hsa_status_t
+    hsa_amd_memory_unlock.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_memory_fill = _libraries['libhsa-runtime64.so'].hsa_amd_memory_fill
+    hsa_amd_memory_fill.restype = hsa_status_t
+    hsa_amd_memory_fill.argtypes = [ctypes.POINTER(None), uint32_t, size_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_interop_map_buffer = _libraries['libhsa-runtime64.so'].hsa_amd_interop_map_buffer
+    hsa_amd_interop_map_buffer.restype = hsa_status_t
+    hsa_amd_interop_map_buffer.argtypes = [uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.c_int32, uint32_t, ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hsa_amd_interop_unmap_buffer = _libraries['libhsa-runtime64.so'].hsa_amd_interop_unmap_buffer
+    hsa_amd_interop_unmap_buffer.restype = hsa_status_t
+    hsa_amd_interop_unmap_buffer.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
 class struct_hsa_amd_image_descriptor_s(Structure):
     pass
 
@@ -2432,9 +3038,12 @@ struct_hsa_amd_image_descriptor_s._fields_ = [
 ]
 
 hsa_amd_image_descriptor_t = struct_hsa_amd_image_descriptor_s
-hsa_amd_image_create = _libraries['libhsa'].hsa_amd_image_create
-hsa_amd_image_create.restype = hsa_status_t
-hsa_amd_image_create.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), ctypes.POINTER(struct_hsa_amd_image_descriptor_s), ctypes.POINTER(None), hsa_access_permission_t, ctypes.POINTER(struct_hsa_ext_image_s)]
+try:
+    hsa_amd_image_create = _libraries['libhsa-runtime64.so'].hsa_amd_image_create
+    hsa_amd_image_create.restype = hsa_status_t
+    hsa_amd_image_create.argtypes = [hsa_agent_t, ctypes.POINTER(struct_hsa_ext_image_descriptor_s), ctypes.POINTER(struct_hsa_amd_image_descriptor_s), ctypes.POINTER(None), hsa_access_permission_t, ctypes.POINTER(struct_hsa_ext_image_s)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_pointer_type_t'
 hsa_amd_pointer_type_t__enumvalues = {
@@ -2467,12 +3076,18 @@ struct_hsa_amd_pointer_info_s._fields_ = [
 ]
 
 hsa_amd_pointer_info_t = struct_hsa_amd_pointer_info_s
-hsa_amd_pointer_info = _libraries['libhsa'].hsa_amd_pointer_info
-hsa_amd_pointer_info.restype = hsa_status_t
-hsa_amd_pointer_info.argtypes = [ctypes.POINTER(None), ctypes.POINTER(struct_hsa_amd_pointer_info_s), ctypes.CFUNCTYPE(ctypes.POINTER(None), ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.POINTER(struct_hsa_agent_s))]
-hsa_amd_pointer_info_set_userdata = _libraries['libhsa'].hsa_amd_pointer_info_set_userdata
-hsa_amd_pointer_info_set_userdata.restype = hsa_status_t
-hsa_amd_pointer_info_set_userdata.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None)]
+try:
+    hsa_amd_pointer_info = _libraries['libhsa-runtime64.so'].hsa_amd_pointer_info
+    hsa_amd_pointer_info.restype = hsa_status_t
+    hsa_amd_pointer_info.argtypes = [ctypes.POINTER(None), ctypes.POINTER(struct_hsa_amd_pointer_info_s), ctypes.CFUNCTYPE(ctypes.POINTER(None), ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.POINTER(struct_hsa_agent_s))]
+except AttributeError:
+    pass
+try:
+    hsa_amd_pointer_info_set_userdata = _libraries['libhsa-runtime64.so'].hsa_amd_pointer_info_set_userdata
+    hsa_amd_pointer_info_set_userdata.restype = hsa_status_t
+    hsa_amd_pointer_info_set_userdata.argtypes = [ctypes.POINTER(None), ctypes.POINTER(None)]
+except AttributeError:
+    pass
 class struct_hsa_amd_ipc_memory_s(Structure):
     pass
 
@@ -2482,22 +3097,37 @@ struct_hsa_amd_ipc_memory_s._fields_ = [
 ]
 
 hsa_amd_ipc_memory_t = struct_hsa_amd_ipc_memory_s
-hsa_amd_ipc_memory_create = _libraries['libhsa'].hsa_amd_ipc_memory_create
-hsa_amd_ipc_memory_create.restype = hsa_status_t
-hsa_amd_ipc_memory_create.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_ipc_memory_s)]
-hsa_amd_ipc_memory_attach = _libraries['libhsa'].hsa_amd_ipc_memory_attach
-hsa_amd_ipc_memory_attach.restype = hsa_status_t
-hsa_amd_ipc_memory_attach.argtypes = [ctypes.POINTER(struct_hsa_amd_ipc_memory_s), size_t, uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(ctypes.POINTER(None))]
-hsa_amd_ipc_memory_detach = _libraries['libhsa'].hsa_amd_ipc_memory_detach
-hsa_amd_ipc_memory_detach.restype = hsa_status_t
-hsa_amd_ipc_memory_detach.argtypes = [ctypes.POINTER(None)]
+try:
+    hsa_amd_ipc_memory_create = _libraries['libhsa-runtime64.so'].hsa_amd_ipc_memory_create
+    hsa_amd_ipc_memory_create.restype = hsa_status_t
+    hsa_amd_ipc_memory_create.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_ipc_memory_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_ipc_memory_attach = _libraries['libhsa-runtime64.so'].hsa_amd_ipc_memory_attach
+    hsa_amd_ipc_memory_attach.restype = hsa_status_t
+    hsa_amd_ipc_memory_attach.argtypes = [ctypes.POINTER(struct_hsa_amd_ipc_memory_s), size_t, uint32_t, ctypes.POINTER(struct_hsa_agent_s), ctypes.POINTER(ctypes.POINTER(None))]
+except AttributeError:
+    pass
+try:
+    hsa_amd_ipc_memory_detach = _libraries['libhsa-runtime64.so'].hsa_amd_ipc_memory_detach
+    hsa_amd_ipc_memory_detach.restype = hsa_status_t
+    hsa_amd_ipc_memory_detach.argtypes = [ctypes.POINTER(None)]
+except AttributeError:
+    pass
 hsa_amd_ipc_signal_t = struct_hsa_amd_ipc_memory_s
-hsa_amd_ipc_signal_create = _libraries['libhsa'].hsa_amd_ipc_signal_create
-hsa_amd_ipc_signal_create.restype = hsa_status_t
-hsa_amd_ipc_signal_create.argtypes = [hsa_signal_t, ctypes.POINTER(struct_hsa_amd_ipc_memory_s)]
-hsa_amd_ipc_signal_attach = _libraries['libhsa'].hsa_amd_ipc_signal_attach
-hsa_amd_ipc_signal_attach.restype = hsa_status_t
-hsa_amd_ipc_signal_attach.argtypes = [ctypes.POINTER(struct_hsa_amd_ipc_memory_s), ctypes.POINTER(struct_hsa_signal_s)]
+try:
+    hsa_amd_ipc_signal_create = _libraries['libhsa-runtime64.so'].hsa_amd_ipc_signal_create
+    hsa_amd_ipc_signal_create.restype = hsa_status_t
+    hsa_amd_ipc_signal_create.argtypes = [hsa_signal_t, ctypes.POINTER(struct_hsa_amd_ipc_memory_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_ipc_signal_attach = _libraries['libhsa-runtime64.so'].hsa_amd_ipc_signal_attach
+    hsa_amd_ipc_signal_attach.restype = hsa_status_t
+    hsa_amd_ipc_signal_attach.argtypes = [ctypes.POINTER(struct_hsa_amd_ipc_memory_s), ctypes.POINTER(struct_hsa_signal_s)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_event_type_s'
 hsa_amd_event_type_s__enumvalues = {
@@ -2570,11 +3200,11 @@ hsa_amd_gpu_hw_exception_info_t = struct_hsa_amd_gpu_hw_exception_info_s
 class struct_hsa_amd_event_s(Structure):
     pass
 
-class union_union_hsa_ext_amd_h_2329(Union):
+class union_unionhsa_ext_amd_h_2329(Union):
     pass
 
-union_union_hsa_ext_amd_h_2329._pack_ = 1 # source:False
-union_union_hsa_ext_amd_h_2329._fields_ = [
+union_unionhsa_ext_amd_h_2329._pack_ = 1 # source:False
+union_unionhsa_ext_amd_h_2329._fields_ = [
     ('memory_fault', hsa_amd_gpu_memory_fault_info_t),
     ('hw_exception', hsa_amd_gpu_hw_exception_info_t),
     ('PADDING_0', ctypes.c_ubyte * 8),
@@ -2585,14 +3215,17 @@ struct_hsa_amd_event_s._anonymous_ = ('_0',)
 struct_hsa_amd_event_s._fields_ = [
     ('event_type', hsa_amd_event_type_t),
     ('PADDING_0', ctypes.c_ubyte * 4),
-    ('_0', union_union_hsa_ext_amd_h_2329),
+    ('_0', union_unionhsa_ext_amd_h_2329),
 ]
 
 hsa_amd_event_t = struct_hsa_amd_event_s
 hsa_amd_system_event_callback_t = ctypes.CFUNCTYPE(hsa_status_t, ctypes.POINTER(struct_hsa_amd_event_s), ctypes.POINTER(None))
-hsa_amd_register_system_event_handler = _libraries['libhsa'].hsa_amd_register_system_event_handler
-hsa_amd_register_system_event_handler.restype = hsa_status_t
-hsa_amd_register_system_event_handler.argtypes = [hsa_amd_system_event_callback_t, ctypes.POINTER(None)]
+try:
+    hsa_amd_register_system_event_handler = _libraries['libhsa-runtime64.so'].hsa_amd_register_system_event_handler
+    hsa_amd_register_system_event_handler.restype = hsa_status_t
+    hsa_amd_register_system_event_handler.argtypes = [hsa_amd_system_event_callback_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_queue_priority_s'
 hsa_amd_queue_priority_s__enumvalues = {
@@ -2606,16 +3239,25 @@ HSA_AMD_QUEUE_PRIORITY_HIGH = 2
 hsa_amd_queue_priority_s = ctypes.c_uint32 # enum
 hsa_amd_queue_priority_t = hsa_amd_queue_priority_s
 hsa_amd_queue_priority_t__enumvalues = hsa_amd_queue_priority_s__enumvalues
-hsa_amd_queue_set_priority = _libraries['libhsa'].hsa_amd_queue_set_priority
-hsa_amd_queue_set_priority.restype = hsa_status_t
-hsa_amd_queue_set_priority.argtypes = [ctypes.POINTER(struct_hsa_queue_s), hsa_amd_queue_priority_t]
+try:
+    hsa_amd_queue_set_priority = _libraries['libhsa-runtime64.so'].hsa_amd_queue_set_priority
+    hsa_amd_queue_set_priority.restype = hsa_status_t
+    hsa_amd_queue_set_priority.argtypes = [ctypes.POINTER(struct_hsa_queue_s), hsa_amd_queue_priority_t]
+except AttributeError:
+    pass
 hsa_amd_deallocation_callback_t = ctypes.CFUNCTYPE(None, ctypes.POINTER(None), ctypes.POINTER(None))
-hsa_amd_register_deallocation_callback = _libraries['libhsa'].hsa_amd_register_deallocation_callback
-hsa_amd_register_deallocation_callback.restype = hsa_status_t
-hsa_amd_register_deallocation_callback.argtypes = [ctypes.POINTER(None), hsa_amd_deallocation_callback_t, ctypes.POINTER(None)]
-hsa_amd_deregister_deallocation_callback = _libraries['libhsa'].hsa_amd_deregister_deallocation_callback
-hsa_amd_deregister_deallocation_callback.restype = hsa_status_t
-hsa_amd_deregister_deallocation_callback.argtypes = [ctypes.POINTER(None), hsa_amd_deallocation_callback_t]
+try:
+    hsa_amd_register_deallocation_callback = _libraries['libhsa-runtime64.so'].hsa_amd_register_deallocation_callback
+    hsa_amd_register_deallocation_callback.restype = hsa_status_t
+    hsa_amd_register_deallocation_callback.argtypes = [ctypes.POINTER(None), hsa_amd_deallocation_callback_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_deregister_deallocation_callback = _libraries['libhsa-runtime64.so'].hsa_amd_deregister_deallocation_callback
+    hsa_amd_deregister_deallocation_callback.restype = hsa_status_t
+    hsa_amd_deregister_deallocation_callback.argtypes = [ctypes.POINTER(None), hsa_amd_deallocation_callback_t]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_amd_svm_model_s'
 hsa_amd_svm_model_s__enumvalues = {
@@ -2670,36 +3312,66 @@ struct_hsa_amd_svm_attribute_pair_s._fields_ = [
 ]
 
 hsa_amd_svm_attribute_pair_t = struct_hsa_amd_svm_attribute_pair_s
-hsa_amd_svm_attributes_set = _libraries['libhsa'].hsa_amd_svm_attributes_set
-hsa_amd_svm_attributes_set.restype = hsa_status_t
-hsa_amd_svm_attributes_set.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_svm_attribute_pair_s), size_t]
-hsa_amd_svm_attributes_get = _libraries['libhsa'].hsa_amd_svm_attributes_get
-hsa_amd_svm_attributes_get.restype = hsa_status_t
-hsa_amd_svm_attributes_get.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_svm_attribute_pair_s), size_t]
-hsa_amd_svm_prefetch_async = _libraries['libhsa'].hsa_amd_svm_prefetch_async
-hsa_amd_svm_prefetch_async.restype = hsa_status_t
-hsa_amd_svm_prefetch_async.argtypes = [ctypes.POINTER(None), size_t, hsa_agent_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t]
-hsa_amd_spm_acquire = _libraries['libhsa'].hsa_amd_spm_acquire
-hsa_amd_spm_acquire.restype = hsa_status_t
-hsa_amd_spm_acquire.argtypes = [hsa_agent_t]
-hsa_amd_spm_release = _libraries['libhsa'].hsa_amd_spm_release
-hsa_amd_spm_release.restype = hsa_status_t
-hsa_amd_spm_release.argtypes = [hsa_agent_t]
-hsa_amd_spm_set_dest_buffer = _libraries['libhsa'].hsa_amd_spm_set_dest_buffer
-hsa_amd_spm_set_dest_buffer.restype = hsa_status_t
-hsa_amd_spm_set_dest_buffer.argtypes = [hsa_agent_t, size_t, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_bool)]
-hsa_amd_portable_export_dmabuf = _libraries['libhsa'].hsa_amd_portable_export_dmabuf
-hsa_amd_portable_export_dmabuf.restype = hsa_status_t
-hsa_amd_portable_export_dmabuf.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_uint64)]
-hsa_amd_portable_close_dmabuf = _libraries['libhsa'].hsa_amd_portable_close_dmabuf
-hsa_amd_portable_close_dmabuf.restype = hsa_status_t
-hsa_amd_portable_close_dmabuf.argtypes = [ctypes.c_int32]
-hsa_amd_vmem_address_reserve = _libraries['libhsa'].hsa_amd_vmem_address_reserve
-hsa_amd_vmem_address_reserve.restype = hsa_status_t
-hsa_amd_vmem_address_reserve.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, uint64_t, uint64_t]
-hsa_amd_vmem_address_free = _libraries['libhsa'].hsa_amd_vmem_address_free
-hsa_amd_vmem_address_free.restype = hsa_status_t
-hsa_amd_vmem_address_free.argtypes = [ctypes.POINTER(None), size_t]
+try:
+    hsa_amd_svm_attributes_set = _libraries['libhsa-runtime64.so'].hsa_amd_svm_attributes_set
+    hsa_amd_svm_attributes_set.restype = hsa_status_t
+    hsa_amd_svm_attributes_set.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_svm_attribute_pair_s), size_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_svm_attributes_get = _libraries['libhsa-runtime64.so'].hsa_amd_svm_attributes_get
+    hsa_amd_svm_attributes_get.restype = hsa_status_t
+    hsa_amd_svm_attributes_get.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_svm_attribute_pair_s), size_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_svm_prefetch_async = _libraries['libhsa-runtime64.so'].hsa_amd_svm_prefetch_async
+    hsa_amd_svm_prefetch_async.restype = hsa_status_t
+    hsa_amd_svm_prefetch_async.argtypes = [ctypes.POINTER(None), size_t, hsa_agent_t, uint32_t, ctypes.POINTER(struct_hsa_signal_s), hsa_signal_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_spm_acquire = _libraries['libhsa-runtime64.so'].hsa_amd_spm_acquire
+    hsa_amd_spm_acquire.restype = hsa_status_t
+    hsa_amd_spm_acquire.argtypes = [hsa_agent_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_spm_release = _libraries['libhsa-runtime64.so'].hsa_amd_spm_release
+    hsa_amd_spm_release.restype = hsa_status_t
+    hsa_amd_spm_release.argtypes = [hsa_agent_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_spm_set_dest_buffer = _libraries['libhsa-runtime64.so'].hsa_amd_spm_set_dest_buffer
+    hsa_amd_spm_set_dest_buffer.restype = hsa_status_t
+    hsa_amd_spm_set_dest_buffer.argtypes = [hsa_agent_t, size_t, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(None), ctypes.POINTER(ctypes.c_bool)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_portable_export_dmabuf = _libraries['libhsa-runtime64.so'].hsa_amd_portable_export_dmabuf
+    hsa_amd_portable_export_dmabuf.restype = hsa_status_t
+    hsa_amd_portable_export_dmabuf.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_uint64)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_portable_close_dmabuf = _libraries['libhsa-runtime64.so'].hsa_amd_portable_close_dmabuf
+    hsa_amd_portable_close_dmabuf.restype = hsa_status_t
+    hsa_amd_portable_close_dmabuf.argtypes = [ctypes.c_int32]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_address_reserve = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_address_reserve
+    hsa_amd_vmem_address_reserve.restype = hsa_status_t
+    hsa_amd_vmem_address_reserve.argtypes = [ctypes.POINTER(ctypes.POINTER(None)), size_t, uint64_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_address_free = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_address_free
+    hsa_amd_vmem_address_free.restype = hsa_status_t
+    hsa_amd_vmem_address_free.argtypes = [ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
 class struct_hsa_amd_vmem_alloc_handle_s(Structure):
     pass
 
@@ -2718,18 +3390,30 @@ hsa_amd_memory_type_t__enumvalues = {
 MEMORY_TYPE_NONE = 0
 MEMORY_TYPE_PINNED = 1
 hsa_amd_memory_type_t = ctypes.c_uint32 # enum
-hsa_amd_vmem_handle_create = _libraries['libhsa'].hsa_amd_vmem_handle_create
-hsa_amd_vmem_handle_create.restype = hsa_status_t
-hsa_amd_vmem_handle_create.argtypes = [hsa_amd_memory_pool_t, size_t, hsa_amd_memory_type_t, uint64_t, ctypes.POINTER(struct_hsa_amd_vmem_alloc_handle_s)]
-hsa_amd_vmem_handle_release = _libraries['libhsa'].hsa_amd_vmem_handle_release
-hsa_amd_vmem_handle_release.restype = hsa_status_t
-hsa_amd_vmem_handle_release.argtypes = [hsa_amd_vmem_alloc_handle_t]
-hsa_amd_vmem_map = _libraries['libhsa'].hsa_amd_vmem_map
-hsa_amd_vmem_map.restype = hsa_status_t
-hsa_amd_vmem_map.argtypes = [ctypes.POINTER(None), size_t, size_t, hsa_amd_vmem_alloc_handle_t, uint64_t]
-hsa_amd_vmem_unmap = _libraries['libhsa'].hsa_amd_vmem_unmap
-hsa_amd_vmem_unmap.restype = hsa_status_t
-hsa_amd_vmem_unmap.argtypes = [ctypes.POINTER(None), size_t]
+try:
+    hsa_amd_vmem_handle_create = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_handle_create
+    hsa_amd_vmem_handle_create.restype = hsa_status_t
+    hsa_amd_vmem_handle_create.argtypes = [hsa_amd_memory_pool_t, size_t, hsa_amd_memory_type_t, uint64_t, ctypes.POINTER(struct_hsa_amd_vmem_alloc_handle_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_handle_release = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_handle_release
+    hsa_amd_vmem_handle_release.restype = hsa_status_t
+    hsa_amd_vmem_handle_release.argtypes = [hsa_amd_vmem_alloc_handle_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_map = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_map
+    hsa_amd_vmem_map.restype = hsa_status_t
+    hsa_amd_vmem_map.argtypes = [ctypes.POINTER(None), size_t, size_t, hsa_amd_vmem_alloc_handle_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_unmap = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_unmap
+    hsa_amd_vmem_unmap.restype = hsa_status_t
+    hsa_amd_vmem_unmap.argtypes = [ctypes.POINTER(None), size_t]
+except AttributeError:
+    pass
 class struct_hsa_amd_memory_access_desc_s(Structure):
     pass
 
@@ -2741,31 +3425,49 @@ struct_hsa_amd_memory_access_desc_s._fields_ = [
 ]
 
 hsa_amd_memory_access_desc_t = struct_hsa_amd_memory_access_desc_s
-hsa_amd_vmem_set_access = _libraries['libhsa'].hsa_amd_vmem_set_access
-hsa_amd_vmem_set_access.restype = hsa_status_t
-hsa_amd_vmem_set_access.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_memory_access_desc_s), size_t]
-hsa_amd_vmem_get_access = _libraries['libhsa'].hsa_amd_vmem_get_access
-hsa_amd_vmem_get_access.restype = hsa_status_t
-hsa_amd_vmem_get_access.argtypes = [ctypes.POINTER(None), ctypes.POINTER(hsa_access_permission_t), hsa_agent_t]
-hsa_amd_vmem_export_shareable_handle = _libraries['libhsa'].hsa_amd_vmem_export_shareable_handle
-hsa_amd_vmem_export_shareable_handle.restype = hsa_status_t
-hsa_amd_vmem_export_shareable_handle.argtypes = [ctypes.POINTER(ctypes.c_int32), hsa_amd_vmem_alloc_handle_t, uint64_t]
-hsa_amd_vmem_import_shareable_handle = _libraries['libhsa'].hsa_amd_vmem_import_shareable_handle
-hsa_amd_vmem_import_shareable_handle.restype = hsa_status_t
-hsa_amd_vmem_import_shareable_handle.argtypes = [ctypes.c_int32, ctypes.POINTER(struct_hsa_amd_vmem_alloc_handle_s)]
-hsa_amd_vmem_retain_alloc_handle = _libraries['libhsa'].hsa_amd_vmem_retain_alloc_handle
-hsa_amd_vmem_retain_alloc_handle.restype = hsa_status_t
-hsa_amd_vmem_retain_alloc_handle.argtypes = [ctypes.POINTER(struct_hsa_amd_vmem_alloc_handle_s), ctypes.POINTER(None)]
-hsa_amd_vmem_get_alloc_properties_from_handle = _libraries['libhsa'].hsa_amd_vmem_get_alloc_properties_from_handle
-hsa_amd_vmem_get_alloc_properties_from_handle.restype = hsa_status_t
-hsa_amd_vmem_get_alloc_properties_from_handle.argtypes = [hsa_amd_vmem_alloc_handle_t, ctypes.POINTER(struct_hsa_amd_memory_pool_s), ctypes.POINTER(hsa_amd_memory_type_t)]
+try:
+    hsa_amd_vmem_set_access = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_set_access
+    hsa_amd_vmem_set_access.restype = hsa_status_t
+    hsa_amd_vmem_set_access.argtypes = [ctypes.POINTER(None), size_t, ctypes.POINTER(struct_hsa_amd_memory_access_desc_s), size_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_get_access = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_get_access
+    hsa_amd_vmem_get_access.restype = hsa_status_t
+    hsa_amd_vmem_get_access.argtypes = [ctypes.POINTER(None), ctypes.POINTER(hsa_access_permission_t), hsa_agent_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_export_shareable_handle = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_export_shareable_handle
+    hsa_amd_vmem_export_shareable_handle.restype = hsa_status_t
+    hsa_amd_vmem_export_shareable_handle.argtypes = [ctypes.POINTER(ctypes.c_int32), hsa_amd_vmem_alloc_handle_t, uint64_t]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_import_shareable_handle = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_import_shareable_handle
+    hsa_amd_vmem_import_shareable_handle.restype = hsa_status_t
+    hsa_amd_vmem_import_shareable_handle.argtypes = [ctypes.c_int32, ctypes.POINTER(struct_hsa_amd_vmem_alloc_handle_s)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_retain_alloc_handle = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_retain_alloc_handle
+    hsa_amd_vmem_retain_alloc_handle.restype = hsa_status_t
+    hsa_amd_vmem_retain_alloc_handle.argtypes = [ctypes.POINTER(struct_hsa_amd_vmem_alloc_handle_s), ctypes.POINTER(None)]
+except AttributeError:
+    pass
+try:
+    hsa_amd_vmem_get_alloc_properties_from_handle = _libraries['libhsa-runtime64.so'].hsa_amd_vmem_get_alloc_properties_from_handle
+    hsa_amd_vmem_get_alloc_properties_from_handle.restype = hsa_status_t
+    hsa_amd_vmem_get_alloc_properties_from_handle.argtypes = [hsa_amd_vmem_alloc_handle_t, ctypes.POINTER(struct_hsa_amd_memory_pool_s), ctypes.POINTER(hsa_amd_memory_type_t)]
+except AttributeError:
+    pass
 class struct_BrigModuleHeader(Structure):
     pass
 
 BrigModule_t = ctypes.POINTER(struct_BrigModuleHeader)
 
-# values for enumeration 'enum_hsa_ext_finalize_h_69'
-enum_hsa_ext_finalize_h_69__enumvalues = {
+# values for enumeration 'enumhsa_ext_finalize_h_69'
+enumhsa_ext_finalize_h_69__enumvalues = {
     8192: 'HSA_EXT_STATUS_ERROR_INVALID_PROGRAM',
     8193: 'HSA_EXT_STATUS_ERROR_INVALID_MODULE',
     8194: 'HSA_EXT_STATUS_ERROR_INCOMPATIBLE_MODULE',
@@ -2781,7 +3483,7 @@ HSA_EXT_STATUS_ERROR_MODULE_ALREADY_INCLUDED = 8195
 HSA_EXT_STATUS_ERROR_SYMBOL_MISMATCH = 8196
 HSA_EXT_STATUS_ERROR_FINALIZATION_FAILED = 8197
 HSA_EXT_STATUS_ERROR_DIRECTIVE_MISMATCH = 8198
-enum_hsa_ext_finalize_h_69 = ctypes.c_uint32 # enum
+enumhsa_ext_finalize_h_69 = ctypes.c_uint32 # enum
 hsa_ext_module_t = ctypes.POINTER(struct_BrigModuleHeader)
 class struct_hsa_ext_program_s(Structure):
     pass
@@ -2792,18 +3494,30 @@ struct_hsa_ext_program_s._fields_ = [
 ]
 
 hsa_ext_program_t = struct_hsa_ext_program_s
-hsa_ext_program_create = _libraries['libhsa'].hsa_ext_program_create
-hsa_ext_program_create.restype = hsa_status_t
-hsa_ext_program_create.argtypes = [hsa_machine_model_t, hsa_profile_t, hsa_default_float_rounding_mode_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_ext_program_s)]
-hsa_ext_program_destroy = _libraries['libhsa'].hsa_ext_program_destroy
-hsa_ext_program_destroy.restype = hsa_status_t
-hsa_ext_program_destroy.argtypes = [hsa_ext_program_t]
-hsa_ext_program_add_module = _libraries['libhsa'].hsa_ext_program_add_module
-hsa_ext_program_add_module.restype = hsa_status_t
-hsa_ext_program_add_module.argtypes = [hsa_ext_program_t, hsa_ext_module_t]
-hsa_ext_program_iterate_modules = _libraries['libhsa'].hsa_ext_program_iterate_modules
-hsa_ext_program_iterate_modules.restype = hsa_status_t
-hsa_ext_program_iterate_modules.argtypes = [hsa_ext_program_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_ext_program_s, ctypes.POINTER(struct_BrigModuleHeader), ctypes.POINTER(None)), ctypes.POINTER(None)]
+try:
+    hsa_ext_program_create = _libraries['libhsa-runtime64.so'].hsa_ext_program_create
+    hsa_ext_program_create.restype = hsa_status_t
+    hsa_ext_program_create.argtypes = [hsa_machine_model_t, hsa_profile_t, hsa_default_float_rounding_mode_t, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(struct_hsa_ext_program_s)]
+except AttributeError:
+    pass
+try:
+    hsa_ext_program_destroy = _libraries['libhsa-runtime64.so'].hsa_ext_program_destroy
+    hsa_ext_program_destroy.restype = hsa_status_t
+    hsa_ext_program_destroy.argtypes = [hsa_ext_program_t]
+except AttributeError:
+    pass
+try:
+    hsa_ext_program_add_module = _libraries['libhsa-runtime64.so'].hsa_ext_program_add_module
+    hsa_ext_program_add_module.restype = hsa_status_t
+    hsa_ext_program_add_module.argtypes = [hsa_ext_program_t, hsa_ext_module_t]
+except AttributeError:
+    pass
+try:
+    hsa_ext_program_iterate_modules = _libraries['libhsa-runtime64.so'].hsa_ext_program_iterate_modules
+    hsa_ext_program_iterate_modules.restype = hsa_status_t
+    hsa_ext_program_iterate_modules.argtypes = [hsa_ext_program_t, ctypes.CFUNCTYPE(hsa_status_t, struct_hsa_ext_program_s, ctypes.POINTER(struct_BrigModuleHeader), ctypes.POINTER(None)), ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_ext_program_info_t'
 hsa_ext_program_info_t__enumvalues = {
@@ -2815,9 +3529,12 @@ HSA_EXT_PROGRAM_INFO_MACHINE_MODEL = 0
 HSA_EXT_PROGRAM_INFO_PROFILE = 1
 HSA_EXT_PROGRAM_INFO_DEFAULT_FLOAT_ROUNDING_MODE = 2
 hsa_ext_program_info_t = ctypes.c_uint32 # enum
-hsa_ext_program_get_info = _libraries['libhsa'].hsa_ext_program_get_info
-hsa_ext_program_get_info.restype = hsa_status_t
-hsa_ext_program_get_info.argtypes = [hsa_ext_program_t, hsa_ext_program_info_t, ctypes.POINTER(None)]
+try:
+    hsa_ext_program_get_info = _libraries['libhsa-runtime64.so'].hsa_ext_program_get_info
+    hsa_ext_program_get_info.restype = hsa_status_t
+    hsa_ext_program_get_info.argtypes = [hsa_ext_program_t, hsa_ext_program_info_t, ctypes.POINTER(None)]
+except AttributeError:
+    pass
 
 # values for enumeration 'hsa_ext_finalizer_call_convention_t'
 hsa_ext_finalizer_call_convention_t__enumvalues = {
@@ -2844,9 +3561,12 @@ struct_hsa_ext_control_directives_s._fields_ = [
 ]
 
 hsa_ext_control_directives_t = struct_hsa_ext_control_directives_s
-hsa_ext_program_finalize = _libraries['libhsa'].hsa_ext_program_finalize
-hsa_ext_program_finalize.restype = hsa_status_t
-hsa_ext_program_finalize.argtypes = [hsa_ext_program_t, hsa_isa_t, int32_t, hsa_ext_control_directives_t, ctypes.POINTER(ctypes.c_char), hsa_code_object_type_t, ctypes.POINTER(struct_hsa_code_object_s)]
+try:
+    hsa_ext_program_finalize = _libraries['libhsa-runtime64.so'].hsa_ext_program_finalize
+    hsa_ext_program_finalize.restype = hsa_status_t
+    hsa_ext_program_finalize.argtypes = [hsa_ext_program_t, hsa_isa_t, int32_t, hsa_ext_control_directives_t, ctypes.POINTER(ctypes.c_char), hsa_code_object_type_t, ctypes.POINTER(struct_hsa_code_object_s)]
+except AttributeError:
+    pass
 class struct_hsa_ext_finalizer_1_00_pfn_s(Structure):
     pass
 
@@ -3230,13 +3950,15 @@ __all__ = \
     'HSA_VARIABLE_ALLOCATION_PROGRAM', 'HSA_VARIABLE_SEGMENT_GLOBAL',
     'HSA_VARIABLE_SEGMENT_READONLY', 'HSA_WAIT_STATE_ACTIVE',
     'HSA_WAIT_STATE_BLOCKED', 'HSA_WAVEFRONT_INFO_SIZE',
-    'MEMORY_TYPE_NONE', 'MEMORY_TYPE_PINNED', 'enum_hsa_ext_amd_h_179', 'enum_hsa_ext_finalize_h_69', 'enum_hsa_ext_image_h_68', 'enum_hsa_ext_image_h_93', 'hsaDeviceToDevice',
-    'hsaDeviceToHost', 'hsaHostToDevice', 'hsaHostToHost',
-    'hsa_access_permission_t', 'hsa_agent_dispatch_packet_t',
-    'hsa_agent_extension_supported', 'hsa_agent_feature_t',
-    'hsa_agent_get_exception_policies', 'hsa_agent_get_info',
-    'hsa_agent_info_t', 'hsa_agent_iterate_caches',
-    'hsa_agent_iterate_isas', 'hsa_agent_iterate_regions',
+    'MEMORY_TYPE_NONE', 'MEMORY_TYPE_PINNED', 'enumhsa_ext_amd_h_179',
+    'enumhsa_ext_finalize_h_69', 'enumhsa_ext_image_h_68',
+    'enumhsa_ext_image_h_93', 'hsaDeviceToDevice', 'hsaDeviceToHost',
+    'hsaHostToDevice', 'hsaHostToHost', 'hsa_access_permission_t',
+    'hsa_agent_dispatch_packet_t', 'hsa_agent_extension_supported',
+    'hsa_agent_feature_t', 'hsa_agent_get_exception_policies',
+    'hsa_agent_get_info', 'hsa_agent_info_t',
+    'hsa_agent_iterate_caches', 'hsa_agent_iterate_isas',
+    'hsa_agent_iterate_regions',
     'hsa_agent_major_extension_supported', 'hsa_agent_t',
     'hsa_amd_agent_info_s', 'hsa_amd_agent_info_t',
     'hsa_amd_agent_info_t__enumvalues',
@@ -3502,4 +4224,4 @@ __all__ = \
     'struct_hsa_queue_s', 'struct_hsa_region_s',
     'struct_hsa_signal_group_s', 'struct_hsa_signal_s',
     'struct_hsa_wavefront_s', 'uint16_t', 'uint32_t', 'uint64_t',
-    'union_union_hsa_ext_amd_h_2329']
+    'union_unionhsa_ext_amd_h_2329']
