@@ -1,6 +1,7 @@
 import unittest
 import ctypes
 import gpuctypes.hip as hip
+import gpuctypes.comgr as comgr
 from helpers import CI, expectedFailureIf, cuda_compile
 
 def check(status):
@@ -28,6 +29,10 @@ class TestHIP(unittest.TestCase):
   def test_compile(self):
     prg = cuda_compile("int test() { return 42; }", ["--offload-arch=gfx1100"], HIPCompile, check)
     assert len(prg) > 10
+
+  def test_comgr(self):
+    status = comgr.amd_comgr_create_action_info(ctypes.byref(action_info := comgr.amd_comgr_action_info_t()))
+    assert status == 0
 
 class TestHIPDevice(unittest.TestCase):
   @expectedFailureIf(CI)
