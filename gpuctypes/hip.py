@@ -155,7 +155,6 @@ def char_pointer_cast(string, encoding='utf-8'):
 
 
 _libraries['libamdhip64.so'] = ctypes.CDLL('/opt/rocm/lib/libamdhip64.so')
-_libraries['libhiprtc.so'] = ctypes.CDLL('/opt/rocm/lib/libhiprtc.so')
 
 
 
@@ -5076,13 +5075,13 @@ class struct_ihiprtcLinkState(Structure):
 
 hiprtcLinkState = ctypes.POINTER(struct_ihiprtcLinkState)
 try:
-    hiprtcGetErrorString = _libraries['libhiprtc.so'].hiprtcGetErrorString
+    hiprtcGetErrorString = _libraries['libamdhip64.so'].hiprtcGetErrorString
     hiprtcGetErrorString.restype = ctypes.POINTER(ctypes.c_char)
     hiprtcGetErrorString.argtypes = [hiprtcResult]
 except AttributeError:
     pass
 try:
-    hiprtcVersion = _libraries['libhiprtc.so'].hiprtcVersion
+    hiprtcVersion = _libraries['libamdhip64.so'].hiprtcVersion
     hiprtcVersion.restype = hiprtcResult
     hiprtcVersion.argtypes = [ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32)]
 except AttributeError:
@@ -5092,97 +5091,97 @@ class struct__hiprtcProgram(Structure):
 
 hiprtcProgram = ctypes.POINTER(struct__hiprtcProgram)
 try:
-    hiprtcAddNameExpression = _libraries['libhiprtc.so'].hiprtcAddNameExpression
+    hiprtcAddNameExpression = _libraries['libamdhip64.so'].hiprtcAddNameExpression
     hiprtcAddNameExpression.restype = hiprtcResult
     hiprtcAddNameExpression.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
 except AttributeError:
     pass
 try:
-    hiprtcCompileProgram = _libraries['libhiprtc.so'].hiprtcCompileProgram
+    hiprtcCompileProgram = _libraries['libamdhip64.so'].hiprtcCompileProgram
     hiprtcCompileProgram.restype = hiprtcResult
     hiprtcCompileProgram.argtypes = [hiprtcProgram, ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
 except AttributeError:
     pass
 try:
-    hiprtcCreateProgram = _libraries['libhiprtc.so'].hiprtcCreateProgram
+    hiprtcCreateProgram = _libraries['libamdhip64.so'].hiprtcCreateProgram
     hiprtcCreateProgram.restype = hiprtcResult
     hiprtcCreateProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram)), ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.c_char), ctypes.c_int32, ctypes.POINTER(ctypes.POINTER(ctypes.c_char)), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
 except AttributeError:
     pass
 try:
-    hiprtcDestroyProgram = _libraries['libhiprtc.so'].hiprtcDestroyProgram
+    hiprtcDestroyProgram = _libraries['libamdhip64.so'].hiprtcDestroyProgram
     hiprtcDestroyProgram.restype = hiprtcResult
     hiprtcDestroyProgram.argtypes = [ctypes.POINTER(ctypes.POINTER(struct__hiprtcProgram))]
 except AttributeError:
     pass
 try:
-    hiprtcGetLoweredName = _libraries['libhiprtc.so'].hiprtcGetLoweredName
+    hiprtcGetLoweredName = _libraries['libamdhip64.so'].hiprtcGetLoweredName
     hiprtcGetLoweredName.restype = hiprtcResult
     hiprtcGetLoweredName.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char), ctypes.POINTER(ctypes.POINTER(ctypes.c_char))]
 except AttributeError:
     pass
 try:
-    hiprtcGetProgramLog = _libraries['libhiprtc.so'].hiprtcGetProgramLog
+    hiprtcGetProgramLog = _libraries['libamdhip64.so'].hiprtcGetProgramLog
     hiprtcGetProgramLog.restype = hiprtcResult
     hiprtcGetProgramLog.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
 except AttributeError:
     pass
 try:
-    hiprtcGetProgramLogSize = _libraries['libhiprtc.so'].hiprtcGetProgramLogSize
+    hiprtcGetProgramLogSize = _libraries['libamdhip64.so'].hiprtcGetProgramLogSize
     hiprtcGetProgramLogSize.restype = hiprtcResult
     hiprtcGetProgramLogSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
 except AttributeError:
     pass
 try:
-    hiprtcGetCode = _libraries['libhiprtc.so'].hiprtcGetCode
+    hiprtcGetCode = _libraries['libamdhip64.so'].hiprtcGetCode
     hiprtcGetCode.restype = hiprtcResult
     hiprtcGetCode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
 except AttributeError:
     pass
 try:
-    hiprtcGetCodeSize = _libraries['libhiprtc.so'].hiprtcGetCodeSize
+    hiprtcGetCodeSize = _libraries['libamdhip64.so'].hiprtcGetCodeSize
     hiprtcGetCodeSize.restype = hiprtcResult
     hiprtcGetCodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
 except AttributeError:
     pass
 try:
-    hiprtcGetBitcode = _libraries['libhiprtc.so'].hiprtcGetBitcode
+    hiprtcGetBitcode = _libraries['libamdhip64.so'].hiprtcGetBitcode
     hiprtcGetBitcode.restype = hiprtcResult
     hiprtcGetBitcode.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_char)]
 except AttributeError:
     pass
 try:
-    hiprtcGetBitcodeSize = _libraries['libhiprtc.so'].hiprtcGetBitcodeSize
+    hiprtcGetBitcodeSize = _libraries['libamdhip64.so'].hiprtcGetBitcodeSize
     hiprtcGetBitcodeSize.restype = hiprtcResult
     hiprtcGetBitcodeSize.argtypes = [hiprtcProgram, ctypes.POINTER(ctypes.c_uint64)]
 except AttributeError:
     pass
 try:
-    hiprtcLinkCreate = _libraries['libhiprtc.so'].hiprtcLinkCreate
+    hiprtcLinkCreate = _libraries['libamdhip64.so'].hiprtcLinkCreate
     hiprtcLinkCreate.restype = hiprtcResult
     hiprtcLinkCreate.argtypes = [ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.POINTER(struct_ihiprtcLinkState))]
 except AttributeError:
     pass
 try:
-    hiprtcLinkAddFile = _libraries['libhiprtc.so'].hiprtcLinkAddFile
+    hiprtcLinkAddFile = _libraries['libamdhip64.so'].hiprtcLinkAddFile
     hiprtcLinkAddFile.restype = hiprtcResult
     hiprtcLinkAddFile.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
 except AttributeError:
     pass
 try:
-    hiprtcLinkAddData = _libraries['libhiprtc.so'].hiprtcLinkAddData
+    hiprtcLinkAddData = _libraries['libamdhip64.so'].hiprtcLinkAddData
     hiprtcLinkAddData.restype = hiprtcResult
     hiprtcLinkAddData.argtypes = [hiprtcLinkState, hiprtcJITInputType, ctypes.POINTER(None), size_t, ctypes.POINTER(ctypes.c_char), ctypes.c_uint32, ctypes.POINTER(hiprtcJIT_option), ctypes.POINTER(ctypes.POINTER(None))]
 except AttributeError:
     pass
 try:
-    hiprtcLinkComplete = _libraries['libhiprtc.so'].hiprtcLinkComplete
+    hiprtcLinkComplete = _libraries['libamdhip64.so'].hiprtcLinkComplete
     hiprtcLinkComplete.restype = hiprtcResult
     hiprtcLinkComplete.argtypes = [hiprtcLinkState, ctypes.POINTER(ctypes.POINTER(None)), ctypes.POINTER(ctypes.c_uint64)]
 except AttributeError:
     pass
 try:
-    hiprtcLinkDestroy = _libraries['libhiprtc.so'].hiprtcLinkDestroy
+    hiprtcLinkDestroy = _libraries['libamdhip64.so'].hiprtcLinkDestroy
     hiprtcLinkDestroy.restype = hiprtcResult
     hiprtcLinkDestroy.argtypes = [hiprtcLinkState]
 except AttributeError:
