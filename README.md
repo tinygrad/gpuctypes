@@ -32,6 +32,6 @@ pip install -e .
 
 ### Current versions
 
-* ROCm 5.7.1
+* ROCm 6.0.0
 * CUDA 11.5
 * OpenCL (whatever is in Ubuntu 22.04)
